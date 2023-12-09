@@ -94,9 +94,9 @@ class OptionsMenu extends MusicBeatState
 			}
 
 			if (curSelected == 5){
-				versionShit.text = "0 = Song Dependent, Controls: Left Or Right, Press Shift To Go Faster, Press Shift Again To Go Slower";
+				versionShit.text = "0 = Song Dependent, Controls: Left Or Right, Press Shift To Go Faster, Press Shift Again To Go Slower, R To Reset";
 			}else if (curSelected == 7){
-				versionShit.text = "Controls: Left Or Right, Press Shift To Go Faster, Press Shift Again To Go Slower";
+				versionShit.text = "Controls: Left Or Right, Press Shift To Go Faster, Press Shift Again To Go Slower, R To Reset";
 			}else{
 				versionShit.text = "";
 			}
@@ -182,6 +182,25 @@ class OptionsMenu extends MusicBeatState
 				grpControls.add(ctrl);
 			}else if (controls.LEFT && fasterSpeed && curSelected == 7){
 				FlxG.save.data.offset--;
+				grpControls.remove(grpControls.members[curSelected]);
+				var ctrl:Alphabet = new Alphabet(0, (70 * curSelected) + 30, "Offset " + FlxG.save.data.offset, true, false);
+				ctrl.isMenuItem = true;
+				ctrl.targetY = curSelected - 7;
+				grpControls.add(ctrl);
+			}
+
+			if (FlxG.keys.justPressed.R && curSelected == 5){
+				curSpeed = 0;
+				FlxG.save.data.curSpeed = curSpeed;
+				grpControls.remove(grpControls.members[curSelected]);
+				var ctrl:Alphabet = new Alphabet(0, (70 * curSelected) + 30, "Scroll Speed " + FlxG.save.data.curSpeed, true, false);
+				ctrl.isMenuItem = true;
+				ctrl.targetY = curSelected - 5;
+				grpControls.add(ctrl);
+			}
+
+			if (FlxG.keys.justPressed.R && curSelected == 7){
+				FlxG.save.data.offset = 0;
 				grpControls.remove(grpControls.members[curSelected]);
 				var ctrl:Alphabet = new Alphabet(0, (70 * curSelected) + 30, "Offset " + FlxG.save.data.offset, true, false);
 				ctrl.isMenuItem = true;
