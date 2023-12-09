@@ -56,9 +56,7 @@ class Note extends FlxSprite
 		switch (daStage)
 		{
 			case 'school' | 'schoolEvil':
-				if (FlxG.save.data.stepmania){
-					loadGraphic(Paths.image('weeb/pixelUI/stepmania'), true, 17, 17);
-				}else{
+				{
 					loadGraphic(Paths.image('weeb/pixelUI/NOTE_assets'), true, 17, 17);
 				}
 
@@ -69,9 +67,7 @@ class Note extends FlxSprite
 
 				if (isSustainNote)
 				{
-					if (FlxG.save.data.stepmania){
-						loadGraphic(Paths.image('weeb/pixelUI/stepmaniaEnds'), true, 7, 6);
-					}else{
+					{
 						loadGraphic(Paths.image('weeb/pixelUI/NOTE_assetsENDS'), true, 7, 6);
 					}
 
@@ -90,9 +86,7 @@ class Note extends FlxSprite
 				updateHitbox();
 
 			default:
-				if (FlxG.save.data.stepmania){
-					frames = Paths.getSparrowAtlas('stepmania');
-				}else{
+				{
 					frames = Paths.getSparrowAtlas('NOTE_assets');
 				}
 
@@ -101,15 +95,18 @@ class Note extends FlxSprite
 				animation.addByPrefix('blueScroll', 'blue0');
 				animation.addByPrefix('purpleScroll', 'purple0');
 
-				animation.addByPrefix('purpleholdend', 'pruple end hold');
-				animation.addByPrefix('greenholdend', 'green hold end');
-				animation.addByPrefix('redholdend', 'red hold end');
-				animation.addByPrefix('blueholdend', 'blue hold end');
-
-				animation.addByPrefix('purplehold', 'purple hold piece');
-				animation.addByPrefix('greenhold', 'green hold piece');
-				animation.addByPrefix('redhold', 'red hold piece');
-				animation.addByPrefix('bluehold', 'blue hold piece');
+				if (isSustainNote){
+					frames = Paths.getSparrowAtlas('NOTE_assets');
+					animation.addByPrefix('purpleholdend', 'pruple end hold');
+					animation.addByPrefix('greenholdend', 'green hold end');
+					animation.addByPrefix('redholdend', 'red hold end');
+					animation.addByPrefix('blueholdend', 'blue hold end');
+	
+					animation.addByPrefix('purplehold', 'purple hold piece');
+					animation.addByPrefix('greenhold', 'green hold piece');
+					animation.addByPrefix('redhold', 'red hold piece');
+					animation.addByPrefix('bluehold', 'blue hold piece');
+				}
 
 				setGraphicSize(Std.int(width * 0.7));
 				updateHitbox();
@@ -137,7 +134,7 @@ class Note extends FlxSprite
 		if (isSustainNote && prevNote != null)
 		{
 			noteScore * 0.2;
-			alpha = 0.6;
+			//alpha = 0.6;
 
 			x += width / 2;
 

@@ -27,7 +27,7 @@ class GameOverSubstate extends MusicBeatSubstate
 				stageSuffix = '-pixel';
 				daBf = 'bf-pixel-dead';
 			default:
-				daBf = 'bf';
+				daBf = 'bf-dead';
 		}
 
 		super();
@@ -48,7 +48,7 @@ class GameOverSubstate extends MusicBeatSubstate
 		FlxG.camera.scroll.set();
 		FlxG.camera.target = null;
 
-		bf.playAnim('firstDeath');
+		bf.playAnim('firstDeath'); 
 	}
 
 	override function update(elapsed:Float)

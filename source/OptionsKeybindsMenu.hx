@@ -94,7 +94,7 @@ class OptionsKeybindsMenu extends MusicBeatState
 				}
 			}
 			else{
-				if (FlxG.keys.justPressed.ANY && !FlxG.keys.justPressed.ENTER && !FlxG.keys.justPressed.ESCAPE && !FlxG.keys.justPressed.LEFT && !FlxG.keys.justPressed.DOWN && !FlxG.keys.justPressed.UP && !FlxG.keys.justPressed.RIGHT && setBind){
+				if (FlxG.keys.justPressed.ANY && !FlxG.keys.justPressed.ENTER && !FlxG.keys.justPressed.ESCAPE && !FlxG.keys.justPressed.SPACE && !FlxG.keys.justPressed.LEFT && !FlxG.keys.justPressed.DOWN && !FlxG.keys.justPressed.UP && !FlxG.keys.justPressed.RIGHT && setBind){
 					grpControls.remove(grpControls.members[curSelected]);
 					switch(curSelected)
 					{

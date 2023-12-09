@@ -35,11 +35,11 @@ class OptionsMenu extends MusicBeatState
 	{
 		curSpeed = FlxG.save.data.curSpeed;
 		var menuBG:FlxSprite = new FlxSprite().loadGraphic(Paths.image('menuDesat'));
-		controlsStrings = CoolUtil.coolStringFile("Keybinds" + "\n" 
-		+ (FlxG.save.data.newInput ? "Ghost Tapping On" : "Ghost Tapping Off") 
-		+ "\n" + (FlxG.save.data.downscroll ? 'Downscroll on' : 'Downscroll off') 
-		+ "\nAccuracy " + (FlxG.save.data.accuracyDisplay ? "on" : "off")
-		+ "\nStepmania Arrows " + (FlxG.save.data.stepmania ? "on" : "off")
+		controlsStrings = CoolUtil.coolStringFile("Keybinds"
+		+ "\nGhost Tapping " + (FlxG.save.data.newInput ? "on" : "off") 
+		+ "\nDownscroll " + (FlxG.save.data.downscroll ? 'on' : 'off') 
+		+ "\nRating Mode " + (FlxG.save.data.accuracyDisplay ? "Kade" : "Psych")
+		+ "\nHide Hud " + (FlxG.save.data.hideHud ? "on" : "off")
 		+ "\nScroll Speed " + curSpeed
 		+ "\nBotplay " + (FlxG.save.data.botPlay ? "on" : "off")
 		+ "\nNote Offset " + FlxG.save.data.offset
@@ -81,6 +81,7 @@ class OptionsMenu extends MusicBeatState
 
 		if (acceptInput){
 			if (controls.BACK){
+				fasterSpeed = false;
 				FlxG.save.data.curSpeed = curSpeed;
 				FlxG.switchState(new MainMenuState());
 			}
@@ -239,25 +240,25 @@ class OptionsMenu extends MusicBeatState
 						FlxG.switchState(new OptionsKeybindsMenu());		
 					case 1:
 						FlxG.save.data.newInput = !FlxG.save.data.newInput;
-						var ctrl:Alphabet = new Alphabet(0, (70 * curSelected) + 30, (FlxG.save.data.newInput ? "Ghost Tapping On" : "Ghost Tapping Off") , true, false);
+						var ctrl:Alphabet = new Alphabet(0, (70 * curSelected) + 30, "Ghost Tapping " + (FlxG.save.data.newInput ? "on" : "off") , true, false);
 						ctrl.isMenuItem = true;
 						ctrl.targetY = curSelected - 1;
 						grpControls.add(ctrl);
 					case 2:
 						FlxG.save.data.downscroll = !FlxG.save.data.downscroll;
-						var ctrl:Alphabet = new Alphabet(0, (70 * curSelected) + 30, (FlxG.save.data.downscroll ? 'Downscroll' : 'Upscroll'), true, false);
+						var ctrl:Alphabet = new Alphabet(0, (70 * curSelected) + 30, "Downscroll " + (FlxG.save.data.downscroll ? 'on' : 'off') , true, false);
 						ctrl.isMenuItem = true;
 						ctrl.targetY = curSelected - 2;
 						grpControls.add(ctrl);
 					case 3:
 						FlxG.save.data.accuracyDisplay = !FlxG.save.data.accuracyDisplay;
-						var ctrl:Alphabet = new Alphabet(0, (70 * curSelected) + 30, "Accuracy " + (FlxG.save.data.accuracyDisplay ? "on" : "off"), true, false);
+						var ctrl:Alphabet = new Alphabet(0, (70 * curSelected) + 30, "Rating Mode " + (FlxG.save.data.accuracyDisplay ? "Kade" : "Psych"), true, false);
 						ctrl.isMenuItem = true;
 						ctrl.targetY = curSelected - 3;
 						grpControls.add(ctrl);
 					case 4:
-						FlxG.save.data.stepmania = !FlxG.save.data.stepmania;
-						var ctrl:Alphabet = new Alphabet(0, (70 * curSelected) + 30, "Stepmania Arrows " + (FlxG.save.data.stepmania ? "on" : "off"), true, false);
+						FlxG.save.data.hideHud = !FlxG.save.data.hideHud;
+						var ctrl:Alphabet = new Alphabet(0, (70 * curSelected) + 30, "Hide Hud " + (FlxG.save.data.hideHud ? "on" : "off"), true, false);
 						ctrl.isMenuItem = true;
 						ctrl.targetY = curSelected - 4;
 						grpControls.add(ctrl);
