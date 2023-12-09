@@ -174,6 +174,12 @@ class PlayState extends MusicBeatState
 			curSpeed = FlxG.save.data.curSpeed;
 		}
 
+		if (FlxG.save.data.botPlay){
+			Conductor.safeZoneOffset = (Conductor.safeFrames / 150) * 1000;
+		}else{
+			Conductor.safeZoneOffset = (Conductor.safeFrames / 50) * 1000;
+		}
+
 		// var gameCam:FlxCamera = FlxG.camera;
 		camGame = new FlxCamera();
 		camHUD = new FlxCamera();
