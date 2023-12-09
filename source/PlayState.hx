@@ -174,12 +174,6 @@ class PlayState extends MusicBeatState
 			curSpeed = FlxG.save.data.curSpeed;
 		}
 
-		if (FlxG.save.data.botPlay){
-			Conductor.safeZoneOffset = (Conductor.safeFrames / 150) * 1000;
-		}else{
-			Conductor.safeZoneOffset = (Conductor.safeFrames / 50) * 1000;
-		}
-
 		// var gameCam:FlxCamera = FlxG.camera;
 		camGame = new FlxCamera();
 		camHUD = new FlxCamera();
@@ -1696,7 +1690,7 @@ class PlayState extends MusicBeatState
 					}
 
 					if (FlxG.save.data.botPlay){
-						if (daNote.mustPress && daNote.canBeHit){
+						if (daNote.mustPress && daNote.canBeHit && Conductor.safeZoneOffset >= Math.floor((Conductor.safeFrames / 350) * 1000)){
 							goodNoteHit(daNote);
 						}
 					}

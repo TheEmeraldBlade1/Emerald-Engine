@@ -42,7 +42,7 @@ class OptionsMenu extends MusicBeatState
 		+ "\nStepmania Arrows " + (FlxG.save.data.stepmania ? "on" : "off")
 		+ "\nScroll Speed " + curSpeed
 		+ "\nBotplay " + (FlxG.save.data.botPlay ? "on" : "off")
-		+ "\nOffset " + FlxG.save.data.offset
+		+ "\nNote Offset " + FlxG.save.data.offset
 		);
 		
 		trace(controlsStrings);
@@ -67,7 +67,7 @@ class OptionsMenu extends MusicBeatState
 		}
 
 
-		versionShit = new FlxText(5, FlxG.height - 18, 0, "Offset (Left, Right): " + FlxG.save.data.offset, 12);
+		versionShit = new FlxText(5, FlxG.height - 18, 0, "", 12);
 		versionShit.scrollFactor.set();
 		versionShit.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(versionShit);
@@ -158,32 +158,52 @@ class OptionsMenu extends MusicBeatState
 			}
 			
 			if (controls.RIGHT_R && !fasterSpeed && curSelected == 7){
-				FlxG.save.data.offset++;
+				if (curSpeed > 9999){
+					FlxG.save.data.offset = 9999;
+				}
+				if (curSpeed != 9999){
+					FlxG.save.data.offset++;
+				}
 				grpControls.remove(grpControls.members[curSelected]);
-				var ctrl:Alphabet = new Alphabet(0, (70 * curSelected) + 30, "Offset " + FlxG.save.data.offset, true, false);
+				var ctrl:Alphabet = new Alphabet(0, (70 * curSelected) + 30, "Note Offset " + FlxG.save.data.offset, true, false);
 				ctrl.isMenuItem = true;
 				ctrl.targetY = curSelected - 7;
 				grpControls.add(ctrl);
 			}else if (controls.RIGHT && fasterSpeed && curSelected == 7){
-				FlxG.save.data.offset++;
+				if (curSpeed > 9999){
+					FlxG.save.data.offset = 9999;
+				}
+				if (curSpeed != 9999){
+					FlxG.save.data.offset++;
+				}
 				grpControls.remove(grpControls.members[curSelected]);
-				var ctrl:Alphabet = new Alphabet(0, (70 * curSelected) + 30, "Offset " + FlxG.save.data.offset, true, false);
+				var ctrl:Alphabet = new Alphabet(0, (70 * curSelected) + 30, "Note Offset " + FlxG.save.data.offset, true, false);
 				ctrl.isMenuItem = true;
 				ctrl.targetY = curSelected - 7;
 				grpControls.add(ctrl);
 			}
 
 			if (controls.LEFT_R && !fasterSpeed && curSelected == 7){
-				FlxG.save.data.offset--;
+				if (curSpeed < -9999){
+					FlxG.save.data.offset = -9999;
+				}
+				if (curSpeed != -9999){
+					FlxG.save.data.offset--;
+				}
 				grpControls.remove(grpControls.members[curSelected]);
-				var ctrl:Alphabet = new Alphabet(0, (70 * curSelected) + 30, "Offset " + FlxG.save.data.offset, true, false);
+				var ctrl:Alphabet = new Alphabet(0, (70 * curSelected) + 30, "Note Offset " + FlxG.save.data.offset, true, false);
 				ctrl.isMenuItem = true;
 				ctrl.targetY = curSelected - 7;
 				grpControls.add(ctrl);
 			}else if (controls.LEFT && fasterSpeed && curSelected == 7){
-				FlxG.save.data.offset--;
+				if (curSpeed < -9999){
+					FlxG.save.data.offset = -9999;
+				}
+				if (curSpeed != -9999){
+					FlxG.save.data.offset--;
+				}
 				grpControls.remove(grpControls.members[curSelected]);
-				var ctrl:Alphabet = new Alphabet(0, (70 * curSelected) + 30, "Offset " + FlxG.save.data.offset, true, false);
+				var ctrl:Alphabet = new Alphabet(0, (70 * curSelected) + 30, "Note Offset " + FlxG.save.data.offset, true, false);
 				ctrl.isMenuItem = true;
 				ctrl.targetY = curSelected - 7;
 				grpControls.add(ctrl);
@@ -202,7 +222,7 @@ class OptionsMenu extends MusicBeatState
 			if (FlxG.keys.justPressed.R && curSelected == 7){
 				FlxG.save.data.offset = 0;
 				grpControls.remove(grpControls.members[curSelected]);
-				var ctrl:Alphabet = new Alphabet(0, (70 * curSelected) + 30, "Offset " + FlxG.save.data.offset, true, false);
+				var ctrl:Alphabet = new Alphabet(0, (70 * curSelected) + 30, "Note Offset " + FlxG.save.data.offset, true, false);
 				ctrl.isMenuItem = true;
 				ctrl.targetY = curSelected - 7;
 				grpControls.add(ctrl);
