@@ -41,7 +41,7 @@ class Character extends FlxSprite
 					default:
 						frames = Paths.getSparrowAtlas('characters/sprites/' + curCharacter);
 				}
-				switch (curCharacter)
+				switch (curCharacter) // PUT CHARACTER ANIMATION NAMES HERE (Don't need too if animation names are idle, left, right, up, down, we have a coded system for that)
 				{
 					case 'bf':
 						animation.addByPrefix('idle', 'BF idle dance', 24, false);
@@ -56,53 +56,52 @@ class Character extends FlxSprite
 						animation.addByPrefix('hey', 'BF HEY', 24, false);
 						animation.addByPrefix('scared', 'BF idle shaking', 24);
 
-						case 'bf-dead':
-							animation.addByPrefix('firstDeath', "BF dies", 24, false);
-							animation.addByPrefix('deathLoop', "BF Dead Loop", 24, true);
-							animation.addByPrefix('deathConfirm', "BF Dead confirm", 24, false);
+					case 'bf-dead':
+						animation.addByPrefix('firstDeath', "BF dies", 24, false);
+						animation.addByPrefix('deathLoop', "BF Dead Loop", 24, true);
+						animation.addByPrefix('deathConfirm', "BF Dead confirm", 24, false);
 
-							case 'bf-car':
-								animation.addByPrefix('idle', 'BF idle dance', 24, false);
-								animation.addByPrefix('singUP', 'BF NOTE UP0', 24, false);
-								animation.addByPrefix('singLEFT', 'BF NOTE LEFT0', 24, false);
-								animation.addByPrefix('singRIGHT', 'BF NOTE RIGHT0', 24, false);
-								animation.addByPrefix('singDOWN', 'BF NOTE DOWN0', 24, false);
-								animation.addByPrefix('singUPmiss', 'BF NOTE UP MISS', 24, false);
-								animation.addByPrefix('singLEFTmiss', 'BF NOTE LEFT MISS', 24, false);
-								animation.addByPrefix('singRIGHTmiss', 'BF NOTE RIGHT MISS', 24, false);
-								animation.addByPrefix('singDOWNmiss', 'BF NOTE DOWN MISS', 24, false);
-								animation.addByPrefix('hey', 'BF HEY', 24, false);
+					case 'bf-car':
+						animation.addByPrefix('idle', 'BF idle dance', 24, false);
+						animation.addByPrefix('singUP', 'BF NOTE UP0', 24, false);
+						animation.addByPrefix('singLEFT', 'BF NOTE LEFT0', 24, false);
+						animation.addByPrefix('singRIGHT', 'BF NOTE RIGHT0', 24, false);
+						animation.addByPrefix('singDOWN', 'BF NOTE DOWN0', 24, false);
+						animation.addByPrefix('singUPmiss', 'BF NOTE UP MISS', 24, false);
+						animation.addByPrefix('singLEFTmiss', 'BF NOTE LEFT MISS', 24, false);
+						animation.addByPrefix('singRIGHTmiss', 'BF NOTE RIGHT MISS', 24, false);
+						animation.addByPrefix('singDOWNmiss', 'BF NOTE DOWN MISS', 24, false);
+						animation.addByPrefix('hey', 'BF HEY', 24, false);
 
-								case 'bf-christmas':
-									animation.addByPrefix('idle', 'BF idle dance', 24, false);
-									animation.addByPrefix('singUP', 'BF NOTE UP0', 24, false);
-									animation.addByPrefix('singLEFT', 'BF NOTE LEFT0', 24, false);
-									animation.addByPrefix('singRIGHT', 'BF NOTE RIGHT0', 24, false);
-									animation.addByPrefix('singDOWN', 'BF NOTE DOWN0', 24, false);
-									animation.addByPrefix('singUPmiss', 'BF NOTE UP MISS', 24, false);
-									animation.addByPrefix('singLEFTmiss', 'BF NOTE LEFT MISS', 24, false);
-									animation.addByPrefix('singRIGHTmiss', 'BF NOTE RIGHT MISS', 24, false);
-									animation.addByPrefix('singDOWNmiss', 'BF NOTE DOWN MISS', 24, false);
-									animation.addByPrefix('hey', 'BF HEY', 24, false);
+					case 'bf-christmas':
+						animation.addByPrefix('idle', 'BF idle dance', 24, false);
+						animation.addByPrefix('singUP', 'BF NOTE UP0', 24, false);
+						animation.addByPrefix('singLEFT', 'BF NOTE LEFT0', 24, false);
+						animation.addByPrefix('singRIGHT', 'BF NOTE RIGHT0', 24, false);
+						animation.addByPrefix('singDOWN', 'BF NOTE DOWN0', 24, false);
+						animation.addByPrefix('singUPmiss', 'BF NOTE UP MISS', 24, false);
+						animation.addByPrefix('singLEFTmiss', 'BF NOTE LEFT MISS', 24, false);
+						animation.addByPrefix('singRIGHTmiss', 'BF NOTE RIGHT MISS', 24, false);
+						animation.addByPrefix('singDOWNmiss', 'BF NOTE DOWN MISS', 24, false);
+						animation.addByPrefix('hey', 'BF HEY', 24, false);
 
-									case 'bf-pixel':
-										animation.addByPrefix('idle', 'BF IDLE', 24, false);
-										animation.addByPrefix('singUP', 'BF UP NOTE', 24, false);
-										animation.addByPrefix('singLEFT', 'BF LEFT NOTE', 24, false);
-										animation.addByPrefix('singRIGHT', 'BF RIGHT NOTE', 24, false);
-										animation.addByPrefix('singDOWN', 'BF DOWN NOTE', 24, false);
-										animation.addByPrefix('singUPmiss', 'BF UP MISS', 24, false);
-										animation.addByPrefix('singLEFTmiss', 'BF LEFT MISS', 24, false);
-										animation.addByPrefix('singRIGHTmiss', 'BF RIGHT MISS', 24, false);
-										animation.addByPrefix('singDOWNmiss', 'BF DOWN MISS', 24, false);
-										animation.addByPrefix('hey', 'BF HEY!!', 24, false);
+					case 'bf-pixel':
+						animation.addByPrefix('idle', 'BF IDLE', 24, false);
+						animation.addByPrefix('singUP', 'BF UP NOTE', 24, false);
+						animation.addByPrefix('singLEFT', 'BF LEFT NOTE', 24, false);
+						animation.addByPrefix('singRIGHT', 'BF RIGHT NOTE', 24, false);
+						animation.addByPrefix('singDOWN', 'BF DOWN NOTE', 24, false);
+						animation.addByPrefix('singUPmiss', 'BF UP MISS', 24, false);
+						animation.addByPrefix('singLEFTmiss', 'BF LEFT MISS', 24, false);
+						animation.addByPrefix('singRIGHTmiss', 'BF RIGHT MISS', 24, false);
+						animation.addByPrefix('singDOWNmiss', 'BF DOWN MISS', 24, false);
+						animation.addByPrefix('hey', 'BF HEY!!', 24, false);
 
-										case 'bf-pixel-dead':
-											animation.addByPrefix('singUP', "BF Dies pixel", 24, false);
-											animation.addByPrefix('firstDeath', "BF Dies pixel", 24, false);
-											animation.addByPrefix('deathLoop', "Retry Loop", 24, true);
-											animation.addByPrefix('deathConfirm', "RETRY CONFIRM", 24, false);
-											animation.play('firstDeath');
+					case 'bf-pixel-dead':
+						animation.addByPrefix('singUP', "BF Dies pixel", 24, false);
+						animation.addByPrefix('firstDeath', "BF Dies pixel", 24, false);
+						animation.addByPrefix('deathLoop', "Retry Loop", 24, true);
+						animation.addByPrefix('deathConfirm', "RETRY CONFIRM", 24, false);
 
 					case 'gf':
 						animation.addByPrefix('cheer', 'GF Cheer', 24, false);
@@ -117,29 +116,28 @@ class Character extends FlxSprite
 						animation.addByIndices('hairFall', "GF Dancing Beat Hair Landing", [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], "", 24, false);
 						animation.addByPrefix('scared', 'GF FEAR', 24);
 
-						case 'gf-car':
-							animation.addByIndices('singUP', 'GF Dancing Beat Hair blowing CAR', [0], "", 24, false);
-							animation.addByIndices('danceLeft', 'GF Dancing Beat Hair blowing CAR', [30, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14], "", 24, false);
-							animation.addByIndices('danceRight', 'GF Dancing Beat Hair blowing CAR', [15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29], "", 24,
-								false);
+					case 'gf-car':
+						animation.addByIndices('singUP', 'GF Dancing Beat Hair blowing CAR', [0], "", 24, false);
+						animation.addByIndices('danceLeft', 'GF Dancing Beat Hair blowing CAR', [30, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14], "", 24, false);
+						animation.addByIndices('danceRight', 'GF Dancing Beat Hair blowing CAR', [15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29], "", 24, false);
 
-								case 'gf-christmas':
-									animation.addByPrefix('cheer', 'GF Cheer', 24, false);
-									animation.addByPrefix('singLEFT', 'GF left note', 24, false);
-									animation.addByPrefix('singRIGHT', 'GF Right Note', 24, false);
-									animation.addByPrefix('singUP', 'GF Up Note', 24, false);
-									animation.addByPrefix('singDOWN', 'GF Down Note', 24, false);
-									animation.addByIndices('sad', 'gf sad', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], "", 24, false);
-									animation.addByIndices('danceLeft', 'GF Dancing Beat', [30, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14], "", 24, false);
-									animation.addByIndices('danceRight', 'GF Dancing Beat', [15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29], "", 24, false);
-									animation.addByIndices('hairBlow', "GF Dancing Beat Hair blowing", [0, 1, 2, 3], "", 24);
-									animation.addByIndices('hairFall', "GF Dancing Beat Hair Landing", [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], "", 24, false);
-									animation.addByPrefix('scared', 'GF FEAR', 24);
+					case 'gf-christmas':
+						animation.addByPrefix('cheer', 'GF Cheer', 24, false);
+						animation.addByPrefix('singLEFT', 'GF left note', 24, false);
+						animation.addByPrefix('singRIGHT', 'GF Right Note', 24, false);
+						animation.addByPrefix('singUP', 'GF Up Note', 24, false);
+						animation.addByPrefix('singDOWN', 'GF Down Note', 24, false);
+						animation.addByIndices('sad', 'gf sad', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], "", 24, false);
+						animation.addByIndices('danceLeft', 'GF Dancing Beat', [30, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14], "", 24, false);
+						animation.addByIndices('danceRight', 'GF Dancing Beat', [15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29], "", 24, false);
+						animation.addByIndices('hairBlow', "GF Dancing Beat Hair blowing", [0, 1, 2, 3], "", 24);
+						animation.addByIndices('hairFall', "GF Dancing Beat Hair Landing", [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], "", 24, false);
+						animation.addByPrefix('scared', 'GF FEAR', 24);
 
-									case 'gf-pixel':
-										animation.addByIndices('singUP', 'GF IDLE', [2], "", 24, false);
-										animation.addByIndices('danceLeft', 'GF IDLE', [30, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14], "", 24, false);
-										animation.addByIndices('danceRight', 'GF IDLE', [15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29], "", 24, false);
+					case 'gf-pixel':
+						animation.addByIndices('singUP', 'GF IDLE', [2], "", 24, false);
+						animation.addByIndices('danceLeft', 'GF IDLE', [30, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14], "", 24, false);
+						animation.addByIndices('danceRight', 'GF IDLE', [15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29], "", 24, false);
 
 					case 'dad':
 						animation.addByPrefix('idle', 'Dad idle dance', 24);
@@ -193,14 +191,14 @@ class Character extends FlxSprite
 						animation.addByPrefix('singUPmiss', 'pico Up note miss', 24);
 						animation.addByPrefix('singDOWNmiss', 'Pico Down Note MISS', 24);
 
-						case 'mom':
-							animation.addByPrefix('idle', "Mom Idle", 24, false);
-							animation.addByPrefix('singUP', "Mom Up Pose", 24, false);
-							animation.addByPrefix('singDOWN', "MOM DOWN POSE", 24, false);
-							animation.addByPrefix('singLEFT', 'Mom Left Pose', 24, false);
-							// ANIMATION IS CALLED MOM LEFT POSE BUT ITS FOR THE RIGHT
-							// CUZ DAVE IS DUMB!
-							animation.addByPrefix('singRIGHT', 'Mom Pose Left', 24, false);
+					case 'mom':
+						animation.addByPrefix('idle', "Mom Idle", 24, false);
+						animation.addByPrefix('singUP', "Mom Up Pose", 24, false);
+						animation.addByPrefix('singDOWN', "MOM DOWN POSE", 24, false);
+						animation.addByPrefix('singLEFT', 'Mom Left Pose', 24, false);
+						// ANIMATION IS CALLED MOM LEFT POSE BUT ITS FOR THE RIGHT
+						// CUZ DAVE IS DUMB!
+						animation.addByPrefix('singRIGHT', 'Mom Pose Left', 24, false);
 						
 					case 'mom-car':
 						animation.addByPrefix('idle', "Mom Idle", 24, false);
@@ -246,10 +244,14 @@ class Character extends FlxSprite
 						animation.addByPrefix('singDOWN', "spirit down_", 24, false);
 
 					default:
-						frames = Paths.getSparrowAtlas('characters/sprites/' + curCharacter);
+						animation.addByPrefix('idle', "idle", 24, false);
+						animation.addByPrefix('singUP', "up", 24, false);
+						animation.addByPrefix('singRIGHT', "right", 24, false);
+						animation.addByPrefix('singLEFT', "left", 24, false);
+						animation.addByPrefix('singDOWN', "down", 24, false);
 				}
 
-				switch (curCharacter)
+				switch (curCharacter) // PUT THE HEALTH BAR COLOR HERE (optional)
 				{
 					case 'bf':
 						iconColor = "FF31B0D1";
@@ -318,27 +320,27 @@ class Character extends FlxSprite
 						iconColor = "FF50a5eb";
 				}
 
-				switch (curCharacter)
+				switch (curCharacter) // if pixel put them in the code so their not blurry
 				{
 					case 'bf-pixel' | 'bf-pixel-dead' | 'gf-pixel' | 'senpai' | 'senpai-angry' | 'spirit':
 						antialiasing = false;
 				}
 
-				switch (curCharacter)
+				switch (curCharacter) // if pixel make them bigger
 				{
 					case 'bf-pixel' | 'bf-pixel-dead' | 'gf-pixel' | 'senpai' | 'senpai-angry' | 'spirit':
 						setGraphicSize(Std.int(width * 6));
 						updateHitbox();
 				}
 				
-				switch (curCharacter)
+				switch (curCharacter) // if their a little too big
 				{
 					case 'bf-pixel':
 						width -= 100;
 						height -= 100;
 				}
 
-				switch (curCharacter)
+				switch (curCharacter) // if their a player character
 				{
 					case 'bf' | 'bf-dead' | 'bf-car' | 'bf-christmas' | 'bf-pixel' | 'bf-pixel-dead':
 						flipX = true;
@@ -346,11 +348,13 @@ class Character extends FlxSprite
 
 				loadOffsetFile(curCharacter);
 
-				switch (curCharacter)
+				switch (curCharacter) // change which animation plays first, if they use idle don't put them here
 				{
-					case 'gf' | 'gf-car' | 'gf-christmas' | 'gf-pixel' | 'spooky':
+					case 'gf' | 'gf-car' | 'gf-christmas' | 'gf-pixel' | 'spooky':  // dance right and left characters
 						playAnim('danceRight');
-					default:
+					case 'bf-dead' | 'bf-pixel-dead':  // gameover characters
+						animation.play('firstDeath');
+					default:  // idle characters
 						playAnim('idle');
 				}
 		}
