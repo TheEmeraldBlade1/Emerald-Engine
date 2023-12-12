@@ -41,6 +41,10 @@ import openfl.filters.ShaderFilter;
 
 using StringTools;
 
+#if desktop
+import Discord.DiscordClient;
+#end
+
 class PlayState extends MusicBeatState
 {
 	public static var curStage:String = '';
@@ -54,6 +58,15 @@ class PlayState extends MusicBeatState
 	public static var bads:Int = 0;
 	public static var goods:Int = 0;
 	public static var sicks:Int = 0;
+
+	#if desktop
+	// Discord RPC variables
+	var storyDifficultyText:String = "";
+	var iconRPC:String = "";
+	var songLength:Float = 0;
+	var detailsText:String = "";
+	var detailsPausedText:String = "";
+	#end
 
 	public var songHits:Int = 0;
 
@@ -750,7 +763,7 @@ class PlayState extends MusicBeatState
 		healthBar = new FlxBar(healthBarBG.x + 4, healthBarBG.y + 4, RIGHT_TO_LEFT, Std.int(healthBarBG.width - 8), Std.int(healthBarBG.height - 8), this,
 			'health', 0, 2);
 		healthBar.scrollFactor.set();
-		healthBar.createFilledBar(0xFFFF0000, 0xFF66FF33);
+		healthBar.createFilledBar(FlxColor.fromString('#' + dad.iconColor), FlxColor.fromString('#' + boyfriend.iconColor));
 		// healthBar
 		add(healthBar);
 
@@ -1370,7 +1383,7 @@ class PlayState extends MusicBeatState
 			{
 				var ranking:String = "N/A";
 		
-				if (misses == 0 && bads == 0 && shits == 0 && goods == 0) // Marvelous (SICK) Full Combo
+				/*if (misses == 0 && bads == 0 && shits == 0 && goods == 0) // Marvelous (SICK) Full Combo
 					ranking = "(MFC)";
 				else if (misses == 0 && bads == 0 && shits == 0 && goods >= 1) // Good Full Combo (Nothing but Goods & Sicks)
 					ranking = "(GFC)";
@@ -1381,8 +1394,8 @@ class PlayState extends MusicBeatState
 				else
 					ranking = "(Clear)";
 
-				ranking += " ";
-				//ranking = "";
+				ranking += " ";*/
+				ranking = "";
 		
 				// WIFE TIME :)))) (based on Wife3)
 		
@@ -1458,6 +1471,40 @@ class PlayState extends MusicBeatState
 
 	override public function update(elapsed:Float)
 	{
+
+		#if desktop
+		// Updating Discord Rich Presence
+		if (FlxG.save.data.accuracyDisplay){
+			if(FlxG.save.data.botPlay){
+				if(ratingString == '?' || ratingString == null){
+					DiscordClient.changePresence(SONG.song + " | Score: " + songScore + ' | Misses: ' + misses + ' | Rating: ?' + " | BOTPLAY", null);
+				}else{
+					DiscordClient.changePresence(SONG.song + " | Score: " + songScore + ' | Misses: ' + misses + ' | Rating: ' + generateRanking() + ' (' + truncateFloat(accuracy, 2) + '%)' + " | BOTPLAY", null);
+				}
+			}else if(!FlxG.save.data.botPlay){
+				if(ratingString == '?' || ratingString == null){
+					DiscordClient.changePresence(SONG.song + " | Score: " + songScore + ' | Misses: ' + misses + ' | Rating: ?', null);
+				}else{
+					DiscordClient.changePresence(SONG.song + " | Score: " + songScore + ' | Misses: ' + misses + ' | Rating: ' + generateRanking() + ' (' + truncateFloat(accuracy, 2) + '%)', null);
+				}
+			}
+		}else{
+			if(FlxG.save.data.botPlay){
+				if(ratingString == '?' || ratingString == null){
+					DiscordClient.changePresence(SONG.song + " | Score: " + songScore + ' | Misses: ' + misses + ' | Rating: ?' + " | BOTPLAY", null);
+				}else{
+					DiscordClient.changePresence(SONG.song + " | Score: " + songScore + ' | Misses: ' + misses + ' | Rating: ' + ratingString + ' (' + Math.floor(ratingPercent * 100) + '%)' + " | BOTPLAY", null);
+				}
+			}else if(!FlxG.save.data.botPlay){
+				if(ratingString == '?' || ratingString == null){
+					DiscordClient.changePresence(SONG.song + " | Score: " + songScore + ' | Misses: ' + misses + ' | Rating: ?', null);
+				}else{
+					DiscordClient.changePresence(SONG.song + " | Score: " + songScore + ' | Misses: ' + misses + ' | Rating: ' + ratingString + ' (' + Math.floor(ratingPercent * 100) + '%)', null);
+				}
+			}
+		}
+		#end
+
 		#if !debug
 		perfectMode = false;
 		#end
@@ -1523,20 +1570,25 @@ class PlayState extends MusicBeatState
 			}
 			//scoreTxt.text = "Score: " + songScore + " | Misses: " + misses + (fc ? " | FC" : misses == 0 ? " | A" : accuracy <= 75 ? " | BAD" : "");
 		}
-		if (FlxG.keys.justPressed.ENTER && startedCountdown && canPause)
+		if (FlxG.keys.justPressed.ENTER && startedCountdown && canPause || FlxG.keys.justPressed.ESCAPE && startedCountdown && canPause)
 		{
 			persistentUpdate = false;
 			persistentDraw = true;
 			paused = true;
 
 			// 1 / 1000 chance for Gitaroo Man easter egg
-			if (FlxG.random.bool(0.1))
-			{
+			if (FlxG.random.bool(0.1) || FlxG.keys.justPressed.END){
 				// gitaroo man easter egg
+				#if desktop
+				DiscordClient.changePresence(SONG.song + " | Gitaroo Pause", null);
+				#end
 				FlxG.switchState(new GitarooPause());
-			}
-			else
+			}else{
+				#if desktop
+				DiscordClient.changePresence(SONG.song + " | Paused", null);
+				#end
 				openSubState(new PauseSubState(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y));
+			}
 		}
 
 		if (FlxG.keys.justPressed.SEVEN)
@@ -1759,7 +1811,18 @@ class PlayState extends MusicBeatState
 			vocals.stop();
 			FlxG.sound.music.stop();
 
-			openSubState(new GameOverSubstate(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y));
+
+			if (FlxG.random.bool(0.1)){
+				#if desktop
+				DiscordClient.changePresence(SONG.song + " | Gitaroo Death", null);
+				#end
+				FlxG.switchState(new GitarooPause());
+			}else{
+				#if desktop
+				DiscordClient.changePresence(SONG.song + " | Game Over", null);
+				#end
+				openSubState(new GameOverSubstate(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y));
+			}
 
 			// FlxG.switchState(new GameOverState(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y));
 		}
@@ -1841,6 +1904,12 @@ class PlayState extends MusicBeatState
 	
 						if (SONG.needsVoices)
 							vocals.volume = 1;
+
+						/*if (!daNote.isSustainNote){
+							daNote.kill();
+							notes.remove(daNote, true);
+							daNote.destroy();
+						}*/
 	
 						daNote.kill();
 						notes.remove(daNote, true);
@@ -1880,8 +1949,7 @@ class PlayState extends MusicBeatState
 							if (!daNote.isSustainNote && !FlxG.save.data.botPlay){
 								health -= 0.075;
 								vocals.volume = 0;
-								if (theFunne)
-									noteMiss(daNote.noteData);
+								noteMiss(daNote.noteData);
 							}else if (FlxG.save.data.botPlay){
 								goodNoteHit(daNote);
 							}
@@ -1936,6 +2004,8 @@ class PlayState extends MusicBeatState
 		if (SONG.validScore)
 		{
 			#if !switch
+			var percent:Float = ratingPercent;
+			if(Math.isNaN(percent)) percent = 0;
 			Highscore.saveScore(SONG.song, songScore, storyDifficulty);
 			#end
 		}
@@ -1956,7 +2026,7 @@ class PlayState extends MusicBeatState
 				FlxG.switchState(new StoryMenuState());
 
 				// if ()
-				StoryMenuState.weekUnlocked[Std.int(Math.min(storyWeek + 1, StoryMenuState.weekUnlocked.length - 1))] = true;
+				//StoryMenuState.weekUnlocked[Std.int(Math.min(storyWeek + 1, StoryMenuState.weekUnlocked.length - 1))] = true;
 
 				if (SONG.validScore)
 				{
@@ -1964,7 +2034,7 @@ class PlayState extends MusicBeatState
 					Highscore.saveWeekScore(storyWeek, campaignScore, storyDifficulty);
 				}
 
-				FlxG.save.data.weekUnlocked = StoryMenuState.weekUnlocked;
+				//FlxG.save.data.weekUnlocked = StoryMenuState.weekUnlocked;
 				FlxG.save.flush();
 			}
 			else
@@ -2570,8 +2640,6 @@ class PlayState extends MusicBeatState
 			{
 				health -= 0.04;
 	
-				ghostMisses++;
-	
 				RecalculateRating();
 	
 				switch (direction)
@@ -2648,6 +2716,17 @@ class PlayState extends MusicBeatState
 
 		function goodNoteHit(note:Note):Void
 			{
+				if (note.y > FlxG.height)
+					{
+						note.active = false;
+						note.visible = false;
+					}
+					else
+					{
+						note.visible = true;
+						note.active = true;
+					}
+
 				if (!note.wasGoodHit)
 				{
 					if (!note.isSustainNote){
@@ -2716,15 +2795,15 @@ class PlayState extends MusicBeatState
 						note.destroy();
 					}*/
 
-					if (FlxG.save.data.botPlay){
+					/*if (FlxG.save.data.botPlay){
 						if (!note.isSustainNote){
 							note.kill();
 							notes.remove(note, true);
 							note.destroy();
 						}
-					}
+					}*/
 
-					if (!FlxG.save.data.botPlay){
+					/*if (!FlxG.save.data.botPlay)*/{
 						note.kill();
 						notes.remove(note, true);
 						note.destroy();

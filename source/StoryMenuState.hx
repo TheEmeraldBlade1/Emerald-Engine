@@ -15,6 +15,10 @@ import lime.net.curl.CURLCode;
 
 using StringTools;
 
+#if desktop
+import Discord.DiscordClient;
+#end
+
 class StoryMenuState extends MusicBeatState
 {
 	var scoreText:FlxText;
@@ -28,9 +32,20 @@ class StoryMenuState extends MusicBeatState
 		['Cocoa', 'Eggnog', 'Winter-Horrorland'],
 		['Senpai', 'Roses', 'Thorns']
 	];
+
+	var weekSongTitles:Array<Dynamic> = [
+		[''],
+		['Bopeebo', 'Fresh', 'Dad battle'],
+		['Spookeez', 'South', "Monster"],
+		['Pico', 'Philly Nice', "Blammed"],
+		['Satin Panties', "High", "M.I.L.F"],
+		['Cocoa', 'Eggnog', 'Winter Horrorland'],
+		['Senpai', 'Roses', 'Thorns']
+	];
+
 	public static var curDifficulty:Int = 1;
 
-	public static var weekUnlocked:Array<Bool> = [true, true, true, true, true, true, true];
+	public static var weekUnlocked:Array<Bool> = [true, true, true, true, true, true, false];
 
 	var weekCharacters:Array<Dynamic> = [
 		['dad', 'bf', 'gf'],
@@ -38,7 +53,7 @@ class StoryMenuState extends MusicBeatState
 		['spooky', 'bf', 'gf'],
 		['pico', 'bf', 'gf'],
 		['mom', 'bf', 'gf'],
-		['parents-christmas', 'bf', 'gf'],
+		['parents-christmas', '2bf', '2gf'],
 		['senpai', 'bf', 'gf']
 	];
 
@@ -49,7 +64,8 @@ class StoryMenuState extends MusicBeatState
 		"PICO",
 		"MOMMY MUST MURDER",
 		"RED SNOW",
-		"hating simulator ft. moawling"
+		"locked because of crashing issue go to freeplay"
+		//"hating simulator ft. moawling"
 	];
 
 	var txtWeekTitle:FlxText;
@@ -70,6 +86,13 @@ class StoryMenuState extends MusicBeatState
 
 	override function create()
 	{
+
+		#if desktop
+		// Updating Discord Rich Presence
+		DiscordClient.changePresence("Story Menu", null);
+		#end
+
+	
 		transIn = FlxTransitionableState.defaultTransIn;
 		transOut = FlxTransitionableState.defaultTransOut;
 
@@ -96,6 +119,7 @@ class StoryMenuState extends MusicBeatState
 
 		var ui_tex = Paths.getSparrowAtlas('campaign_menu_UI_assets');
 		var yellowBG:FlxSprite = new FlxSprite(0, 56).makeGraphic(FlxG.width, 400, 0xFFF9CF51);
+		var ui_diff = Paths.getSparrowAtlas('difficulty modes');
 
 		grpWeekText = new FlxTypedGroup<MenuItem>();
 		add(grpWeekText);
@@ -175,10 +199,10 @@ class StoryMenuState extends MusicBeatState
 		leftArrow.animation.addByPrefix('press', "arrow push left");
 		leftArrow.animation.play('idle');
 		difficultySelectors.add(leftArrow);
-		leftArrow.visible = false;
+		//leftArrow.visible = false;
 
 		sprDifficulty = new FlxSprite(leftArrow.x + 130, leftArrow.y);
-		sprDifficulty.frames = ui_tex;
+		sprDifficulty.frames = ui_diff;
 		sprDifficulty.animation.addByPrefix('easy', 'EASY');
 		sprDifficulty.animation.addByPrefix('normal', 'NORMAL');
 		sprDifficulty.animation.addByPrefix('hard', 'HARD');
@@ -193,7 +217,7 @@ class StoryMenuState extends MusicBeatState
 		rightArrow.animation.addByPrefix('press', "arrow push right", 24, false);
 		rightArrow.animation.play('idle');
 		difficultySelectors.add(rightArrow);
-		rightArrow.visible = false;
+		//rightArrow.visible = false;
 
 		trace("Line 150");
 
@@ -294,7 +318,11 @@ class StoryMenuState extends MusicBeatState
 				FlxG.sound.play(Paths.sound('confirmMenu'));
 
 				grpWeekText.members[curWeek].startFlashing();
-				grpWeekCharacters.members[1].animation.play('bfConfirm');
+				if (curWeek == 5){
+					grpWeekCharacters.members[1].animation.play('2bfConfirm');
+				}else{
+					grpWeekCharacters.members[1].animation.play('bfConfirm');
+				}
 				stopspamming = true;
 			}
 
@@ -421,7 +449,7 @@ class StoryMenuState extends MusicBeatState
 				// grpWeekCharacters.members[0].updateHitbox();
 		}
 
-		var stringThing:Array<String> = weekData[curWeek];
+		var stringThing:Array<String> = weekSongTitles[curWeek];
 
 		for (i in stringThing)
 		{

@@ -13,6 +13,10 @@ import flixel.text.FlxText;
 import flixel.util.FlxColor;
 import lime.utils.Assets;
 
+#if desktop
+import Discord.DiscordClient;
+#end
+
 class OptionsMenu extends MusicBeatState
 {
 	public static var instance:OptionsMenu;
@@ -33,13 +37,19 @@ class OptionsMenu extends MusicBeatState
 	
 	override function create()
 	{
+		#if desktop
+		// Updating Discord Rich Presence
+		DiscordClient.changePresence("Options Menu", null);
+		#end
+
 		curSpeed = FlxG.save.data.curSpeed;
 		var menuBG:FlxSprite = new FlxSprite().loadGraphic(Paths.image('menuDesat'));
 		controlsStrings = CoolUtil.coolStringFile("Keybinds"
 		+ "\nGhost Tapping " + (FlxG.save.data.newInput ? "on" : "off") 
 		+ "\nDownscroll " + (FlxG.save.data.downscroll ? 'on' : 'off') 
-		+ "\nRating Mode " + (FlxG.save.data.accuracyDisplay ? "Kade" : "Psych")
-		+ "\nHide Hud " + (FlxG.save.data.hideHud ? "on" : "off")
+		+ "\nRating System " + (FlxG.save.data.accuracyDisplay ? "Kade" : "Psych")
+		//+ "\nHide Hud " + (FlxG.save.data.hideHud ? "on" : "off")
+		+ "\nHud Options"
 		+ "\nScroll Speed " + curSpeed
 		+ "\nBotplay " + (FlxG.save.data.botPlay ? "on" : "off")
 		+ "\nNote Offset " + FlxG.save.data.offset
@@ -83,7 +93,12 @@ class OptionsMenu extends MusicBeatState
 			if (controls.BACK){
 				fasterSpeed = false;
 				FlxG.save.data.curSpeed = curSpeed;
-				FlxG.switchState(new MainMenuState());
+				if (PauseSubState.enterOptions){
+					FlxG.switchState(new PlayState());
+					PauseSubState.enterOptions = false;
+				}else{
+					FlxG.switchState(new MainMenuState());
+				}
 			}
 			if (controls.UP_P)
 				changeSelection(-1);
@@ -95,7 +110,7 @@ class OptionsMenu extends MusicBeatState
 			}
 
 			if (curSelected == 5){
-				versionShit.text = "0 = Song Dependent, Controls: Left Or Right, Press Shift To Go Faster, Press Shift Again To Go Slower, R To Reset";
+				versionShit.text = "0 = Chart Dependent, Controls: Left Or Right, Press Shift To Go Faster, Press Shift Again To Go Slower, R To Reset";
 			}else if (curSelected == 7){
 				versionShit.text = "Controls: Left Or Right, Press Shift To Go Faster, Press Shift Again To Go Slower, R To Reset";
 			}else{
@@ -159,10 +174,10 @@ class OptionsMenu extends MusicBeatState
 			}
 			
 			if (controls.RIGHT_R && !fasterSpeed && curSelected == 7){
-				if (curSpeed > 9999){
+				if (FlxG.save.data.offset > 9999){
 					FlxG.save.data.offset = 9999;
 				}
-				if (curSpeed != 9999){
+				if (FlxG.save.data.offset != 9999){
 					FlxG.save.data.offset++;
 				}
 				grpControls.remove(grpControls.members[curSelected]);
@@ -171,10 +186,10 @@ class OptionsMenu extends MusicBeatState
 				ctrl.targetY = curSelected - 7;
 				grpControls.add(ctrl);
 			}else if (controls.RIGHT && fasterSpeed && curSelected == 7){
-				if (curSpeed > 9999){
+				if (FlxG.save.data.offset > 9999){
 					FlxG.save.data.offset = 9999;
 				}
-				if (curSpeed != 9999){
+				if (FlxG.save.data.offset != 9999){
 					FlxG.save.data.offset++;
 				}
 				grpControls.remove(grpControls.members[curSelected]);
@@ -185,10 +200,10 @@ class OptionsMenu extends MusicBeatState
 			}
 
 			if (controls.LEFT_R && !fasterSpeed && curSelected == 7){
-				if (curSpeed < -9999){
+				if (FlxG.save.data.offset < -9999){
 					FlxG.save.data.offset = -9999;
 				}
-				if (curSpeed != -9999){
+				if (FlxG.save.data.offset != -9999){
 					FlxG.save.data.offset--;
 				}
 				grpControls.remove(grpControls.members[curSelected]);
@@ -197,10 +212,10 @@ class OptionsMenu extends MusicBeatState
 				ctrl.targetY = curSelected - 7;
 				grpControls.add(ctrl);
 			}else if (controls.LEFT && fasterSpeed && curSelected == 7){
-				if (curSpeed < -9999){
+				if (FlxG.save.data.offset < -9999){
 					FlxG.save.data.offset = -9999;
 				}
-				if (curSpeed != -9999){
+				if (FlxG.save.data.offset != -9999){
 					FlxG.save.data.offset--;
 				}
 				grpControls.remove(grpControls.members[curSelected]);
@@ -252,16 +267,16 @@ class OptionsMenu extends MusicBeatState
 						grpControls.add(ctrl);
 					case 3:
 						FlxG.save.data.accuracyDisplay = !FlxG.save.data.accuracyDisplay;
-						var ctrl:Alphabet = new Alphabet(0, (70 * curSelected) + 30, "Rating Mode " + (FlxG.save.data.accuracyDisplay ? "Kade" : "Psych"), true, false);
+						var ctrl:Alphabet = new Alphabet(0, (70 * curSelected) + 30, "Rating System " + (FlxG.save.data.accuracyDisplay ? "Kade" : "Psych"), true, false);
 						ctrl.isMenuItem = true;
 						ctrl.targetY = curSelected - 3;
 						grpControls.add(ctrl);
-					case 4:
+					/*case 4:
 						FlxG.save.data.hideHud = !FlxG.save.data.hideHud;
 						var ctrl:Alphabet = new Alphabet(0, (70 * curSelected) + 30, "Hide Hud " + (FlxG.save.data.hideHud ? "on" : "off"), true, false);
 						ctrl.isMenuItem = true;
 						ctrl.targetY = curSelected - 4;
-						grpControls.add(ctrl);
+						grpControls.add(ctrl);*/					
 					case 6:
 						FlxG.save.data.botPlay = !FlxG.save.data.botPlay;
 						var ctrl:Alphabet = new Alphabet(0, (70 * curSelected) + 30, "Botplay " + (FlxG.save.data.botPlay ? "on" : "off"), true, false);

@@ -17,8 +17,10 @@ class PauseSubState extends MusicBeatSubstate
 {
 	var grpMenuShit:FlxTypedGroup<Alphabet>;
 
-	var menuItems:Array<String> = ['Resume', 'Restart Song', 'Exit to menu'];
+	var menuItems:Array<String> = ['Resume', 'Restart Song', 'Options', 'Exit to menu'];
 	var curSelected:Int = 0;
+
+	public static var enterOptions:Bool = false;
 
 	public function new(x:Float, y:Float)
 	{
@@ -85,6 +87,10 @@ class PauseSubState extends MusicBeatSubstate
 			changeSelection(1);
 		}
 
+		if (FlxG.keys.justPressed.ESCAPE){
+			close();
+		}
+
 		if (accepted)
 		{
 			var daSelected:String = menuItems[curSelected];
@@ -95,6 +101,9 @@ class PauseSubState extends MusicBeatSubstate
 					close();
 				case "Restart Song":
 					FlxG.resetState();
+				case "Options":
+					enterOptions = true;
+					FlxG.switchState(new OptionsMenu());
 				case "Exit to menu":
 					PlayState.loadRep = false;
 					if (PlayState.isStoryMode){

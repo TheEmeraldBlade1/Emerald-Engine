@@ -14,6 +14,10 @@ import flixel.text.FlxText;
 import flixel.util.FlxColor;
 import lime.utils.Assets;
 
+#if desktop
+import Discord.DiscordClient;
+#end
+
 class OptionsKeybindsMenu extends MusicBeatState
 {
 	public static var instance:OptionsMenu;
@@ -41,8 +45,17 @@ class OptionsKeybindsMenu extends MusicBeatState
 	
 	override function create()
 	{
+		#if desktop
+		// Updating Discord Rich Presence
+		DiscordClient.changePresence("Changing Keybinds", null);
+		#end
+
 		var menuBG:FlxSprite = new FlxSprite().loadGraphic(Paths.image('menuDesat'));
-		controlsStrings = CoolUtil.coolStringFile("LEFT - " + FlxG.save.data.leftBind + "\nDOWN - " + FlxG.save.data.downBind + "\nUP - " + FlxG.save.data.upBind + "\nRIGHT - " + FlxG.save.data.rightBind);
+		controlsStrings = CoolUtil.coolStringFile("LEFT - " + FlxG.save.data.leftBind 
+		+ "\nDOWN - " + FlxG.save.data.downBind 
+		+ "\nUP - " + FlxG.save.data.upBind 
+		+ "\nRIGHT - " + FlxG.save.data.rightBind
+		);
 		
 		trace(controlsStrings);
 

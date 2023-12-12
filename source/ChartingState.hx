@@ -199,6 +199,7 @@ class ChartingState extends MusicBeatState
 
 			FlxG.sound.music.volume = vol;
 		};
+		check_mute_inst.x += 500;
 
 		var saveButton:FlxButton = new FlxButton(110, 8, "Save", function()
 		{

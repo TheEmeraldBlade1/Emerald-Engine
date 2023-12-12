@@ -14,6 +14,11 @@ import flixel.util.FlxColor;
 import io.newgrounds.NG;
 import lime.app.Application;
 
+#if desktop
+import Discord.DiscordClient;
+#end
+
+
 using StringTools;
 
 class MainMenuState extends MusicBeatState
@@ -33,7 +38,7 @@ class MainMenuState extends MusicBeatState
 	var newInput:Bool = true;
 
 	public static var kadeEngineVer:String = "1.2";
-	public static var emeraldEngineVer:String = "1.0";
+	public static var emeraldEngineVer:String = "1.1";
 	public static var gameVer:String = "0.2.7.1";
 
 	var magenta:FlxSprite;
@@ -41,6 +46,11 @@ class MainMenuState extends MusicBeatState
 
 	override function create()
 	{
+		#if desktop
+		// Updating Discord Rich Presence
+		DiscordClient.changePresence("Main Menu", null);
+		#end
+		
 		if (!FlxG.sound.music.playing)
 		{
 			FlxG.sound.playMusic(Paths.music('freakyMenu'));
@@ -130,11 +140,6 @@ class MainMenuState extends MusicBeatState
 				changeItem(1);
 			}
 
-			if (controls.BACK)
-			{
-				FlxG.switchState(new TitleState());
-			}
-
 			if (controls.ACCEPT)
 			{
 				if (optionShit[curSelected] == 'donate')
@@ -177,9 +182,7 @@ class MainMenuState extends MusicBeatState
 										trace("Story Menu Selected");
 									case 'freeplay':
 										FlxG.switchState(new FreeplayState());
-
 										trace("Freeplay Menu Selected");
-
 									case 'options':
 										FlxG.switchState(new OptionsMenu());
 								}
