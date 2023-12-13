@@ -14,10 +14,18 @@ typedef SwagSong =
 	var bpm:Int;
 	var needsVoices:Bool;
 	var speed:Float;
+	var hpDrainValue:Float;
 
 	var player1:String;
 	var player2:String;
+	var gf:String;
+	var stage:String;
+	var noteSkin:String;
 	var validScore:Bool;
+	var hpDrain:Bool;
+
+	var maxMisses:Bool;
+	var maxMissesValue:Int;
 }
 
 class Song
@@ -26,10 +34,18 @@ class Song
 	public var notes:Array<SwagSection>;
 	public var bpm:Int;
 	public var needsVoices:Bool = true;
+	public var hpDrain:Bool = false;
 	public var speed:Float = 1;
+	public var hpDrainValue:Float = 0.001;
+
+	public var maxMisses:Bool = false;
+	public var maxMissesValue:Int = 1;
 
 	public var player1:String = 'bf';
 	public var player2:String = 'dad';
+	public var gf:String = 'gf';
+	public var stage:String = 'stage';
+	public var noteSkin:String = 'normal';
 
 	public function new(song, notes, bpm)
 	{

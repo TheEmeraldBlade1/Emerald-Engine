@@ -342,7 +342,7 @@ class Character extends FlxSprite
 
 				switch (curCharacter) // if their a player character
 				{
-					case 'bf' | 'bf-dead' | 'bf-car' | 'bf-christmas' | 'bf-pixel' | 'bf-pixel-dead':
+					case 'bf' | 'bf-dead' | 'bf-car' | 'bf-christmas' | 'bf-pixel' | 'bf-pixel-dead' | 'pico':
 						flipX = true;
 				}
 

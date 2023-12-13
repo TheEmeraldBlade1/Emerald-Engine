@@ -53,9 +53,12 @@ class Note extends FlxSprite
 
 		var daStage:String = PlayState.curStage;
 
-		switch (daStage)
+		if (PlayState.SONG.noteSkin == null){
+			if (daStage == 'school' || daStage == 'schoolEvil')PlayState.SONG.noteSkin = 'pixel';
+		}
+		switch (PlayState.SONG.noteSkin)
 		{
-			case 'school' | 'schoolEvil':
+			case 'pixel':
 				{
 					loadGraphic(Paths.image('weeb/pixelUI/NOTE_assets'), true, 17, 17);
 				}
@@ -154,7 +157,7 @@ class Note extends FlxSprite
 
 			x -= width / 2;
 
-			if (PlayState.curStage.startsWith('school'))
+			if (PlayState.SONG.noteSkin == 'pixel')
 				x += 30;
 
 			if (prevNote.isSustainNote)

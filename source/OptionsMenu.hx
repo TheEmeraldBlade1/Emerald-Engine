@@ -48,11 +48,13 @@ class OptionsMenu extends MusicBeatState
 		+ "\nGhost Tapping " + (FlxG.save.data.newInput ? "on" : "off") 
 		+ "\nDownscroll " + (FlxG.save.data.downscroll ? 'on' : 'off') 
 		+ "\nRating System " + (FlxG.save.data.accuracyDisplay ? "Kade" : "Psych")
-		//+ "\nHide Hud " + (FlxG.save.data.hideHud ? "on" : "off")
-		+ "\nHud Options"
+		+ "\nHide Hud " + (FlxG.save.data.hideHud ? "on" : "off")
+		//+ "\nHud Options"
 		+ "\nScroll Speed " + curSpeed
 		+ "\nBotplay " + (FlxG.save.data.botPlay ? "on" : "off")
 		+ "\nNote Offset " + FlxG.save.data.offset
+		+ "\nNote Splashes " + (FlxG.save.data.notesplash ? "on" : "off")
+		+ "\nHide Ratings " + (FlxG.save.data.ratingHide ? "on" : "off")
 		);
 		
 		trace(controlsStrings);
@@ -271,17 +273,29 @@ class OptionsMenu extends MusicBeatState
 						ctrl.isMenuItem = true;
 						ctrl.targetY = curSelected - 3;
 						grpControls.add(ctrl);
-					/*case 4:
+					case 4:
 						FlxG.save.data.hideHud = !FlxG.save.data.hideHud;
 						var ctrl:Alphabet = new Alphabet(0, (70 * curSelected) + 30, "Hide Hud " + (FlxG.save.data.hideHud ? "on" : "off"), true, false);
 						ctrl.isMenuItem = true;
 						ctrl.targetY = curSelected - 4;
-						grpControls.add(ctrl);*/					
+						grpControls.add(ctrl);					
 					case 6:
 						FlxG.save.data.botPlay = !FlxG.save.data.botPlay;
 						var ctrl:Alphabet = new Alphabet(0, (70 * curSelected) + 30, "Botplay " + (FlxG.save.data.botPlay ? "on" : "off"), true, false);
 						ctrl.isMenuItem = true;
 						ctrl.targetY = curSelected - 6;
+						grpControls.add(ctrl);
+					case 8:
+						FlxG.save.data.notesplash = !FlxG.save.data.notesplash;
+						var ctrl:Alphabet = new Alphabet(0, (70 * curSelected) + 30, "Note Splashes " + (FlxG.save.data.notesplash ? "on" : "off"), true, false);
+						ctrl.isMenuItem = true;
+						ctrl.targetY = curSelected - 8;
+						grpControls.add(ctrl);
+					case 9:
+						FlxG.save.data.ratingHide = !FlxG.save.data.ratingHide;
+						var ctrl:Alphabet = new Alphabet(0, (70 * curSelected) + 30, "Hide Ratings " + (FlxG.save.data.ratingHide ? "on" : "off"), true, false);
+						ctrl.isMenuItem = true;
+						ctrl.targetY = curSelected - 9;
 						grpControls.add(ctrl);
 				}
 			}
