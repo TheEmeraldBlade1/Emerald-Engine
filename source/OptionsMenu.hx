@@ -28,6 +28,9 @@ class OptionsMenu extends MusicBeatState
 
 	var controlsStrings:Array<String> = [];
 
+	var ratingSystemStr:Array<String> = ["Psych", "Kade", "Emerald"];
+	var scrollStr:Array<String> = ["Rightscroll", "Leftscroll", "Middlescroll"];
+
 	private var grpControls:FlxTypedGroup<Alphabet>;
 	var versionShit:FlxText;
 
@@ -47,7 +50,7 @@ class OptionsMenu extends MusicBeatState
 		controlsStrings = CoolUtil.coolStringFile("Keybinds"
 		+ "\nGhost Tapping " + (FlxG.save.data.newInput ? "on" : "off") 
 		+ "\nDownscroll " + (FlxG.save.data.downscroll ? 'on' : 'off') 
-		+ "\nRating System " + (FlxG.save.data.accuracyDisplay ? "Kade" : "Psych")
+		+ "\nRating System " + ratingSystemStr[FlxG.save.data.accuracyDisplay]
 		+ "\nHide Hud " + (FlxG.save.data.hideHud ? "on" : "off")
 		//+ "\nHud Options"
 		+ "\nScroll Speed " + curSpeed
@@ -55,6 +58,7 @@ class OptionsMenu extends MusicBeatState
 		+ "\nNote Offset " + FlxG.save.data.offset
 		+ "\nNote Splashes " + (FlxG.save.data.notesplash ? "on" : "off")
 		+ "\nHide Ratings " + (FlxG.save.data.ratingHide ? "on" : "off")
+		+ "\n" + scrollStr[FlxG.save.data.scrollType]
 		);
 		
 		trace(controlsStrings);
@@ -268,8 +272,12 @@ class OptionsMenu extends MusicBeatState
 						ctrl.targetY = curSelected - 2;
 						grpControls.add(ctrl);
 					case 3:
-						FlxG.save.data.accuracyDisplay = !FlxG.save.data.accuracyDisplay;
-						var ctrl:Alphabet = new Alphabet(0, (70 * curSelected) + 30, "Rating System " + (FlxG.save.data.accuracyDisplay ? "Kade" : "Psych"), true, false);
+						FlxG.save.data.accuracyDisplay ++;
+						if (FlxG.save.data.accuracyDisplay > 2)
+						{
+							FlxG.save.data.accuracyDisplay = 0;
+						}
+						var ctrl:Alphabet = new Alphabet(0, (70 * curSelected) + 30, "Rating System " + ratingSystemStr[FlxG.save.data.accuracyDisplay], true, false);
 						ctrl.isMenuItem = true;
 						ctrl.targetY = curSelected - 3;
 						grpControls.add(ctrl);
@@ -296,6 +304,16 @@ class OptionsMenu extends MusicBeatState
 						var ctrl:Alphabet = new Alphabet(0, (70 * curSelected) + 30, "Hide Ratings " + (FlxG.save.data.ratingHide ? "on" : "off"), true, false);
 						ctrl.isMenuItem = true;
 						ctrl.targetY = curSelected - 9;
+						grpControls.add(ctrl);
+					case 10:
+						FlxG.save.data.scrollType ++;
+						if (FlxG.save.data.scrollType > 2)
+						{
+							FlxG.save.data.scrollType = 0;
+						}
+						var ctrl:Alphabet = new Alphabet(0, (70 * curSelected) + 30, scrollStr[FlxG.save.data.scrollType], true, false);
+						ctrl.isMenuItem = true;
+						ctrl.targetY = curSelected - 10;
 						grpControls.add(ctrl);
 				}
 			}

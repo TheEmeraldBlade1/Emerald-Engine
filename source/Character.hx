@@ -215,19 +215,17 @@ class Character extends FlxSprite
 						animation.addByPrefix('singDOWN', 'Parent Down Note Dad', 24, false);
 						animation.addByPrefix('singLEFT', 'Parent Left Note Dad', 24, false);
 						animation.addByPrefix('singRIGHT', 'Parent Right Note Dad', 24, false);
-		
 						animation.addByPrefix('singUP-alt', 'Parent Up Note Mom', 24, false);
-		
 						animation.addByPrefix('singDOWN-alt', 'Parent Down Note Mom', 24, false);
 						animation.addByPrefix('singLEFT-alt', 'Parent Left Note Mom', 24, false);
 						animation.addByPrefix('singRIGHT-alt', 'Parent Right Note Mom', 24, false);
 
 					case 'senpai':
-						animation.addByPrefix('idle', 'Angry Senpai Idle', 24, false);
-						animation.addByPrefix('singUP', 'Angry Senpai UP NOTE', 24, false);
-						animation.addByPrefix('singLEFT', 'Angry Senpai LEFT NOTE', 24, false);
-						animation.addByPrefix('singRIGHT', 'Angry Senpai RIGHT NOTE', 24, false);
-						animation.addByPrefix('singDOWN', 'Angry Senpai DOWN NOTE', 24, false);
+						animation.addByPrefix('idle', 'Senpai Idle', 24, false);
+						animation.addByPrefix('singUP', 'SENPAI UP NOTE', 24, false);
+						animation.addByPrefix('singLEFT', 'SENPAI LEFT NOTE', 24, false);
+						animation.addByPrefix('singRIGHT', 'SENPAI RIGHT NOTE', 24, false);
+						animation.addByPrefix('singDOWN', 'SENPAI DOWN NOTE', 24, false);
 
 					case 'senpai-angry':
 						animation.addByPrefix('idle', 'Angry Senpai Idle', 24, false);

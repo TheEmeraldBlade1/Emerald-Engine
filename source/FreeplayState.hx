@@ -41,6 +41,11 @@ class FreeplayState extends MusicBeatState
 		DiscordClient.changePresence("Freeplay Menu", null);
 		#end
 
+		if (!FlxG.sound.music.playing)
+		{
+			FlxG.sound.playMusic(Paths.music('freakyMenu'));
+		}
+	
 		var initSonglist = CoolUtil.coolTextFile(Paths.txt('freeplaySonglist'));
 
 		for (i in 0...initSonglist.length){

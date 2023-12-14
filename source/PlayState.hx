@@ -38,6 +38,7 @@ import lime.utils.Assets;
 import openfl.display.BlendMode;
 import openfl.display.StageQuality;
 import openfl.filters.ShaderFilter;
+import flixel.math.FlxRandom;
 
 using StringTools;
 
@@ -58,6 +59,12 @@ class PlayState extends MusicBeatState
 	public static var bads:Int = 0;
 	public static var goods:Int = 0;
 	public static var sicks:Int = 0;
+
+	var daRating:String = "SICK";
+
+	var rng:FlxRandom = new FlxRandom();
+
+	public var elapsedtime:Float = 0;
 
 	public static var gfVersion:String = '';
 
@@ -127,9 +134,9 @@ class PlayState extends MusicBeatState
 
 	private static var prevCamFollow:FlxObject;
 
-	private var strumLineNotes:FlxTypedGroup<FlxSprite>;
-	private var playerStrums:FlxTypedGroup<FlxSprite>;
-	private var enemyStrums:FlxTypedGroup<FlxSprite>;
+	public var strumLineNotes:FlxTypedGroup<FlxSprite>;
+	public var playerStrums:FlxTypedGroup<FlxSprite>;
+	public var enemyStrums:FlxTypedGroup<FlxSprite>;
 
 	private var camZooming:Bool = false;
 	private var curSong:String = "";
@@ -201,6 +208,11 @@ class PlayState extends MusicBeatState
 
 	override public function create()
 	{
+		// CODE BELOW PREVENTS INVALID CAST WITH MIDDLE SCROLL DON'T DELETE
+		if (ChartingState.bigShoeLmfao){
+			ChartingState.bigShoeLmfao = false;
+			FlxG.save.data.scrollType = 2;
+		}
 
 		theFunne = FlxG.save.data.newInput;
 		if (FlxG.sound.music != null)
@@ -210,6 +222,11 @@ class PlayState extends MusicBeatState
 		bads = 0;
 		shits = 0;
 		goods = 0;
+
+		EmeraldEngineAccuracy.lmfao = 0.00;
+		EmeraldEngineAccuracy.pansexual = 0.00;
+		EmeraldEngineAccuracy.bisexual = 0;
+		EmeraldEngineAccuracy.lesbian = 0;
 
 		misses = 0;
 
@@ -1224,8 +1241,15 @@ class PlayState extends MusicBeatState
 	{
 		for (i in 0...4)
 		{
-			// FlxG.log.add(i);
-			var babyArrow:FlxSprite = new FlxSprite(42, strumLine.y);
+			var xValue:Int = 42;
+
+			if (FlxG.save.data.scrollType == 2){
+				xValue = -300;
+			}else if (FlxG.save.data.scrollType == 1){
+				xValue = -650;
+			}
+
+			var babyArrow:FlxSprite = new FlxSprite(xValue, strumLine.y);
 
 			if (SONG.noteSkin == null){
 				if (curStage == 'school' || curStage == 'schoolEvil')SONG.noteSkin = 'pixel';
@@ -1323,6 +1347,12 @@ class PlayState extends MusicBeatState
 				playerStrums.add(babyArrow);
 			}else if (player == 0){
 				enemyStrums.add(babyArrow);
+			}
+
+			if (FlxG.save.data.scrollType == 2 || FlxG.save.data.scrollType == 1){
+				if (player == 0){
+					babyArrow.visible = false;
+				}
 			}
 
 			babyArrow.animation.play('static');
@@ -1498,16 +1528,64 @@ class PlayState extends MusicBeatState
 	override public function update(elapsed:Float)
 	{
 
+		elapsedtime += elapsed;
+
 		#if desktop
 		// Updating Discord Rich Presence
 		{
 			if(FlxG.save.data.botPlay){
-				DiscordClient.changePresence(SONG.song + " | "  + scoreTxt.text + " | BOTPLAY", null);
+				DiscordClient.changePresence(SONG.song + " | "  + scoreTxt.text + " | BOT", null);
 			}else if(!FlxG.save.data.botPlay){
 				DiscordClient.changePresence(SONG.song + " | "  + scoreTxt.text, null);
 			}
 		}
 		#end
+
+		/*if ((SONG.unfairnessNotes) && !inCutscene || (SONG.randomNotes) && !inCutscene){
+			curSpeed = rng.float(0.1,3.7);
+		}*/
+
+		if ((SONG.cheatingNotes) && !inCutscene)
+			{
+				playerStrums.forEach(function(spr:FlxSprite)                                            
+				{
+					spr.x += Math.sin(elapsedtime) * ((spr.ID % 2) == 0 ? 1 : -1);
+					spr.x -= Math.sin(elapsedtime) * 1.5;
+				});
+				enemyStrums.forEach(function(spr:FlxSprite)
+				{
+					spr.x -= Math.sin(elapsedtime) * ((spr.ID % 2) == 0 ? 1 : -1);
+					spr.x += Math.sin(elapsedtime) * 1.5;
+				});
+			}
+
+			if ((SONG.unfairnessNotes) && !inCutscene)
+				{
+					playerStrums.forEach(function(spr:FlxSprite)
+					{
+						spr.x = ((FlxG.width / 2) - (spr.width / 2)) + (Math.sin(elapsedtime + (spr.ID)) * 300);
+						spr.y = ((FlxG.height / 2) - (spr.height / 2)) + (Math.cos(elapsedtime + (spr.ID)) * 300);
+					});
+					enemyStrums.forEach(function(spr:FlxSprite)
+					{
+						spr.x = ((FlxG.width / 2) - (spr.width / 2)) + (Math.sin((elapsedtime + (spr.ID )) * 2) * 300);
+						spr.y = ((FlxG.height / 2) - (spr.height / 2)) + (Math.cos((elapsedtime + (spr.ID)) * 2) * 300);
+					});
+				}
+
+				if ((SONG.randomNotes) && !inCutscene)
+					{
+						playerStrums.forEach(function(spr:FlxSprite)
+						{
+							spr.x += Math.sin(elapsedtime) * ((spr.ID % 2) == 0 ? 1 : -1);
+							spr.y = ((FlxG.height / 2) - (spr.height / 2)) + (Math.cos(elapsedtime + (spr.ID)) * 300);
+						});
+						enemyStrums.forEach(function(spr:FlxSprite)
+						{
+							spr.x -= Math.sin(elapsedtime) * ((spr.ID % 2) == 0 ? 1 : -1);
+							spr.y = ((FlxG.height / 2) - (spr.height / 2)) + (Math.cos((elapsedtime + (spr.ID)) * 2) * 300);
+						});
+					}
 
 		if (SONG.maxMisses){
 			health = 1;
@@ -1568,10 +1646,12 @@ class PlayState extends MusicBeatState
 		super.update(elapsed);
 
 		scoreTxt.text = 'Score: ' + songScore;
-		
-		/*if (FlxG.save.data.accuracyDisplay){
+
+		if (FlxG.save.data.accuracyDisplay == 1){
 			scoreTxt.text += ' | Combo Breaks: ' + misses;
-		}else*/{
+		}else if (FlxG.save.data.accuracyDisplay == 2){
+			scoreTxt.text += ' | Combo: ' + combo;
+		}else{
 			scoreTxt.text += ' | Misses: ' + misses;
 		}
 
@@ -1579,8 +1659,10 @@ class PlayState extends MusicBeatState
 			scoreTxt.text += ' / ' + SONG.maxMissesValue;
 		}
 
-		if (FlxG.save.data.accuracyDisplay){
+		if (FlxG.save.data.accuracyDisplay == 1){
 			scoreTxt.text += ' | Accuracy: ';
+		}else if (FlxG.save.data.accuracyDisplay == 2){
+			scoreTxt.text += ' | Ranking: ';
 		}else{
 			scoreTxt.text += ' | Rating: ';
 		}
@@ -1588,8 +1670,12 @@ class PlayState extends MusicBeatState
 		if(ratingString == '?' || ratingString == null){
 			scoreTxt.text += '?';
 		}else{
-			if (FlxG.save.data.accuracyDisplay){
+			if (FlxG.save.data.accuracyDisplay == 1){
 				scoreTxt.text += truncateFloat(accuracy, 2) + '% | ' + generateRanking();
+			}else if (FlxG.save.data.accuracyDisplay == 2){
+				scoreTxt.text += EmeraldEngineAccuracy.bisexual + "." + EmeraldEngineAccuracy.lesbian + "%" + ' [' + daRating + '] - ' + misses;
+				//scoreTxt.text += daRating + ' (' + Math.floor(truncateFloat(accuracy, 2)) + '%)'; // SCRAPPED RATING CODE
+				//scoreTxt.text += daRating + ' (' + Math.floor(ratingPercent + (health * 50) + truncateFloat(accuracy, 2) + sicks * combo - misses) + '%)'; // SCRAPPED RATING CODE
 			}else{
 				scoreTxt.text += ratingString + ' (' + Math.floor(ratingPercent * 100) + '%)';
 			}
@@ -1621,6 +1707,13 @@ class PlayState extends MusicBeatState
 			#if desktop
 			DiscordClient.changePresence(SONG.song + " | Charting", null);
 			#end
+			
+			// CODE BELOW PREVENTS INVALID CAST WITH MIDDLE SCROLL DON'T DELETE
+			if (FlxG.save.data.scrollType == 2){
+				ChartingState.bigShoeLmfao = true;
+				FlxG.save.data.scrollType = 0;
+			}
+
 			FlxG.switchState(new ChartingState());
 		}
 
@@ -1646,6 +1739,34 @@ class PlayState extends MusicBeatState
 
 		if (health > 2)
 			health = 2;
+
+		if (misses == 0 && shits == 0 && bads == 0 && goods == 0){
+			if (EmeraldEngineAccuracy.bisexual > 100)
+				EmeraldEngineAccuracy.bisexual = 100;
+		}else{
+			if (EmeraldEngineAccuracy.bisexual > 99)
+				EmeraldEngineAccuracy.bisexual = 99;
+		}
+		if (EmeraldEngineAccuracy.lesbian > 99)
+			EmeraldEngineAccuracy.lesbian = 99;
+		if (misses == 0 && shits == 0 && bads == 0 && goods == 0){
+			if (EmeraldEngineAccuracy.pansexual > 100)
+				EmeraldEngineAccuracy.pansexual = 100;
+		}else{
+			if (EmeraldEngineAccuracy.pansexual > 99.99)
+				EmeraldEngineAccuracy.pansexual = 99.99;
+		}
+		if (EmeraldEngineAccuracy.lmfao > 99.99)
+			EmeraldEngineAccuracy.lmfao = 99.99;	
+
+		if (EmeraldEngineAccuracy.bisexual < 0)
+			EmeraldEngineAccuracy.bisexual = 0;
+		if (EmeraldEngineAccuracy.lesbian < 0)
+			EmeraldEngineAccuracy.lesbian = 0;
+		if (EmeraldEngineAccuracy.pansexual < 0)
+			EmeraldEngineAccuracy.pansexual = 0;
+		if (EmeraldEngineAccuracy.lmfao < 0)
+			EmeraldEngineAccuracy.lmfao = 0;	
 
 		if (healthBar.percent < 20)
 			iconP1.animation.curAnim.curFrame = 1;
@@ -1983,7 +2104,8 @@ class PlayState extends MusicBeatState
 							if (!daNote.isSustainNote && !FlxG.save.data.botPlay){
 								health -= 0.075;
 								vocals.volume = 0;
-								noteMiss(daNote.noteData);
+								noteMiss(daNote.noteData, daNote);
+								EmeraldEngineAccuracy.ratingUpdate(rng.int(-1,-23),rng.int(-1,-13),0,0);
 							}else if (FlxG.save.data.botPlay){
 								goodNoteHit(daNote);
 							}
@@ -2108,11 +2230,13 @@ class PlayState extends MusicBeatState
 		else
 		{
 			trace('WENT BACK TO FREEPLAY??');
+			FlxG.sound.playMusic(Paths.music('freakyMenu'));
 			FlxG.switchState(new FreeplayState());
 		}
 	}
 
 	var endingSong:Bool = false;
+	var missed:Bool = false;
 
 	private function popUpScore(strumtime:Float, note:Note):Void
 		{
@@ -2130,46 +2254,54 @@ class PlayState extends MusicBeatState
 			var rating:FlxSprite = new FlxSprite();
 			var score:Int = 350;
 	
-			var daRating:String = "sick";
-	
 			if (!FlxG.save.data.botPlay){
-				if (noteDiff > Conductor.safeZoneOffset * 2)
+					if (missed)
 					{
-						daRating = 'shit';
-						totalNotesHit -= 2;
-						score = -3000;
-						ss = false;
-						shits++;
+						daRating = 'MISS!!';
+						missed = false;
 					}
-					else if (noteDiff < Conductor.safeZoneOffset * -2)
+					else if (noteDiff > Conductor.safeZoneOffset * 0.65)
 					{
-						daRating = 'shit';
+						daRating = 'SHIT';
 						totalNotesHit -= 2;
 						score = -3000;
 						ss = false;
 						shits++;
+						EmeraldEngineAccuracy.ratingUpdate(rng.int(-1,-23),rng.int(-1,-13),0,0);
 					}
 					else if (noteDiff > Conductor.safeZoneOffset * 0.45)
 					{
-						daRating = 'bad';
+						daRating = 'BAD';
 						score = -1000;
 						totalNotesHit += 0.2;
 						ss = false;
 						bads++;
+						EmeraldEngineAccuracy.ratingUpdate(rng.int(1,5),rng.int(1,2),0,0);
 					}
 					else if (noteDiff > Conductor.safeZoneOffset * 0.25)
 					{
-						daRating = 'good';
+						daRating = 'GOOD';
 						totalNotesHit += 0.65;
 						score = 200;
 						ss = false;
 						goods++;
+						EmeraldEngineAccuracy.ratingUpdate(rng.int(1,8),rng.int(1,5),0,0);
+					}
+					else
+					{
+						daRating = 'SICK!!';
 					}
 			}
-			if (daRating == 'sick')
+			else
+			{
+				daRating = 'SICK!!';
+			}
+
+			if (daRating == 'SICK!!')
 			{
 				totalNotesHit += 1;
 				sicks++;
+				EmeraldEngineAccuracy.ratingUpdate(rng.int(1,13),rng.int(1,6),0,0);
 				if (FlxG.save.data.notesplash){
 					createNoteSplash(note.noteData, true);
 				}
@@ -2189,7 +2321,7 @@ class PlayState extends MusicBeatState
 			RecalculateRating();
 			updateAccuracy();	
 	
-			if (daRating != 'shit' || daRating != 'bad')
+			if (daRating != 'SHIT' || daRating != 'BAD')
 				{
 	
 	
@@ -2246,6 +2378,11 @@ class PlayState extends MusicBeatState
 	
 			comboSpr.updateHitbox();
 			rating.updateHitbox();
+
+			if (combo >= 10){
+				add(comboSpr);
+				comboSpr.visible = !FlxG.save.data.ratingHide;
+			}
 	
 			var seperatedScore:Array<Int> = [];
 	
@@ -2283,7 +2420,7 @@ class PlayState extends MusicBeatState
 				numScore.velocity.y -= FlxG.random.int(140, 160);
 				numScore.velocity.x = FlxG.random.float(-5, 5);
 	
-				if (combo >= 10)
+				//if (combo >= 10)
 					add(numScore);
 	
 				FlxTween.tween(numScore, {alpha: 0}, 0.2, {
@@ -2640,7 +2777,7 @@ class PlayState extends MusicBeatState
 			});
 	}
 
-	function noteMiss(direction:Int = 1):Void
+	function noteMiss(direction:Int = 1, note:Note):Void
 	{
 		if (!boyfriend.stunned)
 		{
@@ -2653,6 +2790,12 @@ class PlayState extends MusicBeatState
 			misses++;
 
 			ghostMisses++;
+
+			daRating = "MISS!!";
+
+			missed = true;
+
+			popUpScore(direction, note);
 
 			songScore -= 10;
 
@@ -2775,8 +2918,8 @@ class PlayState extends MusicBeatState
 						}else{
 							health += 0.004;
 						}
-						popUpScore(note.strumTime, note);
 						combo += 1;
+						popUpScore(note.strumTime, note);
 					}
 
 					switch (note.noteData)

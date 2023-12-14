@@ -23,6 +23,9 @@ typedef SwagSong =
 	var noteSkin:String;
 	var validScore:Bool;
 	var hpDrain:Bool;
+	var cheatingNotes:Bool;
+	var unfairnessNotes:Bool;
+	var randomNotes:Bool;
 
 	var maxMisses:Bool;
 	var maxMissesValue:Int;
@@ -35,6 +38,9 @@ class Song
 	public var bpm:Int;
 	public var needsVoices:Bool = true;
 	public var hpDrain:Bool = false;
+	public var cheatingNotes:Bool = false;
+	public var unfairnessNotes:Bool = false;
+	public var randomNotes:Bool = false;
 	public var speed:Float = 1;
 	public var hpDrainValue:Float = 0.001;
 

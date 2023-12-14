@@ -45,7 +45,7 @@ class StoryMenuState extends MusicBeatState
 
 	public static var curDifficulty:Int = 1;
 
-	public static var weekUnlocked:Array<Bool> = [true, true, true, true, true, true, false];
+	public static var weekUnlocked:Array<Bool> = [true, true, true, true, true, true, true];
 
 	var weekCharacters:Array<Dynamic> = [
 		['dad', 'bf', 'gf'],
@@ -64,8 +64,8 @@ class StoryMenuState extends MusicBeatState
 		"PICO",
 		"MOMMY MUST MURDER",
 		"RED SNOW",
-		"locked because of crashing issue go to freeplay"
-		//"hating simulator ft. moawling"
+		//"locked because of crashing issue go to freeplay" // FIXED!
+		"hating simulator ft. moawling"
 	];
 
 	var txtWeekTitle:FlxText;

@@ -63,6 +63,8 @@ class ChartingState extends MusicBeatState
 
 	var highlight:FlxSprite;
 
+	public static var bigShoeLmfao:Bool = false;
+
 	var GRID_SIZE:Int = 40;
 
 	var dummyArrow:FlxSprite;
@@ -138,7 +140,10 @@ class ChartingState extends MusicBeatState
 				hpDrainValue: 0.001,
 				hpDrain: false,
 				maxMissesValue: 1,
-				maxMisses: false
+				maxMisses: false,
+				cheatingNotes: false,
+				unfairnessNotes: false,
+				randomNotes: false
 			};
 		}
 
@@ -223,16 +228,12 @@ class ChartingState extends MusicBeatState
 		};
 		check_maxMisses.y += 40;
 
-		/*if (_song.maxMissesValue == null){
-			_song.maxMissesValue = 0;
-		}*/
-
 		var steppermaxMissesValue:FlxUINumericStepper = new FlxUINumericStepper(10, 95, 1, 5, 0, 15, 1);
 		steppermaxMissesValue.value = _song.maxMissesValue;
 		steppermaxMissesValue.name = 'song_maxMissesValue';
 		steppermaxMissesValue.y -= 10;
 
-		var check_mute_inst = new FlxUICheckBox(140, 8, null, null, "Mute Instrumental (in editor)", 100);
+		var check_mute_inst = new FlxUICheckBox(130, 8, null, null, "Mute Instrumental (in editor)", 100);
 		check_mute_inst.checked = false;
 		check_mute_inst.callback = function()
 		{
@@ -252,6 +253,49 @@ class ChartingState extends MusicBeatState
 			_song.needsVoices = check_voices.checked;
 			trace('CHECKED!');
 		};
+
+		var check_cheatNote = new FlxUICheckBox(130, 25 + 25, null, null, "Cheating Notes", 100);
+		var check_unfairNote = new FlxUICheckBox(130, 25 + 25 + 25, null, null, "Unfairness Notes", 100);
+		var check_ranNote = new FlxUICheckBox(130, 25 + 25 + 25 + 25, null, null, "Random Notes", 100);
+
+		check_cheatNote.checked = _song.cheatingNotes;
+		check_unfairNote.checked = false;
+		check_ranNote.checked = false;
+		check_cheatNote.callback = function()
+		{
+			_song.cheatingNotes = check_cheatNote.checked;
+			_song.unfairnessNotes = false;
+			_song.randomNotes = false;
+			check_unfairNote.checked = false;
+			check_ranNote.checked = false;
+			trace('CHECKED!');
+		};
+
+		check_unfairNote.checked = _song.unfairnessNotes;
+		check_cheatNote.checked = false;
+		check_ranNote.checked = false;
+		check_unfairNote.callback = function()
+		{
+			_song.unfairnessNotes = check_unfairNote.checked;
+			_song.cheatingNotes = false;
+			_song.randomNotes = false;
+			check_cheatNote.checked = false;
+			check_ranNote.checked = false;
+			trace('CHECKED!');
+		};
+
+		check_ranNote.checked = _song.randomNotes;
+		check_unfairNote.checked = false;
+		check_cheatNote.checked = false;
+		check_ranNote.callback = function()
+		{
+			_song.randomNotes = check_ranNote.checked;
+			_song.unfairnessNotes = false;
+			_song.cheatingNotes = false;
+			check_unfairNote.checked = false;
+			check_cheatNote.checked = false;
+			trace('CHECKED!');
+		};
 	
 		UI_box.addGroup(tab_group_function);
 		tab_group_function.add(check_hpdrain);
@@ -260,6 +304,9 @@ class ChartingState extends MusicBeatState
 		tab_group_function.add(steppermaxMissesValue);
 		tab_group_function.add(check_mute_inst);
 		tab_group_function.add(check_voices);
+		tab_group_function.add(check_cheatNote);
+		tab_group_function.add(check_unfairNote);
+		tab_group_function.add(check_ranNote);
 		UI_box.scrollFactor.set();
 	}
 
@@ -662,7 +709,7 @@ class ChartingState extends MusicBeatState
 				dummyArrow.y = Math.floor(FlxG.mouse.y / GRID_SIZE) * GRID_SIZE;
 		}
 
-		if (FlxG.keys.justPressed.ENTER)
+		if (FlxG.keys.justPressed.ENTER || FlxG.keys.justPressed.ESCAPE)
 		{
 			FlxG.mouse.visible = false;
 			

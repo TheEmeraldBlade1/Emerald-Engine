@@ -33,6 +33,14 @@ class Note extends FlxSprite
 	public static var BLUE_NOTE:Int = 1;
 	public static var RED_NOTE:Int = 3;
 
+	public var MyStrum:FlxSprite;
+
+	private var notetolookfor = 0;
+
+	public var elapsedtime:Float = 0;
+
+	private var InPlayState:Bool = false;
+
 	public function new(strumTime:Float, noteData:Int, ?prevNote:Note, ?sustainNote:Bool = false)
 	{
 		super();
@@ -43,8 +51,13 @@ class Note extends FlxSprite
 		this.prevNote = prevNote;
 		isSustainNote = sustainNote;
 
-		x += 50;
-		x += 42;
+		if (FlxG.save.data.scrollType == 2){
+			x -= 250;
+		}else if (FlxG.save.data.scrollType == 1){
+			x -= 600;
+		}else{
+			x = 92;
+		}
 		// MAKE SURE ITS DEFINITELY OFF SCREEN?
 		y -= 2000;
 		this.strumTime = strumTime + FlxG.save.data.offset;
@@ -116,20 +129,73 @@ class Note extends FlxSprite
 				antialiasing = true;
 		}
 
-		switch (noteData)
-		{
-			case 0:
-				x += swagWidth * 0;
-				animation.play('purpleScroll');
-			case 1:
-				x += swagWidth * 1;
-				animation.play('blueScroll');
-			case 2:
-				x += swagWidth * 2;
-				animation.play('greenScroll');
-			case 3:
-				x += swagWidth * 3;
-				animation.play('redScroll');
+
+		if (PlayState.SONG.cheatingNotes || PlayState.SONG.unfairnessNotes || PlayState.SONG.randomNotes){
+			switch (noteData)
+			{
+				case 0:
+					x += swagWidth * 3;
+					notetolookfor = 3;
+					animation.play('purpleScroll');
+				case 1:
+					x += swagWidth * 1;
+					notetolookfor = 1;
+					animation.play('blueScroll');
+				case 2:
+					x += swagWidth * 0;
+					notetolookfor = 0;
+					animation.play('greenScroll');
+				case 3:
+					notetolookfor = 2;
+					x += swagWidth * 2;
+					animation.play('redScroll');
+			}
+			flipY = (Math.round(Math.random()) == 0); //fuck you
+			flipX = (Math.round(Math.random()) == 1);
+		}else{
+			switch (noteData)
+			{
+				case 0:
+					x += swagWidth * 0;
+					animation.play('purpleScroll');
+				case 1:
+					x += swagWidth * 1;
+					animation.play('blueScroll');
+				case 2:
+					x += swagWidth * 2;
+					animation.play('greenScroll');
+				case 3:
+					x += swagWidth * 3;
+					animation.play('redScroll');
+			}
+		}
+
+		if (PlayState.SONG.cheatingNotes || PlayState.SONG.unfairnessNotes || PlayState.SONG.randomNotes){
+			if (Type.getClassName(Type.getClass(FlxG.state)).contains("PlayState"))
+				{
+					var state:PlayState = cast(FlxG.state,PlayState);
+					InPlayState = true;
+					if (mustPress)
+					{
+						state.playerStrums.forEach(function(spr:FlxSprite)
+						{
+							if (spr.ID == notetolookfor)
+							{
+								x = spr.x;
+							}
+						});
+					}
+					else
+					{
+						state.enemyStrums.forEach(function(spr:FlxSprite)
+						{
+							if (spr.ID == notetolookfor)
+							{
+								x = spr.x;
+							}
+						});
+					}
+				}
 		}
 
 		// trace(prevNote);
@@ -184,6 +250,103 @@ class Note extends FlxSprite
 	override function update(elapsed:Float)
 	{
 		super.update(elapsed);
+
+		elapsedtime += elapsed;
+
+		if (PlayState.SONG.cheatingNotes){
+			if (Type.getClassName(Type.getClass(FlxG.state)).contains("PlayState"))
+			{
+				var state:PlayState = cast(FlxG.state,PlayState);
+				InPlayState = true;
+
+				if (mustPress)                                         
+				{
+					state.playerStrums.forEach(function(spr:FlxSprite){
+						{
+							x += Math.sin(elapsedtime) * ((spr.ID % 2) == 0 ? 1 : -1);
+							x -= Math.sin(elapsedtime) * 1.5;
+						}
+					});
+				}
+				else
+				{
+					state.enemyStrums.forEach(function(spr:FlxSprite){
+						{
+							x -= Math.sin(elapsedtime) * ((spr.ID % 2) == 0 ? 1 : -1);
+							x += Math.sin(elapsedtime) * 1.5;
+						}
+					});
+				}
+			}
+		}
+
+		if (FlxG.save.data.scrollType == 2){
+			var state:PlayState = cast(FlxG.state,PlayState);
+			InPlayState = true;
+			if (!mustPress)                                         
+				{
+					state.enemyStrums.forEach(function(spr:FlxSprite){
+						{
+							x = spr.x - 9654;
+						}
+					});
+				}
+		}
+
+		if (PlayState.SONG.unfairnessNotes){
+			if (Type.getClassName(Type.getClass(FlxG.state)).contains("PlayState"))
+			{
+				var state:PlayState = cast(FlxG.state,PlayState);
+				InPlayState = true;
+
+				if (mustPress)                                         
+				{
+					state.playerStrums.forEach(function(spr:FlxSprite){
+						{
+							x = ((FlxG.width / 2) - (spr.width / 2)) + (Math.sin(elapsedtime + (spr.ID)) * 300);
+							y = ((FlxG.height / 2) - (spr.height / 2)) + (Math.cos(elapsedtime + (spr.ID)) * 300);
+						}
+					});
+				}
+				else
+				{
+					state.enemyStrums.forEach(function(spr:FlxSprite){
+						{
+							x = ((FlxG.width / 2) - (spr.width / 2)) + (Math.sin((elapsedtime + (spr.ID )) * 2) * 300);
+							y = ((FlxG.height / 2) - (spr.height / 2)) + (Math.cos((elapsedtime + (spr.ID)) * 2) * 300);
+						}
+					});
+				}
+			}
+		}
+
+		if (PlayState.SONG.randomNotes){
+			if (Type.getClassName(Type.getClass(FlxG.state)).contains("PlayState"))
+			{
+				var state:PlayState = cast(FlxG.state,PlayState);
+				InPlayState = true;
+
+				if (mustPress)                                         
+				{
+					state.playerStrums.forEach(function(spr:FlxSprite){
+						{
+							x += Math.sin(elapsedtime) * ((spr.ID % 2) == 0 ? 1 : -1);
+							x -= Math.sin(elapsedtime) * 1.5;
+						}
+					});
+				}
+				else
+				{
+					state.enemyStrums.forEach(function(spr:FlxSprite){
+						{
+							x -= Math.sin(elapsedtime) * ((spr.ID % 2) == 0 ? 1 : -1);
+							x += Math.sin(elapsedtime) * 1.5;
+							y = ((FlxG.height / 2) - (spr.height / 2)) + (Math.cos((elapsedtime + (spr.ID)) * 2) * 300);
+						}
+					});
+				}
+			}
+		}
 
 		if (mustPress)
 		{
