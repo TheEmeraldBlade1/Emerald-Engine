@@ -33,12 +33,14 @@ class GamePlaySubstate extends MusicBeatSubstate
 	static var unselectableOptions:Array<String> = [
 	];
 	static var noCheckbox:Array<String> = [
-		'Note Delay'
+		'Note Delay',
+		'Scroll Speed'
 	];
 
 	static var options:Array<String> = [
+		'Custom Scroll Speed',
+		'Scroll Speed',
 		'Downscroll',
-		'Middlescroll',
 		'Ghost Tapping',
 		'Note Delay',
 		'Camera Zooms',
@@ -185,14 +187,14 @@ class GamePlaySubstate extends MusicBeatSubstate
 					case 'Downscroll':
 						ClientPrefs.downScroll = !ClientPrefs.downScroll;
 
-					case 'Middlescroll':
-						ClientPrefs.middleScroll = !ClientPrefs.middleScroll;
-
 					case 'Ghost Tapping':
 						ClientPrefs.ghostTapping = !ClientPrefs.ghostTapping;
 
 					case 'Camera Zooms':
 						ClientPrefs.camZooms = !ClientPrefs.camZooms;
+
+					case 'Custom Scroll Speed':
+						ClientPrefs.hss = !ClientPrefs.hss;
 				}
 				FlxG.sound.play(Paths.sound('scrollMenu'));
 				reloadValues();
@@ -210,6 +212,14 @@ class GamePlaySubstate extends MusicBeatSubstate
 						ClientPrefs.noteOffset += add * mult;
 						if(ClientPrefs.noteOffset < 0) ClientPrefs.noteOffset = 0;
 						else if(ClientPrefs.noteOffset > 500) ClientPrefs.noteOffset = 500;
+					case 'Scroll Speed':
+						//ClientPrefs.speed += add/10;
+						if (controls.UI_RIGHT)
+							ClientPrefs.speed += 0.1;
+						else if (controls.UI_LEFT)
+							ClientPrefs.speed -= 0.1;
+						if(ClientPrefs.speed < 0.1) ClientPrefs.speed = 0.1;
+						else if(ClientPrefs.speed > 10) ClientPrefs.speed = 10;
 				}
 				reloadValues();
 
@@ -246,8 +256,6 @@ class GamePlaySubstate extends MusicBeatSubstate
 				daText = "Changes how late a note is spawned.\nUseful for preventing audio lag from wireless earphones.";
 			case 'Downscroll':
 				daText = "If checked, notes go Down instead of Up, simple enough.";
-			case 'Middlescroll':
-				daText = "If checked, hides Opponent's notes and your notes get centered.";
 			case 'Ghost Tapping':
 				daText = "If checked, you won't get misses from pressing keys\nwhile there are no notes able to be hit.";
 			case 'Swearing':
@@ -256,6 +264,10 @@ class GamePlaySubstate extends MusicBeatSubstate
 				daText = "If unchecked, you won't get disgusted as frequently.";
 			case 'Camera Zooms':
 				daText = "If unchecked, the camera won't zoom in on a beat hit.";
+			case 'Custom Scroll Speed':
+				daText = "If checked, you can customize your scroll speed";
+			case 'Scroll Speed':
+				daText = "changes how much scroll speed you want\n(Custom Scroll Speed Must Be On)";
 		}
 		descText.text = daText;
 
@@ -302,8 +314,6 @@ class GamePlaySubstate extends MusicBeatSubstate
 				switch(options[checkboxNumber[i]]) {
 					case 'Downscroll':
 						daValue = ClientPrefs.downScroll;
-					case 'Middlescroll':
-						daValue = ClientPrefs.middleScroll;
 					case 'Ghost Tapping':
 						daValue = ClientPrefs.ghostTapping;
 					case 'Swearing':
@@ -312,6 +322,8 @@ class GamePlaySubstate extends MusicBeatSubstate
 						daValue = ClientPrefs.violence;
 					case 'Camera Zooms':
 						daValue = ClientPrefs.camZooms;
+					case 'Custom Scroll Speed':
+						daValue = ClientPrefs.hss;
 				}
 				checkbox.daValue = daValue;
 			}
@@ -323,6 +335,8 @@ class GamePlaySubstate extends MusicBeatSubstate
 				switch(options[textNumber[i]]) {
 					case 'Note Delay':
 						daText = ClientPrefs.noteOffset + 'ms';
+					case 'Scroll Speed':
+						daText = ((Math.floor(ClientPrefs.speed * 10) / 10))+"";
 				}
 				var lastTracker:FlxSprite = text.sprTracker;
 				text.sprTracker = null;

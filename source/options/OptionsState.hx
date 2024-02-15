@@ -23,6 +23,8 @@ import flixel.tweens.FlxTween;
 import flixel.util.FlxTimer;
 import flixel.input.keyboard.FlxKey;
 import flixel.graphics.FlxGraphic;
+import flixel.util.FlxTimer;
+import flixel.effects.FlxFlicker;
 import Controls;
 
 using StringTools;
@@ -101,6 +103,26 @@ class OptionsState extends MusicBeatState
 			}
 		}
 	}
+
+	/*var daTime:Float = 0.5;
+	function prefsState()
+		{	
+			var da:Int = curSelected;
+			FlxG.sound.play(Paths.sound('confirmMenu'));
+			for (i in 0...grpOptions.members.length)
+			{
+				if (i == da)
+				{
+					if (ClientPrefs.flashing){
+						FlxFlicker.flicker(grpOptions.members[i], 1, 0.06, false, false);
+					}
+				}
+			}
+			new FlxTimer().start(daTime, function(tmr:FlxTimer)
+			{
+				MusicBeatState.switchState(new options.PreferencesState());
+			});
+		}*/
 	
 	function changeSelection(change:Int = 0) {
 		curSelected += change;

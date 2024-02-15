@@ -5,4 +5,5 @@
 class PublicVariables
 {
     public static var pauseOptions:Bool = false;
+    public static var noteFlip:Bool = false; // changes notes to left side useful if opponent is on the right side
 }

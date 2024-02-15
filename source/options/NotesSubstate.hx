@@ -34,14 +34,17 @@ class NotesSubstate extends MusicBeatSubstate
 	];
 	static var noCheckbox:Array<String> = [
 		'Note Colors',
-		'Noteskin'
+		'Noteskin',
+		'Arrow Lane'
 	];
 
 	static var options:Array<String> = [
 		'Note Colors',
 		'Noteskin',
 		'Flip Arrow Y',
-		'Flip Arrow X'
+		'Flip Arrow X',
+		'Arrow Lane',
+		'Hide Enemy Notes'
 	];
 
 	static var noteSkins:Array<String> = [
@@ -50,6 +53,11 @@ class NotesSubstate extends MusicBeatSubstate
 		'Rectangles',
 		'Stepmania',
 		'Synthwave'
+	];
+	static var arrowLanes:Array<String> = [
+		'Right',
+		'Middle',
+		'Left'
 	];
 
 	private var grpOptions:FlxTypedGroup<Alphabet>;
@@ -183,6 +191,8 @@ class NotesSubstate extends MusicBeatSubstate
 						ClientPrefs.aFlipY = !ClientPrefs.aFlipY;
 					case 'Flip Arrow X':
 						ClientPrefs.aFlipX = !ClientPrefs.aFlipX;
+					case 'Hide Enemy Notes':
+						ClientPrefs.hideEnemyNotes = !ClientPrefs.hideEnemyNotes;
 				}
 				FlxG.sound.play(Paths.sound('scrollMenu'));
 				reloadValues();
@@ -207,6 +217,13 @@ class NotesSubstate extends MusicBeatSubstate
 							ClientPrefs.notetypes = 4;
 						else if (ClientPrefs.notetypes > 4)
 							ClientPrefs.notetypes = 0;
+						case 'Arrow Lane':
+							var mult:Int = 1;
+							ClientPrefs.middleScroll += add;
+							if (ClientPrefs.middleScroll < 0)
+								ClientPrefs.middleScroll = 2;
+							else if (ClientPrefs.middleScroll > 2)
+								ClientPrefs.middleScroll = 0;
 				}
 				reloadValues();
 
@@ -247,6 +264,10 @@ class NotesSubstate extends MusicBeatSubstate
 				daText = "If checked, flips the y of the arrows";
 			case 'Flip Arrow X':
 				daText = "If checked, flips the x of the arrows";
+			case 'Arrow Lane':
+				daText = "change the position of your notes";
+			case 'Hide Enemy Notes':
+				daText = "Hides The Notes Of The Opponent";
 		}
 		descText.text = daText;
 
@@ -295,6 +316,8 @@ class NotesSubstate extends MusicBeatSubstate
 						daValue = ClientPrefs.aFlipY;
 					case 'Flip Arrow X':
 						daValue = ClientPrefs.aFlipX;
+					case 'Hide Enemy Notes':
+						daValue = ClientPrefs.hideEnemyNotes;
 				}
 				checkbox.daValue = daValue;
 			}
@@ -308,6 +331,8 @@ class NotesSubstate extends MusicBeatSubstate
 						daText = '';
 					case 'Noteskin':
 						daText = "<" + noteSkins[ClientPrefs.notetypes] + ">";
+					case 'Arrow Lane':
+						daText = "<" + arrowLanes[ClientPrefs.middleScroll] + ">";
 				}
 				var lastTracker:FlxSprite = text.sprTracker;
 				text.sprTracker = null;

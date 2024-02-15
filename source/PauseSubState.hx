@@ -11,6 +11,8 @@ import flixel.system.FlxSound;
 import flixel.text.FlxText;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
+import flixel.util.FlxTimer;
+import flixel.effects.FlxFlicker;
 import flixel.util.FlxColor;
 import flixel.FlxCamera;
 
@@ -52,7 +54,7 @@ class PauseSubState extends MusicBeatSubstate
 		add(levelInfo);
 
 		var levelDifficulty:FlxText = new FlxText(20, 15 + 32, 0, "", 32);
-		levelDifficulty.text += CoolUtil.difficultyString();
+		levelDifficulty.text += "";
 		levelDifficulty.scrollFactor.set();
 		levelDifficulty.setFormat(Paths.font('vcr.ttf'), 32);
 		levelDifficulty.updateHitbox();
@@ -152,7 +154,7 @@ class PauseSubState extends MusicBeatSubstate
 			switch (daSelected)
 			{
 				case "Resume":
-					close();
+					closeState();
 				case 'Change Difficulty':
 					menuItems = difficultyChoices;
 					regenMenu();
@@ -165,15 +167,14 @@ class PauseSubState extends MusicBeatSubstate
 					MusicBeatState.resetState();
 					FlxG.sound.music.volume = 0;
 				case "Options":
-					PublicVariables.pauseOptions = true;
-					MusicBeatState.switchState(new options.OptionsState());
-					FlxG.sound.playMusic(Paths.music('freakyMenu'));
+					optionsState();
 				case 'Botplay':
 					FlxG.save.data.BotPlayToggleMode = !FlxG.save.data.BotPlayToggleMode;
 					PlayState.usedPractice = true;
 					PlayState.cpuControlled = FlxG.save.data.BotPlayToggleMode;
 					botplayText.visible = PlayState.cpuControlled;
 				case "Exit to menu":
+					PublicVariables.pauseOptions = false;
 					PlayState.deathCounter = 0;
 					PlayState.seenCutscene = false;
 					CustomFadeTransition.nextCamera = transCamera;
@@ -239,5 +240,43 @@ class PauseSubState extends MusicBeatSubstate
 		}
 		curSelected = 0;
 		changeSelection();
+	}
+	var daTime:Float = 0.9;
+	function closeState()
+	{	
+		var da:Int = curSelected;
+		FlxG.sound.play(Paths.sound('confirmMenu'));
+		for (i in 0...grpMenuShit.members.length)
+		{
+			if (i == da)
+			{
+				if (ClientPrefs.flashing){
+					FlxFlicker.flicker(grpMenuShit.members[i], 1, 0.06, false, false);
+				}
+			}
+		}
+		new FlxTimer().start(daTime, function(tmr:FlxTimer)
+		{
+			close();
+		});
+	}
+	function optionsState()
+	{	
+		var da:Int = curSelected;
+		FlxG.sound.play(Paths.sound('confirmMenu'));
+		for (i in 0...grpMenuShit.members.length)
+		{
+			if (i == da)
+			{
+				if (ClientPrefs.flashing){
+					FlxFlicker.flicker(grpMenuShit.members[i], 1, 0.06, false, false);
+				}
+			}
+		}
+		new FlxTimer().start(daTime, function(tmr:FlxTimer)
+		{
+			PublicVariables.pauseOptions = true;
+			MusicBeatState.switchState(new options.OptionsState());
+		});
 	}
 }

@@ -63,6 +63,10 @@ class NoteColorsSubstate extends MusicBeatSubstate
 			if (ClientPrefs.notetypes == 3) noteskinpath = '_Stepmania';
 			if (ClientPrefs.notetypes == 4) noteskinpath = '_Synthwave';
 			note.frames = Paths.getSparrowAtlas('NOTESKINS/NOTE_assets' + noteskinpath);
+			if (ClientPrefs.aFlipY)
+				note.flipY = true;
+			if (ClientPrefs.aFlipX)
+				note.flipX = true;
 			switch(i) {
 				case 0:
 					note.animation.addByPrefix('idle', 'purple0');

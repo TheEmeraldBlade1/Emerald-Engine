@@ -9,7 +9,7 @@ import Controls;
 class ClientPrefs {
 	//TO DO: Redo ClientPrefs in a way that isn't too stupid
 	public static var downScroll:Bool = false;
-	public static var middleScroll:Bool = false;
+	public static var middleScroll:Int = 0;
 	public static var showFPS:Bool = true;
 	public static var flashing:Bool = true;
 	public static var globalAntialiasing:Bool = true;
@@ -29,6 +29,10 @@ class ClientPrefs {
 	public static var hideTime:Bool = false;
 	public static var aFlipY:Bool = false;
 	public static var aFlipX:Bool = false;
+	public static var safeFrame:Int = 8;
+	public static var speed:Float = 2;
+	public static var hss:Bool = false;
+	public static var hideEnemyNotes:Bool = false;
 
 	public static var defaultKeys:Array<FlxKey> = [
 		A, LEFT,			//Note Left
@@ -67,6 +71,7 @@ class ClientPrefs {
 	public static var lastControls:Array<FlxKey> = defaultKeys.copy();
 
 	public static function saveSettings() {
+		FlxG.save.data.hideEnemyNotes = hideEnemyNotes;
 		FlxG.save.data.downScroll = downScroll;
 		FlxG.save.data.middleScroll = middleScroll;
 		FlxG.save.data.showFPS = showFPS;
@@ -88,6 +93,10 @@ class ClientPrefs {
 		FlxG.save.data.notetypes = notetypes;
 		FlxG.save.data.aFlipY = aFlipY;
 		FlxG.save.data.aFlipX = aFlipX;
+		FlxG.save.data.hss = hss;
+		FlxG.save.data.speed = speed;
+		FlxG.save.data.safeFrames = Conductor.safeFrames;
+		FlxG.save.data.safeFrame = safeFrame;
 
 		var achieves:Array<String> = [];
 		for (i in 0...Achievements.achievementsUnlocked.length) {
@@ -107,6 +116,18 @@ class ClientPrefs {
 	}
 
 	public static function loadPrefs() {
+		if(FlxG.save.data.hideEnemyNotes != null) {
+			hideEnemyNotes = FlxG.save.data.hideEnemyNotes;
+		}
+		if(FlxG.save.data.hss != null) {
+			hss = FlxG.save.data.hss;
+		}
+		if(FlxG.save.data.safeFrame != null) {
+			safeFrame = FlxG.save.data.safeFrame;
+		}
+		if(FlxG.save.data.speed != null) {
+			speed = FlxG.save.data.speed;
+		}
 		if(FlxG.save.data.notetypes != null) {
 			notetypes = FlxG.save.data.notetypes;
 		}

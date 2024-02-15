@@ -62,6 +62,10 @@ class PlayState extends MusicBeatState
 	public static var STRUM_X = 42;
 	public static var STRUM_X_MIDDLESCROLL = -278;
 
+	var curSpeed:Float = 1;
+
+	var centerMark:FlxText; // small side bar like kade engine that tells you engine info
+
 	private var accuracy:Float = 0.00;
 	private var totalNotesHit:Float = 0;
 	private var totalPlayed:Int = 0;
@@ -689,6 +693,7 @@ class PlayState extends MusicBeatState
 			add(halloweenWhite);
 		}
 
+
 		#if LUA_ALLOWED
 		luaDebugGroup = new FlxTypedGroup<DebugLuaText>();
 		luaDebugGroup.cameras = [camOther];
@@ -810,7 +815,7 @@ class PlayState extends MusicBeatState
 
 		Conductor.songPosition = -5000;
 
-		strumLine = new FlxSprite(ClientPrefs.middleScroll ? STRUM_X_MIDDLESCROLL : STRUM_X, 50).makeGraphic(FlxG.width, 10);
+		strumLine = new FlxSprite(ClientPrefs.middleScroll == 1 ? STRUM_X_MIDDLESCROLL : STRUM_X, 50).makeGraphic(FlxG.width, 10);
 		if(ClientPrefs.downScroll) strumLine.y = FlxG.height - 150;
 		strumLine.scrollFactor.set();
 
@@ -955,22 +960,37 @@ class PlayState extends MusicBeatState
 		scoreTxt.scrollFactor.set();
 		scoreTxt.borderSize = 1.25;
 		scoreTxt.visible = !ClientPrefs.hideHud;
+		scoreTxt.text = "Score: 0 - Misses: 0 - Rating: ? - Accuracy: ?";
 		add(scoreTxt);
 
-		judgementTxt = new FlxText(0, healthBarBG.y + 36, FlxG.width, "", 20);
+		judgementTxt = new FlxText(0, strumLine.y, FlxG.width, "", 20);
 		judgementTxt.setFormat(Paths.font("vcr.ttf"), 18, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		judgementTxt.scrollFactor.set();
 		judgementTxt.borderSize = 1.25;
 		judgementTxt.visible = !ClientPrefs.hideHud;
-		judgementTxt.y -= 60;
+		judgementTxt.text = '';
+		if (ClientPrefs.middleScroll == 1){judgementTxt.x -= 280;};
 		add(judgementTxt);
 
-		var cornerMark:FlxText = new FlxText(0, 0, 0, 'EMERALD ENGINE v0.1.2\n');
+		var cornerMark:FlxText = new FlxText(0, 0, 0, 'EMERALD ENGINE v' + Main.stringVersion + '\n');
 		cornerMark.setFormat(Paths.font('vcr.ttf'), 18, FlxColor.WHITE);
 		cornerMark.setBorderStyle(OUTLINE, FlxColor.BLACK, 2);
 		add(cornerMark);
 		cornerMark.setPosition(FlxG.width - (cornerMark.width + 5), 5);
 		cornerMark.antialiasing = true;
+
+		centerMark = new FlxText(0, 0, 0,
+			'- ' + PlayState.SONG.song + ' [HARD] -');
+		centerMark.setFormat(Paths.font('vcr.ttf'), 24, FlxColor.WHITE);
+		centerMark.setBorderStyle(OUTLINE, FlxColor.BLACK, 2);
+		add(centerMark);
+		if (ClientPrefs.downScroll)
+			centerMark.y = (FlxG.height - centerMark.height / 2);
+		else centerMark.y = (FlxG.height / 24) - 24;
+		centerMark.screenCenter(X);
+		centerMark.antialiasing = true;
+		
+		centerMark.alpha = 0.50; cornerMark.alpha = 0.50; //scoreTxt.alpha = 0.50; judgementTxt.alpha = 0.50;
 
 		botplayTxt = new FlxText(400, healthBarBG.y - 55, FlxG.width - 800, "BOTPLAY", 32);
 		botplayTxt.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
@@ -985,6 +1005,7 @@ class PlayState extends MusicBeatState
 		strumLineNotes.cameras = [camHUD];
 		grpNoteSplashes.cameras = [camHUD];
 		cornerMark.cameras = [camHUD];
+		centerMark.cameras = [camHUD];
 		notes.cameras = [camHUD];
 		healthBar.cameras = [camHUD];
 		healthBarBG.cameras = [camHUD];
@@ -1357,7 +1378,7 @@ class PlayState extends MusicBeatState
 			for (i in 0...opponentStrums.length) {
 				setOnLuas('defaultOpponentStrumX' + i, opponentStrums.members[i].x);
 				setOnLuas('defaultOpponentStrumY' + i, opponentStrums.members[i].y);
-				if(ClientPrefs.middleScroll) opponentStrums.members[i].visible = false;
+				if(ClientPrefs.hideEnemyNotes) opponentStrums.members[i].visible = false;
 			}
 
 			startedCountdown = true;
@@ -1484,6 +1505,9 @@ class PlayState extends MusicBeatState
 				notes.forEachAlive(function(note:Note) {
 					note.copyAlpha = false;
 					note.alpha = 1 * note.multAlpha;
+					if(ClientPrefs.middleScroll == 1 && !note.mustPress) {
+						note.alpha *= 0.5;
+					}
 				});
 				callOnLuas('onCountdownTick', [swagCounter]);
 
@@ -1643,6 +1667,14 @@ class PlayState extends MusicBeatState
 							{
 								sustainNote.x += FlxG.width / 2; // general offset
 							}
+							else if(ClientPrefs.middleScroll == 1)
+								{
+									sustainNote.x += 310;
+									if(daNoteData > 1) //Up and Right
+									{
+										sustainNote.x += FlxG.width / 2 + 25;
+									}
+								}
 						}
 					}
 
@@ -1650,7 +1682,14 @@ class PlayState extends MusicBeatState
 					{
 						swagNote.x += FlxG.width / 2; // general offset
 					}
-					else {}
+					else if(ClientPrefs.middleScroll == 1)
+						{
+							swagNote.x += 310;
+							if(daNoteData > 1) //Up and Right
+							{
+								swagNote.x += FlxG.width / 2 + 25;
+							}
+						}
 
 					if(!noteTypeMap.exists(swagNote.noteType)) {
 						noteTypeMap.set(swagNote.noteType, true);
@@ -1727,27 +1766,47 @@ class PlayState extends MusicBeatState
 		for (i in 0...4)
 		{
 			// FlxG.log.add(i);
-			var babyArrow:StrumNote = new StrumNote(ClientPrefs.middleScroll ? STRUM_X_MIDDLESCROLL : STRUM_X, strumLine.y, i, player);
+			var targetAlpha:Float = 1;
+			if (player < 1 && ClientPrefs.middleScroll == 1) targetAlpha = 0.35;
+
+			var babyArrow:StrumNote = new StrumNote(ClientPrefs.middleScroll == 1 ? STRUM_X_MIDDLESCROLL : STRUM_X, strumLine.y, i, player);
 			if (!isStoryMode)
 			{
-				babyArrow.y -= 10;
+				//babyArrow.y -= 10;
 				babyArrow.alpha = 0;
-				FlxTween.tween(babyArrow, {y: babyArrow.y + 10, alpha: 1}, 1, {ease: FlxEase.circOut, startDelay: 0.5 + (0.2 * i)});
+				FlxTween.tween(babyArrow, {alpha: targetAlpha}, 1, {ease: FlxEase.circOut, startDelay: 0.5 + (0.2 * i)});
 			}
 
 			if (player == 1)
 			{
 				playerStrums.add(babyArrow);
-				for (i in 0...playerStrums.length){
-					trace("PlayerStrums: x:" + playerStrums.members[i].x + ",y:" + playerStrums.members[i].y);
+				if (ClientPrefs.middleScroll == 2 || PublicVariables.noteFlip && ClientPrefs.middleScroll == 0){
+					babyArrow.x -= 732;
+					babyArrow.x += STRUM_X + 74;
 				}
+				playerStrums.forEach(function(spr:FlxSprite){
+					trace("PlayerStrums: x:" + spr.x + ",y:" + spr.y);
+				});
 			}
 			else
 			{
 				opponentStrums.add(babyArrow);
-				for (i in 0...opponentStrums.length){
-					trace("OpponentStrums: x:" + opponentStrums.members[i].x + ",y:" + opponentStrums.members[i].y);
+				if (ClientPrefs.middleScroll == 2 || PublicVariables.noteFlip && ClientPrefs.middleScroll == 0){
+					babyArrow.x = 732;
+					babyArrow.x -= STRUM_X + 24;
 				}
+				if (ClientPrefs.hideEnemyNotes){
+					babyArrow.visible = false;
+				}
+				if(ClientPrefs.middleScroll == 1){
+					babyArrow.x += 310;
+					if(i > 1) { //Up and Right
+						babyArrow.x += FlxG.width / 2 + 25;
+					}
+				}
+				opponentStrums.forEach(function(spr:FlxSprite){
+					trace("OpponentStrums: x:" + spr.x + ",y:" + spr.y);
+				});
 			}
 			if (ClientPrefs.aFlipY)
 				babyArrow.flipY = true;
@@ -2137,7 +2196,6 @@ class PlayState extends MusicBeatState
 
 		super.update(elapsed);
 
-		judgementTxt.text = '';
 
 		/*if(ratingString == '?') {
 			scoreTxt.text = "Score: 0 - Misses: 0 - Rating: ? - Accuracy: ?";
@@ -2163,6 +2221,45 @@ class PlayState extends MusicBeatState
 			+ '\nRanking: ' + ratingString2;
 			//+ '\nRanking: ' + EmeraldEngineAccuracy.bisexual + "." + EmeraldEngineAccuracy.lesbian + "%";
 		}*/
+
+		/*playerStrums.forEach(function(spr:FlxSprite){
+			if (spr.animation.curAnim.name != 'confirm' 
+				&& spr.animation.curAnim.name != 'confirm2'
+			&& spr.animation.curAnim.name != 'purple'
+			&& spr.animation.curAnim.name != 'blue'
+			&& spr.animation.curAnim.name != 'green'
+			&& spr.animation.curAnim.name != 'red'
+			&& spr.animation.curAnim.name != 'purplehold'
+			&& spr.animation.curAnim.name != 'bluehold'
+			&& spr.animation.curAnim.name != 'greenhold'
+			&& spr.animation.curAnim.name != 'redhold'
+			&& spr.animation.curAnim.name != 'purpleholdend'
+			&& spr.animation.curAnim.name != 'blueholdend'
+			&& spr.animation.curAnim.name != 'greenholdend'
+			&& spr.animation.curAnim.name != 'redholdend')
+				spr.alpha = 0.55;
+			else
+				spr.alpha = 1;
+		});
+		opponentStrums.forEach(function(spr:FlxSprite){
+			if (spr.animation.curAnim.name != 'confirm' 
+				&& spr.animation.curAnim.name != 'confirm2'
+			&& spr.animation.curAnim.name != 'purple'
+			&& spr.animation.curAnim.name != 'blue'
+			&& spr.animation.curAnim.name != 'green'
+			&& spr.animation.curAnim.name != 'red'
+			&& spr.animation.curAnim.name != 'purplehold'
+			&& spr.animation.curAnim.name != 'bluehold'
+			&& spr.animation.curAnim.name != 'greenhold'
+			&& spr.animation.curAnim.name != 'redhold'
+			&& spr.animation.curAnim.name != 'purpleholdend'
+			&& spr.animation.curAnim.name != 'blueholdend'
+			&& spr.animation.curAnim.name != 'greenholdend'
+			&& spr.animation.curAnim.name != 'redholdend')
+				spr.alpha = 0.55;
+			else
+				spr.alpha = 1;
+		});*/
 
 		if(cpuControlled) {
 			botplaySine += 180 * elapsed;
@@ -2372,7 +2469,7 @@ class PlayState extends MusicBeatState
 			var fakeCrochet:Float = (60 / SONG.bpm) * 1000;
 			notes.forEachAlive(function(daNote:Note)
 			{
-				if(!daNote.mustPress && ClientPrefs.middleScroll)
+				if(!daNote.mustPress && ClientPrefs.hideEnemyNotes)
 				{
 					daNote.active = true;
 					daNote.visible = false;
@@ -2524,7 +2621,7 @@ class PlayState extends MusicBeatState
 					daNote.hitByOpponent = true;
 
 					if (!daNote.isSustainNote && ClientPrefs.noteSplashes2){
-						spawnNoteSplashOnNoteEnemy(daNote, ClientPrefs.middleScroll);
+						spawnNoteSplashOnNoteEnemy(daNote, ClientPrefs.hideEnemyNotes);
 					}
 
 					callOnLuas('opponentNoteHit', [notes.members.indexOf(daNote), Math.abs(daNote.noteData), daNote.noteType, daNote.isSustainNote]);
@@ -2582,54 +2679,59 @@ class PlayState extends MusicBeatState
 			}
 		}
 		
-		#if debug
-		if(!endingSong && !startingSong) {
-			if (FlxG.keys.justPressed.ONE) {
-				KillNotes();
-				FlxG.sound.music.onComplete();
-			}
-			if(FlxG.keys.justPressed.TWO) { //Go 10 seconds into the future :O
-				FlxG.sound.music.pause();
-				vocals.pause();
-				Conductor.songPosition += 10000;
-				notes.forEachAlive(function(daNote:Note)
-				{
-					if(daNote.strumTime + 800 < Conductor.songPosition) {
+		if (Main.debugBuild){
+			if(!endingSong && !startingSong) {
+				if (FlxG.keys.justPressed.ONE) {
+					KillNotes();
+					FlxG.sound.music.onComplete();
+				}
+				if (FlxG.keys.justPressed.SIX) {
+					FlxG.save.data.BotPlayToggleMode = !FlxG.save.data.BotPlayToggleMode;
+					PlayState.usedPractice = true;
+					PlayState.cpuControlled = FlxG.save.data.BotPlayToggleMode;
+				}
+				if(FlxG.keys.justPressed.TWO) { //Go 10 seconds into the future :O
+					FlxG.sound.music.pause();
+					vocals.pause();
+					Conductor.songPosition += 10000;
+					notes.forEachAlive(function(daNote:Note)
+					{
+						if(daNote.strumTime + 800 < Conductor.songPosition) {
+							daNote.active = false;
+							daNote.visible = false;
+	
+							daNote.kill();
+							notes.remove(daNote, true);
+							daNote.destroy();
+						}
+					});
+					for (i in 0...unspawnNotes.length) {
+						var daNote:Note = unspawnNotes[0];
+						if(daNote.strumTime + 800 >= Conductor.songPosition) {
+							break;
+						}
+	
 						daNote.active = false;
 						daNote.visible = false;
-
+	
 						daNote.kill();
-						notes.remove(daNote, true);
+						unspawnNotes.splice(unspawnNotes.indexOf(daNote), 1);
 						daNote.destroy();
 					}
-				});
-				for (i in 0...unspawnNotes.length) {
-					var daNote:Note = unspawnNotes[0];
-					if(daNote.strumTime + 800 >= Conductor.songPosition) {
-						break;
-					}
-
-					daNote.active = false;
-					daNote.visible = false;
-
-					daNote.kill();
-					unspawnNotes.splice(unspawnNotes.indexOf(daNote), 1);
-					daNote.destroy();
+	
+					FlxG.sound.music.time = Conductor.songPosition;
+					FlxG.sound.music.play();
+	
+					vocals.time = Conductor.songPosition;
+					vocals.play();
 				}
-
-				FlxG.sound.music.time = Conductor.songPosition;
-				FlxG.sound.music.play();
-
-				vocals.time = Conductor.songPosition;
-				vocals.play();
 			}
+	
+			setOnLuas('cameraX', camFollowPos.x);
+			setOnLuas('cameraY', camFollowPos.y);
+			setOnLuas('botPlay', PlayState.cpuControlled);
+			callOnLuas('onUpdatePost', [elapsed]);
 		}
-
-		setOnLuas('cameraX', camFollowPos.x);
-		setOnLuas('cameraY', camFollowPos.y);
-		setOnLuas('botPlay', PlayState.cpuControlled);
-		callOnLuas('onUpdatePost', [elapsed]);
-		#end
 	}
 
 	var isDead:Bool = false;
@@ -3273,6 +3375,13 @@ class PlayState extends MusicBeatState
 	}
 
 	function tweenTxtFunction(){
+		scoreTxt.text = 'Score: ' + songScore 
+		+ " - Misses: " + songMisses 
+		+ " - Rating: " + ratingString 
+		+ ' (' + Math.floor(ratingPercent * 100) + '%)'
+		+ " - Accuracy: " + truncateFloat(accuracy, 2) + '%'
+		+ " - " + generateRanking();
+		judgementTxt.text = daRating + "\nCombo: " + combo + "\n" + EmeraldEngineAccuracy.bisexual + "." + EmeraldEngineAccuracy.lesbian + "%";
 		if(scoreTxtTween != null) {
 			scoreTxtTween.cancel();
 		}
@@ -3322,7 +3431,7 @@ class PlayState extends MusicBeatState
 			if (noteDiff > Conductor.safeZoneOffset * 0.7)
 				{
 					daRating = 'Shit!!';
-					totalNotesHit -= 2;
+					totalNotesHit = 0.1;
 					score = 50;
 					shits += 1;
 					EmeraldEngineAccuracy.ratingUpdate(rng.int(0,5),rng.int(0,5),0,0);
@@ -3653,8 +3762,9 @@ class PlayState extends MusicBeatState
 		EmeraldEngineAccuracy.ratingUpdate(rng.int(0,0),rng.int(0,0),0,0);
 		songScore -= 500;
 		RecalculateRating();
-		totalNotesHit -= 2;
+		totalNotesHit -= 1;
 		updateAccuracy();
+		tweenTxtFunction();
 
 		daRating = 'MISS!!';
 
@@ -3790,6 +3900,15 @@ class PlayState extends MusicBeatState
 					StrumPlayAnim(false, Std.int(Math.abs(note.noteData)) % 4, time);
 				}
 			}else{
+				var time:Float = 0.05;
+				if(note.isSustainNote && !note.animation.curAnim.name.endsWith('end')) {
+					time = 0.005;
+				}
+				if (note.isSustainNote){
+					StrumPlayAnim2(false, Std.int(Math.abs(note.noteData)) % 4, time);
+				}else{
+					StrumPlayAnim(false, Std.int(Math.abs(note.noteData)) % 4, time);
+				}
 			}
 			note.wasGoodHit = true;
 			vocals.volume = 1;
@@ -4266,7 +4385,12 @@ class PlayState extends MusicBeatState
 	public function setUpShit(){
 		NoteSplash.isPerfectNote = false; 
 		cpuControlled = FlxG.save.data.BotPlayToggleMode; 
-		setSongScrollSpeed(3.8);
+		if (ClientPrefs.hss){
+			curSpeed = ClientPrefs.speed;
+		}else{
+			curSpeed = 3.8;
+		}
+		setSongScrollSpeed(curSpeed);
 	}
 
 	public var ratingString:String;
@@ -4298,17 +4422,6 @@ class PlayState extends MusicBeatState
 						break;
 					}
 				}
-			}
-
-			scoreTxt.text = 'Score: ' + songScore 
-			+ " - Misses: " + songMisses 
-			+ " - Rating: " + ratingString 
-			+ ' (' + Math.floor(ratingPercent * 100) + '%)'
-			+ " - Accuracy: " + truncateFloat(accuracy, 2) + '%'
-			+ " - " + generateRanking() ;
-
-			if (ratingString == '?'){
-				scoreTxt.text = "Score: 0 - Misses: 0 - Rating: ? - Accuracy: ?";
 			}
 
 			setOnLuas('rating', ratingPercent);
