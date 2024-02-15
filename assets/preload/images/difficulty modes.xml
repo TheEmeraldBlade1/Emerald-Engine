@@ -1,8 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<TextureAtlas imagePath="difficulty modes.png">
-	<!-- Created with Adobe Animate version 23.0.0.407 -->
-	<!-- http://www.adobe.com/products/animate.html -->
-	<SubTexture name="EASY0000" x="0" y="0" width="196" height="65"/>
-	<SubTexture name="HARD0000" x="196" y="0" width="211" height="67"/>
-	<SubTexture name="NORMAL0000" x="0" y="67" width="308" height="67"/>
-</TextureAtlas>

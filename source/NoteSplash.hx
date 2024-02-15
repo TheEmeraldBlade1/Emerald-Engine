@@ -1,64 +1,72 @@
 package;
 
-import openfl.display.BlendMode;
-import openfl.display.BitmapData;
-import flixel.FlxSprite;
-import flixel.animation.FlxBaseAnimation;
-import flixel.graphics.frames.FlxAtlasFrames;
 import flixel.FlxG;
+import flixel.FlxSprite;
+import flixel.graphics.frames.FlxAtlasFrames;
 
-using StringTools;
+class NoteSplash extends FlxSprite
+{
+	public var colorSwap:ColorSwap = null;
+	private var idleAnim:String;
+	private var textureLoaded:String = null;
+	public static var isPerfectNote:Bool = false;
 
-class NoteSplash extends FlxSprite{
+	public function new(x:Float = 0, y:Float = 0, ?note:Int = 0) {
+		super(x, y);
 
-  //  public static var splashPath:String = FlxAtlasFrames.fromSparrow('assets/images/noteSplashes.png', 'assets/images/noteSplashes.xml');
+		var skin:String = 'noteSplashes';
+		if (isPerfectNote){
+			skin = 'noteSplashesPerfect';
+		}
+		if(PlayState.SONG.splashSkin != null && PlayState.SONG.splashSkin.length > 0) skin = PlayState.SONG.splashSkin;
 
-    public function new(x:Float, y:Float, note:Int){
+		loadAnims(skin);
+		
+		colorSwap = new ColorSwap();
+		shader = colorSwap.shader;
 
-        super(x, y);
-        
-        var noteColor:String = "purple";
-        switch(note){
-            case 1:
-                noteColor = "blue";
-            case 2:
-                noteColor = "green";
-            case 3:
-                noteColor = "red";
-        }
+		setupNoteSplash(x, y, note);
+		antialiasing = ClientPrefs.globalAntialiasing;
+	}
 
-        frames = Paths.getSparrowAtlas('noteSplashes');
-        antialiasing = true;
-        animation.addByPrefix("splash", "note impact " + FlxG.random.int(1, 2) + " " + noteColor, 24 + FlxG.random.int(-3, 4), false);
-        animation.finishCallback = function(n){ kill(); }
-        animation.play("splash");
+	public function setupNoteSplash(x:Float, y:Float, note:Int = 0, texture:String = null, hueColor:Float = 0, satColor:Float = 0, brtColor:Float = 0) {
+		setPosition(x - Note.swagWidth * 0.95, y - Note.swagWidth);
+		alpha = 0.6;
 
-        /*switch(PlayState.curStage){
-            case "school" | "schoolEvil":
-                frames = FlxAtlasFrames.fromSparrow('assets/images/weeb/pixelUI/noteSplashes-pixel.png', 'assets/images/weeb/pixelUI/noteSplashes-pixel.xml');
-        }*/
+		if(texture == null) {
+			texture = 'noteSplashes';
+			if (isPerfectNote){
+				texture = 'noteSplashesPerfect';
+			}
+			if(PlayState.SONG.splashSkin != null && PlayState.SONG.splashSkin.length > 0) texture = PlayState.SONG.splashSkin;
+		}
 
-        alpha = 0.6;
+		if(textureLoaded != texture) {
+			loadAnims(texture);
+		}
+		colorSwap.hue = hueColor;
+		colorSwap.saturation = satColor;
+		colorSwap.brightness = brtColor;
+		offset.set(10, 10);
 
-        switch(PlayState.curStage){
-          /*  case "school" | "schoolEvil":
-                setGraphicSize(Std.int(width * PlayState.daPixelZoom));
-                antialiasing = false;
-                updateHitbox();
-                offset.set(width * -0.1, height * -0.1);
-                var angles = [0, 90, 180, 270];
-                angle = angles[FlxG.random.int(0, 3)];
-                //alpha = 0.8;*/
+		var animNum:Int = FlxG.random.int(1, 2);
+		animation.play('note' + note + '-' + animNum, true);
+		animation.curAnim.frameRate = 24 + FlxG.random.int(-2, 2);
+	}
 
-            default:
-                updateHitbox();
-                offset.set(width * 0.3, height * 0.3);
-                angle = FlxG.random.int(0, 359);
+	function loadAnims(skin:String) {
+		frames = Paths.getSparrowAtlas(skin);
+		for (i in 1...3) {
+			animation.addByPrefix("note1-" + i, "note splash blue " + i, 24, false);
+			animation.addByPrefix("note2-" + i, "note splash green " + i, 24, false);
+			animation.addByPrefix("note0-" + i, "note splash purple " + i, 24, false);
+			animation.addByPrefix("note3-" + i, "note splash red " + i, 24, false);
+		}
+	}
 
-        }
+	override function update(elapsed:Float) {
+		if(animation.curAnim.finished) kill();
 
-        //blend = BlendMode.SCREEN;
-
-    }
-
+		super.update(elapsed);
+	}
 }

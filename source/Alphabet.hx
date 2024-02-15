@@ -121,7 +121,7 @@ class Alphabet extends FlxSpriteGroup
 			// {
 			// }
 
-			var spaceChar:Bool = (character == " " || (isBold && character == "_"));
+			var spaceChar:Bool = (character == " " || character == "_");
 			if (spaceChar)
 			{
 				consecutiveSpaces++;
@@ -242,7 +242,7 @@ class Alphabet extends FlxSpriteGroup
 		}
 
 		if(loopNum <= splitWords.length && splitWords[loopNum] != null) {
-			var spaceChar:Bool = (splitWords[loopNum] == " " || (isBold && splitWords[loopNum] == "_"));
+			var spaceChar:Bool = (splitWords[loopNum] == " " || splitWords[loopNum] == "_");
 			if (spaceChar)
 			{
 				consecutiveSpaces++;
@@ -377,7 +377,7 @@ class AlphaCharacter extends FlxSprite
 		setGraphicSize(Std.int(width * textSize));
 		updateHitbox();
 		this.textSize = textSize;
-		antialiasing = true;
+		antialiasing = ClientPrefs.globalAntialiasing;
 	}
 
 	public function createBoldLetter(letter:String)

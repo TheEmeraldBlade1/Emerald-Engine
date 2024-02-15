@@ -6,9 +6,9 @@ class EmeraldEngineAccuracy
   public static var lesbian:Int = 0;
   public static function ratingUpdate(gay:Int, gay2:Int, gay3:Float, gay4:Float)
   {
-    lmfao += gay3;
-    pansexual += gay4;
-    bisexual += gay;
-    lesbian += gay2;
+    lmfao = gay3;
+    pansexual = gay4;
+    bisexual = gay;
+    lesbian = gay2;
   }
 }
