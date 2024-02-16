@@ -52,7 +52,8 @@ class NotesSubstate extends MusicBeatSubstate
 		'Circles',
 		'Rectangles',
 		'Stepmania',
-		'Synthwave'
+		'Synthwave',
+		'Halloween'
 	];
 	static var arrowLanes:Array<String> = [
 		'Right',
@@ -214,8 +215,8 @@ class NotesSubstate extends MusicBeatSubstate
 						var mult:Int = 1;
 						ClientPrefs.notetypes += add;
 						if (ClientPrefs.notetypes < 0)
-							ClientPrefs.notetypes = 4;
-						else if (ClientPrefs.notetypes > 4)
+							ClientPrefs.notetypes = 5;
+						else if (ClientPrefs.notetypes > 5)
 							ClientPrefs.notetypes = 0;
 						case 'Arrow Lane':
 							var mult:Int = 1;

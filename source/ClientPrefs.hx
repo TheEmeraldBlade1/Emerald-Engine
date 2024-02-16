@@ -21,6 +21,10 @@ class ClientPrefs {
 	public static var violence:Bool = true;
 	public static var camZooms:Bool = true;
 	public static var hideHud:Bool = false;
+	public static var hideHudScore:Bool = false;
+	public static var hideHudIconp1:Bool = false;
+	public static var hideHudIconp2:Bool = false;
+	public static var hideHudJudge:Bool = false;
 	public static var noteOffset:Int = 0;
 	public static var notetypes:Int = 0;
 	public static var arrowHSV:Array<Array<Int>> = [[0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0]];
@@ -86,6 +90,10 @@ class ClientPrefs {
 		FlxG.save.data.camZooms = camZooms;
 		FlxG.save.data.noteOffset = noteOffset;
 		FlxG.save.data.hideHud = hideHud;
+		FlxG.save.data.hideHudScore = hideHudScore;
+		FlxG.save.data.hideHudIconp1 = hideHudIconp1;
+		FlxG.save.data.hideHudIconp2 = hideHudIconp2;
+		FlxG.save.data.hideHudJudge = hideHudJudge;
 		FlxG.save.data.arrowHSV = arrowHSV;
 		FlxG.save.data.imagesPersist = imagesPersist;
 		FlxG.save.data.ghostTapping = ghostTapping;
@@ -185,6 +193,18 @@ class ClientPrefs {
 		}
 		if(FlxG.save.data.hideHud != null) {
 			hideHud = FlxG.save.data.hideHud;
+		}
+		if(FlxG.save.data.hideHudScore != null) {
+			hideHudScore = FlxG.save.data.hideHudScore;
+		}
+		if(FlxG.save.data.hideHudIconp1 != null) {
+			hideHudIconp1 = FlxG.save.data.hideHudIconp1;
+		}
+		if(FlxG.save.data.hideHudIconp2 != null) {
+			hideHudIconp2 = FlxG.save.data.hideHudIconp2;
+		}
+		if(FlxG.save.data.hideHudJudge != null) {
+			hideHudJudge = FlxG.save.data.hideHudJudge;
 		}
 		if(FlxG.save.data.noteOffset != null) {
 			noteOffset = FlxG.save.data.noteOffset;

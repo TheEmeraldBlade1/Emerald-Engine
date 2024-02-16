@@ -41,7 +41,11 @@ class VisualSubstate extends MusicBeatSubstate
 		#if !mobile
 		'FPS Counter',
 		#end
-		'Hide HUD',
+		'Hide Health Bar',
+		'Hide Score Ratings',
+		'Hide Judgements',
+		'Hide Icon Player 1',
+		'Hide Icon Player 2',
 		'Hide Song Length',
 		'Flashing Lights'
 	];
@@ -181,8 +185,16 @@ class VisualSubstate extends MusicBeatSubstate
 						ClientPrefs.noteSplashes = !ClientPrefs.noteSplashes;
 					case 'Enemy Note Splashes':
 						ClientPrefs.noteSplashes2 = !ClientPrefs.noteSplashes2;
-					case 'Hide HUD':
+					case 'Hide Health Bar':
 						ClientPrefs.hideHud = !ClientPrefs.hideHud;
+					case 'Hide Score Ratings':
+						ClientPrefs.hideHudScore = !ClientPrefs.hideHudScore;
+					case 'Hide Judgements':
+						ClientPrefs.hideHudJudge = !ClientPrefs.hideHudJudge;
+					case 'Hide Icon Player 1':
+						ClientPrefs.hideHudIconp1 = !ClientPrefs.hideHudIconp1;
+					case 'Hide Icon Player 2':
+						ClientPrefs.hideHudIconp2 = !ClientPrefs.hideHudIconp2;
 					case 'Hide Song Length':
 						ClientPrefs.hideTime = !ClientPrefs.hideTime;
 				}
@@ -234,8 +246,6 @@ class VisualSubstate extends MusicBeatSubstate
 				daText = "If unchecked, enemy notes won't show particles.";
 			case 'Flashing Lights':
 				daText = "Uncheck this if you're sensitive to flashing lights!";
-			case 'Hide HUD':
-				daText = "If checked, hides most HUD elements.";
 			case 'Hide Song Length':
 				daText = "If checked, the bar showing how much time is left\nwill be hidden.";
 		}
@@ -290,8 +300,16 @@ class VisualSubstate extends MusicBeatSubstate
 						daValue = ClientPrefs.noteSplashes;
 					case 'Enemy Note Splashes':
 						daValue = ClientPrefs.noteSplashes2;
-					case 'Hide HUD':
+					case 'Hide Health Bar':
 						daValue = ClientPrefs.hideHud;
+					case 'Hide Score Ratings':
+						daValue = ClientPrefs.hideHudScore;
+					case 'Hide Judgements':
+						daValue = ClientPrefs.hideHudJudge;
+					case 'Hide Icon Player 1':
+						daValue = ClientPrefs.hideHudIconp1;
+					case 'Hide Icon Player 2':
+						daValue = ClientPrefs.hideHudIconp2;
 					case 'Hide Song Length':
 						daValue = ClientPrefs.hideTime;
 				}

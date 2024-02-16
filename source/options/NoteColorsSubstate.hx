@@ -62,6 +62,7 @@ class NoteColorsSubstate extends MusicBeatSubstate
 			if (ClientPrefs.notetypes == 2) noteskinpath = '_Rectangle';
 			if (ClientPrefs.notetypes == 3) noteskinpath = '_Stepmania';
 			if (ClientPrefs.notetypes == 4) noteskinpath = '_Synthwave';
+			if (ClientPrefs.notetypes == 5) noteskinpath = '_Halloween';
 			note.frames = Paths.getSparrowAtlas('NOTESKINS/NOTE_assets' + noteskinpath);
 			if (ClientPrefs.aFlipY)
 				note.flipY = true;

@@ -944,12 +944,12 @@ class PlayState extends MusicBeatState
 
 		iconP1 = new HealthIcon(boyfriend.healthIcon, true);
 		iconP1.y = healthBar.y - (iconP1.height / 2);
-		iconP1.visible = !ClientPrefs.hideHud;
+		iconP1.visible = !ClientPrefs.hideHudIconp1;
 		add(iconP1);
 
 		iconP2 = new HealthIcon(dad.healthIcon, false);
 		iconP2.y = healthBar.y - (iconP2.height / 2);
-		iconP2.visible = !ClientPrefs.hideHud;
+		iconP2.visible = !ClientPrefs.hideHudIconp2;
 		add(iconP2);
 		reloadHealthBarColors();
 
@@ -959,7 +959,7 @@ class PlayState extends MusicBeatState
 		scoreTxt.setFormat(Paths.font("vcr.ttf"), 18, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		scoreTxt.scrollFactor.set();
 		scoreTxt.borderSize = 1.25;
-		scoreTxt.visible = !ClientPrefs.hideHud;
+		scoreTxt.visible = !ClientPrefs.hideHudScore;
 		scoreTxt.text = "Score: 0 - Misses: 0 - Rating: ? - Accuracy: ?";
 		add(scoreTxt);
 
@@ -967,7 +967,7 @@ class PlayState extends MusicBeatState
 		judgementTxt.setFormat(Paths.font("vcr.ttf"), 18, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		judgementTxt.scrollFactor.set();
 		judgementTxt.borderSize = 1.25;
-		judgementTxt.visible = !ClientPrefs.hideHud;
+		judgementTxt.visible = !ClientPrefs.hideHudJudge;
 		judgementTxt.text = '';
 		if (ClientPrefs.middleScroll == 1){judgementTxt.x -= 280;};
 		add(judgementTxt);
@@ -989,6 +989,8 @@ class PlayState extends MusicBeatState
 		else centerMark.y = (FlxG.height / 24) - 24;
 		centerMark.screenCenter(X);
 		centerMark.antialiasing = true;
+
+		cornerMark.y = centerMark.y;
 		
 		centerMark.alpha = 0.50; cornerMark.alpha = 0.50; //scoreTxt.alpha = 0.50; judgementTxt.alpha = 0.50;
 
@@ -3902,7 +3904,7 @@ class PlayState extends MusicBeatState
 			}else{
 				var time:Float = 0.05;
 				if(note.isSustainNote && !note.animation.curAnim.name.endsWith('end')) {
-					time = 0.005;
+					time = 0.05;
 				}
 				if (note.isSustainNote){
 					StrumPlayAnim2(false, Std.int(Math.abs(note.noteData)) % 4, time);
