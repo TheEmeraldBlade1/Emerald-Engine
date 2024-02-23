@@ -8,8 +8,9 @@ import Controls;
 
 class ClientPrefs {
 	//TO DO: Redo ClientPrefs in a way that isn't too stupid
+	public static var controllerModeEnable:Bool = false;
 	public static var downScroll:Bool = false;
-	public static var middleScroll:Int = 0;
+	public static var middleScroll:Int = 3;
 	public static var showFPS:Bool = true;
 	public static var flashing:Bool = true;
 	public static var globalAntialiasing:Bool = true;
@@ -37,6 +38,8 @@ class ClientPrefs {
 	public static var speed:Float = 2;
 	public static var hss:Bool = false;
 	public static var hideEnemyNotes:Bool = false;
+
+	public static var iconColorNotes:Bool = false;
 
 	public static var defaultKeys:Array<FlxKey> = [
 		A, LEFT,			//Note Left
@@ -75,6 +78,8 @@ class ClientPrefs {
 	public static var lastControls:Array<FlxKey> = defaultKeys.copy();
 
 	public static function saveSettings() {
+		FlxG.save.data.controllerModeEnable = controllerModeEnable;
+		FlxG.save.data.iconColorNotes = iconColorNotes;
 		FlxG.save.data.hideEnemyNotes = hideEnemyNotes;
 		FlxG.save.data.downScroll = downScroll;
 		FlxG.save.data.middleScroll = middleScroll;
@@ -124,6 +129,12 @@ class ClientPrefs {
 	}
 
 	public static function loadPrefs() {
+		if(FlxG.save.data.controllerModeEnable != null) {
+			controllerModeEnable = FlxG.save.data.controllerModeEnable;
+		}
+		if(FlxG.save.data.iconColorNotes != null) {
+			iconColorNotes = FlxG.save.data.iconColorNotes;
+		}
 		if(FlxG.save.data.hideEnemyNotes != null) {
 			hideEnemyNotes = FlxG.save.data.hideEnemyNotes;
 		}

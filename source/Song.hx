@@ -28,6 +28,13 @@ typedef SwagSong =
 	var arrowSkin:String;
 	var splashSkin:String;
 	var validScore:Bool;
+	var hpDrain:Bool;
+	var cheatingNotes:Bool;
+	var unfairnessNotes:Bool;
+	var randomNotes:Bool;
+	var hpDrainValue:Float;
+	var maxMisses:Bool;
+	var maxMissesValue:Int;
 }
 
 class Song
@@ -40,6 +47,13 @@ class Song
 	public var splashSkin:String;
 	public var speed:Float = 1;
 	public var stage:String;
+	public var cheatingNotes:Bool = false;
+	public var unfairnessNotes:Bool = false;
+	public var randomNotes:Bool = false;
+	public var hpDrainValue:Float = 0.001;
+
+	public var maxMisses:Bool = false;
+	public var maxMissesValue:Int = 1;
 
 	public var player1:String = 'bf';
 	public var player2:String = 'dad';

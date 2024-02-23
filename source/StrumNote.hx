@@ -29,6 +29,9 @@ class StrumNote extends FlxSprite
 		if (ClientPrefs.notetypes == 3) noteskinpath = '_Stepmania';
 		if (ClientPrefs.notetypes == 4) noteskinpath = '_Synthwave';
 		if (ClientPrefs.notetypes == 5) noteskinpath = '_Halloween';
+		if (ClientPrefs.notetypes == 6) noteskinpath = '_silver';
+		if (ClientPrefs.notetypes == 7) noteskinpath = '_Mario';
+		if (ClientPrefs.notetypes == 8) noteskinpath = '_Luigi';
 		if(PlayState.SONG.arrowSkin != null && PlayState.SONG.arrowSkin.length > 1) skin = PlayState.SONG.arrowSkin;
 
 		if(PlayState.isPixelStage)

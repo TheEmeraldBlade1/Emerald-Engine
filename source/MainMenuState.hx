@@ -108,7 +108,7 @@ class MainMenuState extends MusicBeatState
 
 		FlxG.camera.follow(camFollowPos, null, 1);
 
-		var versionShit:FlxText = new FlxText(12, FlxG.height - 44, 0, "Psych Engine v" + psychEngineVersion, 12);
+		var versionShit:FlxText = new FlxText(12, FlxG.height - 44, 0, "Emerald Engine v" + Main.stringVersion, 12);
 		versionShit.scrollFactor.set();
 		versionShit.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(versionShit);
@@ -151,6 +151,11 @@ class MainMenuState extends MusicBeatState
 		if (FlxG.sound.music.volume < 0.8)
 		{
 			FlxG.sound.music.volume += 0.5 * FlxG.elapsed;
+		}
+
+				
+		if (FlxG.keys.justPressed.THREE) {
+			FlxG.mouse.visible = !FlxG.mouse.visible;
 		}
 
 		var lerpVal:Float = CoolUtil.boundTo(elapsed * 5.6, 0, 1);
@@ -219,6 +224,7 @@ class MainMenuState extends MusicBeatState
 									case 'credits':
 										MusicBeatState.switchState(new CreditsState());
 									case 'options':
+										FlxG.sound.music.stop();
 										MusicBeatState.switchState(new options.OptionsState());
 								}
 							});

@@ -41,6 +41,7 @@ class NotesSubstate extends MusicBeatSubstate
 	static var options:Array<String> = [
 		'Note Colors',
 		'Noteskin',
+		'Note Colors Bar Color',
 		'Flip Arrow Y',
 		'Flip Arrow X',
 		'Arrow Lane',
@@ -53,12 +54,17 @@ class NotesSubstate extends MusicBeatSubstate
 		'Rectangles',
 		'Stepmania',
 		'Synthwave',
-		'Halloween'
+		'Halloween',
+		'Silver',
+		'Mario',
+		'Luigi'
 	];
 	static var arrowLanes:Array<String> = [
-		'Right',
+		'Song Dependent',
 		'Middle',
-		'Left'
+		'Left',
+		'Left Split Apart',
+		'Right'
 	];
 
 	private var grpOptions:FlxTypedGroup<Alphabet>;
@@ -192,6 +198,8 @@ class NotesSubstate extends MusicBeatSubstate
 						ClientPrefs.aFlipY = !ClientPrefs.aFlipY;
 					case 'Flip Arrow X':
 						ClientPrefs.aFlipX = !ClientPrefs.aFlipX;
+					case 'Note Colors Bar Color':
+						ClientPrefs.iconColorNotes = !ClientPrefs.iconColorNotes;
 					case 'Hide Enemy Notes':
 						ClientPrefs.hideEnemyNotes = !ClientPrefs.hideEnemyNotes;
 				}
@@ -215,15 +223,15 @@ class NotesSubstate extends MusicBeatSubstate
 						var mult:Int = 1;
 						ClientPrefs.notetypes += add;
 						if (ClientPrefs.notetypes < 0)
-							ClientPrefs.notetypes = 5;
-						else if (ClientPrefs.notetypes > 5)
+							ClientPrefs.notetypes = noteSkins.length - 1;
+						else if (ClientPrefs.notetypes > noteSkins.length - 1)
 							ClientPrefs.notetypes = 0;
 						case 'Arrow Lane':
 							var mult:Int = 1;
 							ClientPrefs.middleScroll += add;
 							if (ClientPrefs.middleScroll < 0)
-								ClientPrefs.middleScroll = 2;
-							else if (ClientPrefs.middleScroll > 2)
+								ClientPrefs.middleScroll = arrowLanes.length - 1;
+							else if (ClientPrefs.middleScroll > arrowLanes.length - 1)
 								ClientPrefs.middleScroll = 0;
 				}
 				reloadValues();
@@ -266,9 +274,11 @@ class NotesSubstate extends MusicBeatSubstate
 			case 'Flip Arrow X':
 				daText = "If checked, flips the x of the arrows";
 			case 'Arrow Lane':
-				daText = "change the position of your notes";
+				daText = "change the position of your notes\n(Song Dependent Is Recommened)";
 			case 'Hide Enemy Notes':
 				daText = "Hides The Notes Of The Opponent";
+			case 'Note Colors Bar Color':
+				daText = "Note Colors Will Be Based On Healthbar Color";
 		}
 		descText.text = daText;
 
@@ -317,6 +327,8 @@ class NotesSubstate extends MusicBeatSubstate
 						daValue = ClientPrefs.aFlipY;
 					case 'Flip Arrow X':
 						daValue = ClientPrefs.aFlipX;
+					case 'Note Colors Bar Color':
+						daValue = ClientPrefs.iconColorNotes;
 					case 'Hide Enemy Notes':
 						daValue = ClientPrefs.hideEnemyNotes;
 				}

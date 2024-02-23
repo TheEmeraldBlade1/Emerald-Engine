@@ -18,15 +18,19 @@ class Main extends Sprite
 	var framerate:Int = 60; // How many frames per second the game should run at.
 	var skipSplash:Bool = true; // Whether to skip the flixel splash screen that appears in release mode.
 	var startFullscreen:Bool = false; // Whether to start the game in fullscreen on desktop targets
-	public static var stringVersion:String = "0.1.2.1";
 	public static var fpsVar:FPS;
-	public static var debugBuild:Bool = true;
+	public static var debugBuild:Bool = false;
+	public static var stringVersion:String = "0.1.2.2";
 
 	// You can pretty much ignore everything from here on - your code should go in your states.
 
 	public static function main():Void
 	{
 		Lib.current.addChild(new Main());
+				
+		if (FlxG.keys.justPressed.THREE) {
+			FlxG.mouse.visible = !FlxG.mouse.visible;
+		}
 	}
 
 	public function new()
@@ -55,6 +59,7 @@ class Main extends Sprite
 
 	private function setupGame():Void
 	{
+		if (debugBuild) stringVersion += " (DEBUG)";
 		var stageWidth:Int = Lib.current.stage.stageWidth;
 		var stageHeight:Int = Lib.current.stage.stageHeight;
 

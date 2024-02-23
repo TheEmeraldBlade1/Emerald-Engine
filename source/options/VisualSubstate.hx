@@ -177,6 +177,8 @@ class VisualSubstate extends MusicBeatSubstate
 		if(usesCheckbox) {
 			if(controls.ACCEPT && nextAccept <= 0) {
 				switch(options[curSelected]) {
+					case 'Flashing Lights':
+						ClientPrefs.flashing = !ClientPrefs.flashing;
 					case 'FPS Counter':
 						ClientPrefs.showFPS = !ClientPrefs.showFPS;
 						if(Main.fpsVar != null)

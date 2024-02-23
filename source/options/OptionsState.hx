@@ -41,6 +41,10 @@ class OptionsState extends MusicBeatState
 		DiscordClient.changePresence("Options Menu", null);
 		#end
 
+		if (!FlxG.sound.music.playing){
+			FlxG.sound.playMusic(Paths.music('lullma'));
+		}
+
 		menuBG = new FlxSprite().loadGraphic(Paths.image('menuDesat'));
 		menuBG.color = 0xFFea71fd;
 		menuBG.setGraphicSize(Std.int(menuBG.width * 1.1));
@@ -81,48 +85,65 @@ class OptionsState extends MusicBeatState
 		}
 
 		if (controls.BACK) {
+			FlxG.sound.music.stop();
 			FlxG.sound.play(Paths.sound('cancelMenu'));
 			if (PublicVariables.pauseOptions == true){
 				PublicVariables.pauseOptions == false;
 				MusicBeatState.switchState(new PlayState());
 			}else{
+				FlxG.sound.playMusic(Paths.music('freakyMenu'));
 				MusicBeatState.switchState(new MainMenuState());
 			}
 		}
 
 		if (controls.ACCEPT) {
-			for (item in grpOptions.members) {
-				item.alpha = 0;
-			}
-
 			switch(options[curSelected]) {
+				case 'Controller':
+					controllerState();
 				case 'Controls':
-					openSubState(new options.ControlsSubstate());
+					controlsState();
 				case 'Preferences':
-					MusicBeatState.switchState(new options.PreferencesState());
+					prefsState();
 			}
 		}
 	}
 
-	/*var daTime:Float = 0.5;
+	var daTime:Float = 0.5;
+	
 	function prefsState()
-		{	
-			var da:Int = curSelected;
-			FlxG.sound.play(Paths.sound('confirmMenu'));
-			for (i in 0...grpOptions.members.length)
+	{	
+		var da:Int = curSelected;
+		FlxG.sound.play(Paths.sound('confirmMenu'));
+		for (i in 0...grpOptions.members.length)
+		{
+			if (i == da)
 			{
-				if (i == da)
-				{
-					if (ClientPrefs.flashing){
-						FlxFlicker.flicker(grpOptions.members[i], 1, 0.06, false, false);
-					}
+				if (ClientPrefs.flashing){
+					FlxFlicker.flicker(grpOptions.members[i], 1, 0.06, false, false);
 				}
 			}
-			new FlxTimer().start(daTime, function(tmr:FlxTimer)
-			{
-				MusicBeatState.switchState(new options.PreferencesState());
-			});
-		}*/
+		}
+		new FlxTimer().start(daTime, function(tmr:FlxTimer)
+		{
+			MusicBeatState.switchState(new options.PreferencesState());
+		});
+	}
+
+	function controlsState()
+	{	
+		for (item in grpOptions.members) {
+			item.alpha = 0;
+		}
+		openSubState(new options.ControlsSubstate());
+	}
+
+	function controllerState()
+	{	
+		for (item in grpOptions.members) {
+			item.alpha = 0;
+		}
+		openSubState(new options.ControllerSubstate());
+	}
 	
 	function changeSelection(change:Int = 0) {
 		curSelected += change;

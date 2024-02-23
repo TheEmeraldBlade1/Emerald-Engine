@@ -34,7 +34,8 @@ class GamePlaySubstate extends MusicBeatSubstate
 	];
 	static var noCheckbox:Array<String> = [
 		'Note Delay',
-		'Scroll Speed'
+		'Scroll Speed',
+		'Safe Frames'
 	];
 
 	static var options:Array<String> = [
@@ -42,10 +43,11 @@ class GamePlaySubstate extends MusicBeatSubstate
 		'Scroll Speed',
 		'Downscroll',
 		'Ghost Tapping',
+		'Safe Frames',
 		'Note Delay',
 		'Camera Zooms',
 		'Violence',
-		'Swearing'
+		'Swearing',
 	];
 
 	private var grpOptions:FlxTypedGroup<Alphabet>;
@@ -212,6 +214,18 @@ class GamePlaySubstate extends MusicBeatSubstate
 						ClientPrefs.noteOffset += add * mult;
 						if(ClientPrefs.noteOffset < 0) ClientPrefs.noteOffset = 0;
 						else if(ClientPrefs.noteOffset > 500) ClientPrefs.noteOffset = 500;
+					case 'Safe Frames':
+						if (controls.UI_LEFT){
+							ClientPrefs.safeFrame -= 1;
+							Conductor.safeFrames -= 1;
+						}else if (controls.UI_RIGHT){
+							ClientPrefs.safeFrame += 1;
+							Conductor.safeFrames += 1;
+						}
+						if(ClientPrefs.safeFrame < 8) ClientPrefs.safeFrame = 8;
+						else if(ClientPrefs.safeFrame > 20) ClientPrefs.safeFrame = 20;		
+						if(Conductor.safeFrames < 8) Conductor.safeFrames = 8;
+						else if(Conductor.safeFrames > 20) Conductor.safeFrames = 20;					
 					case 'Scroll Speed':
 						//ClientPrefs.speed += add/10;
 						if (controls.UI_RIGHT)
@@ -268,6 +282,8 @@ class GamePlaySubstate extends MusicBeatSubstate
 				daText = "If checked, you can customize your scroll speed";
 			case 'Scroll Speed':
 				daText = "changes how much scroll speed you want\n(Custom Scroll Speed Must Be On)";
+			case 'Safe Frames':
+				daText = "changes the timing of when a note can be hit";
 		}
 		descText.text = daText;
 
@@ -334,9 +350,11 @@ class GamePlaySubstate extends MusicBeatSubstate
 				var daText:String = '';
 				switch(options[textNumber[i]]) {
 					case 'Note Delay':
-						daText = ClientPrefs.noteOffset + 'ms';
+						daText = '<' + ClientPrefs.noteOffset + 'ms' + '>';
 					case 'Scroll Speed':
-						daText = ((Math.floor(ClientPrefs.speed * 10) / 10))+"";
+						daText = ClientPrefs.speed+"";
+					case 'Safe Frames':
+						daText = '<' + ClientPrefs.safeFrame + '>';
 				}
 				var lastTracker:FlxSprite = text.sprTracker;
 				text.sprTracker = null;

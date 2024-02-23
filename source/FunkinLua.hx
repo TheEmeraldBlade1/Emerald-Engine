@@ -546,10 +546,14 @@ class FunkinLua {
 		Lua_helper.add_callback(lua, "precacheSound", function(name:String) {
 			CoolUtil.precacheSound(name);
 		});
-		Lua_helper.add_callback(lua, "triggerEvent", function(name:String, arg1:Dynamic, arg2:Dynamic) {
+		Lua_helper.add_callback(lua, "triggerEvent", function(name:String, arg1:Dynamic, arg2:Dynamic, arg3:Dynamic, arg4:Dynamic, arg5:Dynamic, arg6:Dynamic) {
 			var value1:String = arg1;
 			var value2:String = arg2;
-			lePlayState.triggerEventNote(name, value1, value2);
+			var value3:String = arg3;
+			var value4:String = arg4;
+			var value5:String = arg5;
+			var value6:String = arg6;
+			lePlayState.triggerEventNote(name, value1, value2, value3, value4, value5, value6);
 			//trace('Triggered event: ' + name + ', ' + value1 + ', ' + value2);
 		});
 
