@@ -73,10 +73,10 @@ Only love is with us now
 Something warm and pure
 Find the peace within ourselves
 No need for a cure
-When the wind is slow, when the fire's hot
+When the wind is slow, when the fires hot
 The vulture waits to see what rots
 Oh, how pretty, all the scenery
-This is nature's sacrifice
+This is natures sacrifice
 When the air blows through with a brisk attack
 The reptile tail ripped from its back
 When the sun sets
