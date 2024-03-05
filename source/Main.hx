@@ -83,7 +83,7 @@ When the air blows through with a brisk attack
 The reptile tail ripped from its back
 When the sun sets
 We will not forget the red sun over paradise
-Red sun')
+Red sun');
 		var stageWidth:Int = Lib.current.stage.stageWidth;
 		var stageHeight:Int = Lib.current.stage.stageHeight;
 

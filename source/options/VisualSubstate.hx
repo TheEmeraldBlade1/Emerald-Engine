@@ -218,6 +218,10 @@ class VisualSubstate extends MusicBeatSubstate
 						ClientPrefs.hideHudIconp2 = !ClientPrefs.hideHudIconp2;
 					case 'Hide Song Length':
 						ClientPrefs.hideTime = !ClientPrefs.hideTime;
+					case 'Disable Perfect Splash':
+						ClientPrefs.disablePerfectNoteSplashes = !ClientPrefs.disablePerfectNoteSplashes;
+					case 'Disable Sick Splash':
+						ClientPrefs.disableSickNoteSplashes = !ClientPrefs.disableSickNoteSplashes;
 				}
 				FlxG.sound.play(Paths.sound('scrollMenu'));
 				if (!ClientPrefs.noteSplashes && !ClientPrefs.noteSplashes2){
