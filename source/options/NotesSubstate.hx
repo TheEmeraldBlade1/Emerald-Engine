@@ -39,8 +39,8 @@ class NotesSubstate extends MusicBeatSubstate
 	];
 
 	static var options:Array<String> = [
-		'Note Colors',
 		'Noteskin',
+		'Note Colors',
 		'Note Colors Bar Color',
 		'Flip Arrow Y',
 		'Flip Arrow X',
@@ -48,17 +48,6 @@ class NotesSubstate extends MusicBeatSubstate
 		'Hide Enemy Notes'
 	];
 
-	static var noteSkins:Array<String> = [
-		'Default',
-		'Circles',
-		'Rectangles',
-		'Stepmania',
-		'Synthwave',
-		'Halloween',
-		'Silver',
-		'Mario',
-		'Luigi'
-	];
 	static var arrowLanes:Array<String> = [
 		'Song Dependent',
 		'Middle',
@@ -153,6 +142,10 @@ class NotesSubstate extends MusicBeatSubstate
 	var holdTime:Float = 0;
 	override function update(elapsed:Float)
 	{
+		if (FlxG.keys.justPressed.THREE) {
+			FlxG.mouse.visible = !FlxG.mouse.visible;
+		}
+
 		if (controls.UI_UP_P)
 		{
 			changeSelection(-1);
@@ -207,11 +200,21 @@ class NotesSubstate extends MusicBeatSubstate
 				reloadValues();
 			}
 		} else {
-			if(controls.ACCEPT && nextAccept <= 0) {
-				switch(options[curSelected]) {
-					case 'Note Colors':
-						openSubState(new options.NoteColorsSubstate());
-				}
+			if((controls.ACCEPT && nextAccept <= 0) && options[curSelected] == 'Note Colors') {
+					grpOptions.forEachAlive(function(spr:Alphabet) {
+						spr.alpha = 0.35;
+					});
+					grpTexts.forEachAlive(function(spr:AttachedText) {
+						spr.alpha = 0.35;
+					});
+					for (i in 0...checkboxArray.length) {
+						var spr:CheckboxThingie = checkboxArray[i];
+						if(spr != null) {
+							spr.alpha = 0.35;
+						}
+					}
+				descText.alpha = 0;
+				openSubState(new options.NoteColorsSubstate());
 				FlxG.sound.play(Paths.sound('scrollMenu'));
 				reloadValues();
 			}
@@ -223,8 +226,8 @@ class NotesSubstate extends MusicBeatSubstate
 						var mult:Int = 1;
 						ClientPrefs.notetypes += add;
 						if (ClientPrefs.notetypes < 0)
-							ClientPrefs.notetypes = noteSkins.length - 1;
-						else if (ClientPrefs.notetypes > noteSkins.length - 1)
+							ClientPrefs.notetypes = PublicVariables.noteSkins.length - 1;
+						else if (ClientPrefs.notetypes > PublicVariables.noteSkins.length - 1)
 							ClientPrefs.notetypes = 0;
 						case 'Arrow Lane':
 							var mult:Int = 1;
@@ -343,7 +346,7 @@ class NotesSubstate extends MusicBeatSubstate
 					case 'Note Colors':
 						daText = '';
 					case 'Noteskin':
-						daText = "<" + noteSkins[ClientPrefs.notetypes] + ">";
+						daText = "<" + PublicVariables.noteSkins[ClientPrefs.notetypes] + ">";
 					case 'Arrow Lane':
 						daText = "<" + arrowLanes[ClientPrefs.middleScroll] + ">";
 				}

@@ -106,7 +106,7 @@ class TitleState extends MusicBeatState
 			MusicBeatState.switchState(new FlashingState());
 		} else {
 			#if desktop
-			if (!Main.debugBuild){
+			{
 				DiscordClient.initialize();
 				Application.current.onExit.add (function (exitCode) {
 					DiscordClient.shutdown();
@@ -266,6 +266,22 @@ class TitleState extends MusicBeatState
 
 	override function update(elapsed:Float)
 	{
+		if (FlxG.keys.justPressed.THREE) {
+			FlxG.mouse.visible = !FlxG.mouse.visible;
+		}
+
+		#if desktop
+		if (Main.debugBuild && FlxG.keys.justPressed.SIX){
+			DiscordClient.initialize();
+			Application.current.onExit.add (function (exitCode) {
+				DiscordClient.shutdown();
+			});
+		}
+		if (Main.debugBuild && FlxG.keys.justPressed.FIVE){
+			DiscordClient.shutdown();
+		}
+		#end
+
 		if (FlxG.sound.music != null)
 			Conductor.songPosition = FlxG.sound.music.time;
 		// FlxG.watch.addQuick('amp', FlxG.sound.music.amplitude);

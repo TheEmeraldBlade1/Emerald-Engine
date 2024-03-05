@@ -73,6 +73,10 @@ class AchievementsMenuState extends MusicBeatState
 	}
 
 	override function update(elapsed:Float) {
+		if (FlxG.keys.justPressed.THREE) {
+			FlxG.mouse.visible = !FlxG.mouse.visible;
+		}
+
 		super.update(elapsed);
 
 		if (controls.UI_UP_P) {

@@ -39,6 +39,9 @@ class ClientPrefs {
 	public static var hss:Bool = false;
 	public static var hideEnemyNotes:Bool = false;
 
+	public static var disablePerfectNoteSplashes:Bool = false;
+	public static var disableSickNoteSplashes:Bool = false;
+
 	public static var iconColorNotes:Bool = false;
 
 	public static var defaultKeys:Array<FlxKey> = [
@@ -78,6 +81,8 @@ class ClientPrefs {
 	public static var lastControls:Array<FlxKey> = defaultKeys.copy();
 
 	public static function saveSettings() {
+		FlxG.save.data.disablePerfectNoteSplashes = disablePerfectNoteSplashes;
+		FlxG.save.data.disableSickNoteSplashes = disableSickNoteSplashes;
 		FlxG.save.data.controllerModeEnable = controllerModeEnable;
 		FlxG.save.data.iconColorNotes = iconColorNotes;
 		FlxG.save.data.hideEnemyNotes = hideEnemyNotes;
@@ -129,6 +134,12 @@ class ClientPrefs {
 	}
 
 	public static function loadPrefs() {
+		if(FlxG.save.data.disablePerfectNoteSplashes != null) {
+			disablePerfectNoteSplashes = FlxG.save.data.disablePerfectNoteSplashes;
+		}
+		if(FlxG.save.data.disableSickNoteSplashes != null) {
+			disableSickNoteSplashes = FlxG.save.data.disableSickNoteSplashes;
+		}
 		if(FlxG.save.data.controllerModeEnable != null) {
 			controllerModeEnable = FlxG.save.data.controllerModeEnable;
 		}

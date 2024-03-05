@@ -136,6 +136,10 @@ class GamePlaySubstate extends MusicBeatSubstate
 	var holdTime:Float = 0;
 	override function update(elapsed:Float)
 	{
+		if (FlxG.keys.justPressed.THREE) {
+			FlxG.mouse.visible = !FlxG.mouse.visible;
+		}
+
 		if (controls.UI_UP_P)
 		{
 			changeSelection(-1);
@@ -281,7 +285,7 @@ class GamePlaySubstate extends MusicBeatSubstate
 			case 'Custom Scroll Speed':
 				daText = "If checked, you can customize your scroll speed";
 			case 'Scroll Speed':
-				daText = "changes how much scroll speed you want\n(Custom Scroll Speed Must Be On)";
+				daText = "changes how what the scroll speed value should be\n(Custom Scroll Speed Must Be On)";
 			case 'Safe Frames':
 				daText = "changes the timing of when a note can be hit";
 		}

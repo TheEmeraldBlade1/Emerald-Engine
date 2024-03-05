@@ -395,6 +395,10 @@ class WeekEditorState extends MusicBeatState
 	
 	override function update(elapsed:Float)
 	{
+		if (FlxG.keys.justPressed.THREE) {
+			FlxG.mouse.visible = !FlxG.mouse.visible;
+		}
+
 		if(loadedWeek != null) {
 			weekFile = loadedWeek;
 			loadedWeek = null;
@@ -762,6 +766,10 @@ class WeekEditorFreeplayState extends MusicBeatState
 	}
 
 	override function update(elapsed:Float) {
+		if (FlxG.keys.justPressed.THREE) {
+			FlxG.mouse.visible = !FlxG.mouse.visible;
+		}
+
 		if(WeekEditorState.loadedWeek != null) {
 			super.update(elapsed);
 			FlxTransitionableState.skipNextTransIn = true;

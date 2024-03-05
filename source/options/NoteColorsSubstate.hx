@@ -57,16 +57,8 @@ class NoteColorsSubstate extends MusicBeatSubstate
 			}
 
 			var note:FlxSprite = new FlxSprite(posX - 70, yPos);
-			var noteskinpath:String = '';
-			if (ClientPrefs.notetypes == 1) noteskinpath = '_Circles';
-			if (ClientPrefs.notetypes == 2) noteskinpath = '_Rectangle';
-			if (ClientPrefs.notetypes == 3) noteskinpath = '_Stepmania';
-			if (ClientPrefs.notetypes == 4) noteskinpath = '_Synthwave';
-			if (ClientPrefs.notetypes == 5) noteskinpath = '_Halloween';
-			if (ClientPrefs.notetypes == 6) noteskinpath = '_silver';
-			if (ClientPrefs.notetypes == 7) noteskinpath = '_Mario';
-			if (ClientPrefs.notetypes == 8) noteskinpath = '_Luigi';
-			note.frames = Paths.getSparrowAtlas('NOTESKINS/NOTE_assets' + noteskinpath);
+			PublicVariables.getNoteSkinPath();
+			note.frames = Paths.getSparrowAtlas('NOTESKINS/NOTE_assets' + PublicVariables.noteskinpath);
 			if (ClientPrefs.aFlipY)
 				note.flipY = true;
 			if (ClientPrefs.aFlipX)
@@ -100,6 +92,10 @@ class NoteColorsSubstate extends MusicBeatSubstate
 	var changingNote:Bool = false;
 	var hsvTextOffsets:Array<Float> = [240, 90];
 	override function update(elapsed:Float) {
+		if (FlxG.keys.justPressed.THREE) {
+			FlxG.mouse.visible = !FlxG.mouse.visible;
+		}
+
 		if(changingNote) {
 			if(holdTime < 0.5) {
 				if(controls.UI_LEFT_P) {
@@ -209,6 +205,7 @@ class NoteColorsSubstate extends MusicBeatSubstate
 				grpNotes.forEachAlive(function(spr:FlxSprite) {
 					spr.alpha = 0;
 				});
+				changeSelection(0);
 				close();
 			}
 			changingNote = false;

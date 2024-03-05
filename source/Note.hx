@@ -222,15 +222,11 @@ class Note extends FlxSprite
 		if(suffix == null) suffix = '';
 		
 		var skin:String = texture;
-		var noteskinpath:String = '';
-		if (ClientPrefs.notetypes == 1) noteskinpath = '_Circles';
-		if (ClientPrefs.notetypes == 2) noteskinpath = '_Rectangle';
-		if (ClientPrefs.notetypes == 3) noteskinpath = '_Stepmania';
-		if (ClientPrefs.notetypes == 4) noteskinpath = '_Synthwave';
-		if (ClientPrefs.notetypes == 5) noteskinpath = '_Halloween';
-		if (ClientPrefs.notetypes == 6) noteskinpath = '_silver';
-		if (ClientPrefs.notetypes == 7) noteskinpath = '_Mario';
-		if (ClientPrefs.notetypes == 8) noteskinpath = '_Luigi';
+		if (PublicVariables.dontOverWriteNote.contains(prefix)){
+			PublicVariables.noteskinpath = '';
+		}else{
+			PublicVariables.getNoteSkinPath();
+		}
 		if(texture.length < 1) {
 			skin = PlayState.SONG.arrowSkin;
 			if(skin == null || skin.length < 1) {
@@ -250,21 +246,21 @@ class Note extends FlxSprite
 		var blahblah:String = arraySkin.join('/');
 		if(PlayState.isPixelStage) {
 			if(isSustainNote) {
-				loadGraphic(Paths.image('NOTESKINS/pixelUI/' + blahblah + 'ENDS' + noteskinpath));
+				loadGraphic(Paths.image('NOTESKINS/pixelUI/' + blahblah + 'ENDS' + PublicVariables.noteskinpath));
 				width = width / 4;
 				height = height / 2;
-				loadGraphic(Paths.image('NOTESKINS/pixelUI/' + blahblah + 'ENDS' + noteskinpath), true, Math.floor(width), Math.floor(height));
+				loadGraphic(Paths.image('NOTESKINS/pixelUI/' + blahblah + 'ENDS' + PublicVariables.noteskinpath), true, Math.floor(width), Math.floor(height));
 			} else {
-				loadGraphic(Paths.image('NOTESKINS/pixelUI/' + blahblah + noteskinpath));
+				loadGraphic(Paths.image('NOTESKINS/pixelUI/' + blahblah + PublicVariables.noteskinpath));
 				width = width / 4;
 				height = height / 5;
-				loadGraphic(Paths.image('NOTESKINS/pixelUI/' + blahblah + noteskinpath), true, Math.floor(width), Math.floor(height));
+				loadGraphic(Paths.image('NOTESKINS/pixelUI/' + blahblah + PublicVariables.noteskinpath), true, Math.floor(width), Math.floor(height));
 			}
 			setGraphicSize(Std.int(width * PlayState.daPixelZoom));
 			loadPixelNoteAnims();
 			antialiasing = false;
 		} else {
-			frames = Paths.getSparrowAtlas('NOTESKINS/' + blahblah + noteskinpath);
+			frames = Paths.getSparrowAtlas('NOTESKINS/' + blahblah + PublicVariables.noteskinpath);
 			loadNoteAnims();
 			antialiasing = ClientPrefs.globalAntialiasing;
 		}

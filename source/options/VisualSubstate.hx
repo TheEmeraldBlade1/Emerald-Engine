@@ -33,11 +33,15 @@ class VisualSubstate extends MusicBeatSubstate
 	static var unselectableOptions:Array<String> = [
 	];
 	static var noCheckbox:Array<String> = [
+		'Disable Perfect Splash:',
+		'Disable Sick Splash:'
 	];
 
 	static var options:Array<String> = [
 		'Note Splashes',
 		'Enemy Note Splashes',
+		'Disable Perfect Splash',
+		'Disable Sick Splash',
 		#if !mobile
 		'FPS Counter',
 		#end
@@ -62,6 +66,17 @@ class VisualSubstate extends MusicBeatSubstate
 	public function new()
 	{
 		super();
+		if (!ClientPrefs.noteSplashes && !ClientPrefs.noteSplashes2){
+			/*unselectableOptions = [
+				'Disable Perfect Splash',
+				'Disable Sick Splash'
+			];*/
+			unselectableOptions = [
+			];		
+		}else{
+			unselectableOptions = [
+			];		
+		}
 		// avoids lagspikes while scrolling through menus!
 		showCharacter = new Character(840, 170, 'bf', true);
 		showCharacter.setGraphicSize(Std.int(showCharacter.width * 0.8));
@@ -136,6 +151,10 @@ class VisualSubstate extends MusicBeatSubstate
 	var holdTime:Float = 0;
 	override function update(elapsed:Float)
 	{
+		if (FlxG.keys.justPressed.THREE) {
+			FlxG.mouse.visible = !FlxG.mouse.visible;
+		}
+
 		if (controls.UI_UP_P)
 		{
 			changeSelection(-1);
@@ -201,10 +220,31 @@ class VisualSubstate extends MusicBeatSubstate
 						ClientPrefs.hideTime = !ClientPrefs.hideTime;
 				}
 				FlxG.sound.play(Paths.sound('scrollMenu'));
+				if (!ClientPrefs.noteSplashes && !ClientPrefs.noteSplashes2){
+					/*unselectableOptions = [
+						'Disable Perfect Splash',
+						'Disable Sick Splash'
+					];*/
+					unselectableOptions = [
+					];		
+				}else{
+					unselectableOptions = [
+					];		
+				}
 				reloadValues();
 			}
 		} else {
-			if(controls.UI_LEFT || controls.UI_RIGHT) {
+			if((options[curSelected] == 'Disable Perfect Splash' || options[curSelected] == 'Disable Sick Splash') && controls.ACCEPT && nextAccept <= 0){
+				switch(options[curSelected]){
+					case 'Disable Perfect Splash':
+						ClientPrefs.disablePerfectNoteSplashes = !ClientPrefs.disablePerfectNoteSplashes;
+					case 'Disable Sick Splash':
+						ClientPrefs.disableSickNoteSplashes = !ClientPrefs.disableSickNoteSplashes;
+				}
+				FlxG.sound.play(Paths.sound('scrollMenu'));
+				reloadValues();
+			}
+			if((controls.UI_LEFT || controls.UI_RIGHT) && options[curSelected] != 'Disable Perfect Splash' && options[curSelected] != 'Disable Sick Splash') {
 				var add:Int = controls.UI_LEFT ? -1 : 1;
 				if(holdTime > 0.5 || controls.UI_LEFT_P || controls.UI_RIGHT_P)
 				switch(options[curSelected]) {
@@ -243,7 +283,7 @@ class VisualSubstate extends MusicBeatSubstate
 			case 'FPS Counter':
 				daText = "If unchecked, hides FPS Counter.";
 			case 'Note Splashes':
-				daText = "If unchecked, hitting \"Sick!\" notes won't show particles.";
+				daText = "If unchecked, hitting \"Sick! Or Perfect!!\" notes won't show particles.";
 			case 'Enemy Note Splashes':
 				daText = "If unchecked, enemy notes won't show particles.";
 			case 'Flashing Lights':
@@ -323,6 +363,10 @@ class VisualSubstate extends MusicBeatSubstate
 			if(text != null) {
 				var daText:String = '';
 				switch(options[textNumber[i]]) {
+					case 'Disable Perfect Splash':
+						daText = '' + ClientPrefs.disablePerfectNoteSplashes;
+					case 'Disable Sick Splash':
+						daText = ' ' + ClientPrefs.disableSickNoteSplashes;
 				}
 				var lastTracker:FlxSprite = text.sprTracker;
 				text.sprTracker = null;

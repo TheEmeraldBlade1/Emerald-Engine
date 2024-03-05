@@ -23,23 +23,15 @@ class StrumNote extends FlxSprite
 		super(x, y);
 
 		var skin:String = 'NOTE_assets';
-		var noteskinpath:String = '';
-		if (ClientPrefs.notetypes == 1) noteskinpath = '_Circles';
-		if (ClientPrefs.notetypes == 2) noteskinpath = '_Rectangle';
-		if (ClientPrefs.notetypes == 3) noteskinpath = '_Stepmania';
-		if (ClientPrefs.notetypes == 4) noteskinpath = '_Synthwave';
-		if (ClientPrefs.notetypes == 5) noteskinpath = '_Halloween';
-		if (ClientPrefs.notetypes == 6) noteskinpath = '_silver';
-		if (ClientPrefs.notetypes == 7) noteskinpath = '_Mario';
-		if (ClientPrefs.notetypes == 8) noteskinpath = '_Luigi';
+		PublicVariables.getNoteSkinPath();
 		if(PlayState.SONG.arrowSkin != null && PlayState.SONG.arrowSkin.length > 1) skin = PlayState.SONG.arrowSkin;
 
 		if(PlayState.isPixelStage)
 		{
-			loadGraphic(Paths.image('NOTESKINS/pixelUI/' + skin + noteskinpath));
+			loadGraphic(Paths.image('NOTESKINS/pixelUI/' + skin + PublicVariables.noteskinpath));
 			width = width / 4;
 			height = height / 5;
-			loadGraphic(Paths.image('NOTESKINS/pixelUI/' + skin + noteskinpath), true, Math.floor(width), Math.floor(height));
+			loadGraphic(Paths.image('NOTESKINS/pixelUI/' + skin + PublicVariables.noteskinpath), true, Math.floor(width), Math.floor(height));
 			animation.add('green', [6]);
 			animation.add('red', [7]);
 			animation.add('blue', [5]);
@@ -74,7 +66,7 @@ class StrumNote extends FlxSprite
 		}
 		else
 		{
-			frames = Paths.getSparrowAtlas('NOTESKINS/' + skin + noteskinpath);
+			frames = Paths.getSparrowAtlas('NOTESKINS/' + skin + PublicVariables.noteskinpath);
 			animation.addByPrefix('green', 'arrowUP');
 			animation.addByPrefix('blue', 'arrowDOWN');
 			animation.addByPrefix('purple', 'arrowLEFT');
@@ -156,7 +148,9 @@ class StrumNote extends FlxSprite
 
 	function updateConfirmOffset() { //TO DO: Find a calc to make the offset work fine on other angles
 		centerOffsets();
-		offset.x -= 13;
-		offset.y -= 13;
+		if (!PublicVariables.unCenteredNoteTypes.contains(ClientPrefs.notetypes)){
+			offset.x -= 13;
+			offset.y -= 13;
+		}
 	}
 }

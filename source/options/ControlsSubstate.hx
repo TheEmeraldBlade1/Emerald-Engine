@@ -95,6 +95,10 @@ class ControlsSubstate extends MusicBeatSubstate {
 	var leaving:Bool = false;
 	var bindingTime:Float = 0;
 	override function update(elapsed:Float) {
+		if (FlxG.keys.justPressed.THREE) {
+			FlxG.mouse.visible = !FlxG.mouse.visible;
+		}
+		
 		if(rebindingKey < 0) {
 			if (controls.UI_UP_P) {
 				changeSelection(-1);

@@ -117,6 +117,10 @@ class PauseSubState extends MusicBeatSubstate
 	{
 		super.update(elapsed);
 
+		if (FlxG.keys.justPressed.THREE) {
+			FlxG.mouse.visible = !FlxG.mouse.visible;
+		}
+
 		var upP = controls.UI_UP_P;
 		var downP = controls.UI_DOWN_P;
 		var accepted = controls.ACCEPT;

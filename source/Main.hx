@@ -1,5 +1,6 @@
 package;
 
+import sys.io.File;
 import flixel.FlxG;
 import flixel.FlxGame;
 import flixel.FlxState;
@@ -19,8 +20,8 @@ class Main extends Sprite
 	var skipSplash:Bool = true; // Whether to skip the flixel splash screen that appears in release mode.
 	var startFullscreen:Bool = false; // Whether to start the game in fullscreen on desktop targets
 	public static var fpsVar:FPS;
-	public static var debugBuild:Bool = false;
-	public static var stringVersion:String = "0.1.2.2";
+	public static var debugBuild:Bool;
+	public static var stringVersion:String = "0.2.0";
 
 	// You can pretty much ignore everything from here on - your code should go in your states.
 
@@ -59,6 +60,7 @@ class Main extends Sprite
 
 	private function setupGame():Void
 	{
+		debugBuild = sys.FileSystem.exists(Paths.debug());
 		if (debugBuild) stringVersion += " (DEBUG)";
 		var stageWidth:Int = Lib.current.stage.stageWidth;
 		var stageHeight:Int = Lib.current.stage.stageHeight;

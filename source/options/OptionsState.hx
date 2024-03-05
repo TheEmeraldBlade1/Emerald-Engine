@@ -31,15 +31,21 @@ using StringTools;
 
 class OptionsState extends MusicBeatState
 {
-	var options:Array<String> = ['Preferences', 'Controls'];
+	var options:Array<String> = [];
 	private var grpOptions:FlxTypedGroup<Alphabet>;
-	private var curSelected:Int = 0;
+	private static var curSelected:Int = 0;
 	public static var menuBG:FlxSprite;
 
 	override function create() {
 		#if desktop
 		DiscordClient.changePresence("Options Menu", null);
 		#end
+
+		options = [
+		'Preferences'
+		, 'Note Colors'
+		, 'Controls'
+		];
 
 		if (!FlxG.sound.music.playing){
 			FlxG.sound.playMusic(Paths.music('lullma'));
@@ -75,6 +81,10 @@ class OptionsState extends MusicBeatState
 	}
 
 	override function update(elapsed:Float) {
+		if (FlxG.keys.justPressed.THREE) {
+			FlxG.mouse.visible = !FlxG.mouse.visible;
+		}
+
 		super.update(elapsed);
 
 		if (controls.UI_UP_P) {
@@ -82,6 +92,24 @@ class OptionsState extends MusicBeatState
 		}
 		if (controls.UI_DOWN_P) {
 			changeSelection(1);
+		}
+
+		if(options[curSelected] == 'Noteskin ' + "<" + PublicVariables.noteSkins[ClientPrefs.notetypes] + ">"){
+			if (controls.UI_LEFT){
+				ClientPrefs.notetypes -= 1;	
+				FlxG.sound.play(Paths.sound('scrollMenu'));
+				if (ClientPrefs.notetypes < 0)
+					ClientPrefs.notetypes = PublicVariables.noteSkins.length - 1;
+				ClientPrefs.saveSettings();
+				MusicBeatState.switchState(new options.OptionsState());			
+			}else if (controls.UI_RIGHT){
+				ClientPrefs.notetypes += 1;
+				FlxG.sound.play(Paths.sound('scrollMenu'));
+				if (ClientPrefs.notetypes > PublicVariables.noteSkins.length - 1)
+					ClientPrefs.notetypes = 0;
+				ClientPrefs.saveSettings();
+				MusicBeatState.switchState(new options.OptionsState());
+			}
 		}
 
 		if (controls.BACK) {
@@ -98,8 +126,8 @@ class OptionsState extends MusicBeatState
 
 		if (controls.ACCEPT) {
 			switch(options[curSelected]) {
-				case 'Controller':
-					controllerState();
+				case 'Note Colors':
+					noteColorsState();
 				case 'Controls':
 					controlsState();
 				case 'Preferences':
@@ -137,12 +165,12 @@ class OptionsState extends MusicBeatState
 		openSubState(new options.ControlsSubstate());
 	}
 
-	function controllerState()
+	function noteColorsState()
 	{	
 		for (item in grpOptions.members) {
 			item.alpha = 0;
 		}
-		openSubState(new options.ControllerSubstate());
+		openSubState(new options.NoteColorsSubstate());
 	}
 	
 	function changeSelection(change:Int = 0) {

@@ -40,8 +40,8 @@
 
 	<classpath name="source" />
 
-	<assets path="assets/preload" rename="assets" exclude="*.ogg" if="web"/>
-	<assets path="assets/preload" rename="assets" exclude="*.mp3"  unless="web"/>
+	<assets path="assets" rename="assets" exclude="*.ogg" if="web"/>
+	<assets path="assets" rename="assets" exclude="*.mp3"  unless="web"/>
 	
 	<!-- PSYCH ENGINE CUSTOMIZATION -->
 	<define name="MODS_ALLOWED" if="desktop" />
@@ -56,7 +56,8 @@
 	<assets path="plugins/"             rename=''               if="VIDEOS_ALLOWED windows" />
 	<assets path="dlls/"                rename=''               if="VIDEOS_ALLOWED windows" />
 
-		<assets path='example_mods' rename='mods' embed='false' if="MODS_ALLOWED"/>
+	<assets path='example_mods' rename='mods' embed='false' if="MODS_ALLOWED"/>
+	<assets path='debug' rename='assets/data/gameData/debug' embed='false' if="desktop"/>
 	
 	<!-- <template path='mods' /> -->
 	

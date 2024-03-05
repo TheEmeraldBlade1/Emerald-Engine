@@ -121,6 +121,11 @@ class Paths
 		return getPath('data/$key.txt', TEXT, library);
 	}
 
+	inline static public function debug()
+	{
+		return 'assets/data/gameData/debug/debugControls.txt';
+	}
+
 	inline static public function xml(key:String, ?library:String)
 	{
 		return getPath('data/$key.xml', TEXT, library);
@@ -188,7 +193,7 @@ class Paths
 			return file;
 		}
 		#end
-		return 'assets/data/SongData/Audio/${song.toLowerCase().replace(' ', '-')}/Voices.ogg';
+		return 'assets/data/SongData/Audio/${song.toLowerCase().replace(' ', '-')}/Voices.$SOUND_EXT';
 	}
 
 	inline static public function inst(song:String):Any
@@ -199,7 +204,7 @@ class Paths
 			return file;
 		}
 		#end
-		return 'assets/data/SongData/Audio/${song.toLowerCase().replace(' ', '-')}/Inst.ogg';
+		return 'assets/data/SongData/Audio/${song.toLowerCase().replace(' ', '-')}/Inst.$SOUND_EXT';
 	}
 
 	#if MODS_ALLOWED

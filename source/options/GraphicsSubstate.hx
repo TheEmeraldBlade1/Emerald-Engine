@@ -131,6 +131,10 @@ class GraphicsSubstate extends MusicBeatSubstate
 	var holdTime:Float = 0;
 	override function update(elapsed:Float)
 	{
+		if (FlxG.keys.justPressed.THREE) {
+			FlxG.mouse.visible = !FlxG.mouse.visible;
+		}
+
 		if (controls.UI_UP_P)
 		{
 			changeSelection(-1);
@@ -203,8 +207,8 @@ class GraphicsSubstate extends MusicBeatSubstate
 				switch(options[curSelected]) {
 					case 'Framerate':
 						ClientPrefs.framerate += add;
-						if(ClientPrefs.framerate < 60) ClientPrefs.framerate = 60;
-						else if(ClientPrefs.framerate > 350) ClientPrefs.framerate = 350;
+						if(ClientPrefs.framerate < 30) ClientPrefs.framerate = 30;
+						else if(ClientPrefs.framerate > 500) ClientPrefs.framerate = 500;
 
 						if(ClientPrefs.framerate > FlxG.drawFramerate) {
 							FlxG.updateFramerate = ClientPrefs.framerate;
