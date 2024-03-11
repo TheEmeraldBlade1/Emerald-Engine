@@ -60,6 +60,7 @@ class ChartingState extends MusicBeatState
 		'Hey!',
 		'Hurt Note',
 		'GF Sing',
+		'GF And Character Sing',
 		'No Animation'
 	];
 	private var noteTypeIntMap:Map<Int, String> = new Map<Int, String>();
@@ -326,7 +327,6 @@ class ChartingState extends MusicBeatState
 		updateWaveform();
 		addFunctionsUI();
 		addAssetsUI();
-		UI_box.selected_tab = 5;
 
 		add(curRenderedSustains);
 		add(curRenderedNotes);
@@ -482,13 +482,13 @@ class ChartingState extends MusicBeatState
 			tab_group_asset.add(new FlxText(stageDropDown.x, stageDropDown.y - 15, 0, 'Stage:'));
 			tab_group_asset.add(new FlxText(noteSkinInputText.x, noteSkinInputText.y - 15, 0, 'Note Texture:'));
 			tab_group_asset.add(new FlxText(noteSplashesInputText.x, noteSplashesInputText.y - 15, 0, 'Note Splashes Texture:'));
+			tab_group_asset.add(reloadNotesButton);
+			tab_group_asset.add(noteSkinInputText);
+			tab_group_asset.add(noteSplashesInputText);
 			tab_group_asset.add(player2DropDown);
 			tab_group_asset.add(player3DropDown);
 			tab_group_asset.add(player1DropDown);
 			tab_group_asset.add(stageDropDown);
-			tab_group_asset.add(reloadNotesButton);
-			tab_group_asset.add(noteSkinInputText);
-			tab_group_asset.add(noteSplashesInputText);
 			UI_box.scrollFactor.set();
 		}
 

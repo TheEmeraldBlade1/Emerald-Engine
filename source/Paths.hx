@@ -59,8 +59,8 @@ class Paths
 		ignoreModFolders.set('custom_events', true);
 		ignoreModFolders.set('custom_notetypes', true);
 		ignoreModFolders.set('data', true);
-		ignoreModFolders.set('songs', true);
 		ignoreModFolders.set('music', true);
+		ignoreModFolders.set('scripts', true);
 		ignoreModFolders.set('sounds', true);
 		ignoreModFolders.set('videos', true);
 		ignoreModFolders.set('images', true);
@@ -124,6 +124,11 @@ class Paths
 	inline static public function debug()
 	{
 		return 'assets/data/gameData/debug/debugControls.txt';
+	}
+
+	inline static public function disableDiscordRPC()
+	{
+		return 'assets/data/gameData/debug/disableDiscordRPC.txt';
 	}
 
 	inline static public function xml(key:String, ?library:String)
@@ -344,7 +349,7 @@ class Paths
 	}
 
 	inline static public function modsSongs(key:String) {
-		return modFolders('songs/' + key + '.' + SOUND_EXT);
+		return modFolders('data/SongData/Audio/' + key + '.' + SOUND_EXT);
 	}
 
 	inline static public function modsImages(key:String) {
@@ -357,6 +362,10 @@ class Paths
 
 	inline static public function modsTxt(key:String) {
 		return modFolders('images/' + key + '.txt');
+	}
+
+	inline static public function modsScripts(key:String) {
+		return modFolders('scripts/' + key + '.lua');
 	}
 
 	static public function modFolders(key:String) {

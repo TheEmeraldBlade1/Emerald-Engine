@@ -21,6 +21,7 @@ class Main extends Sprite
 	var startFullscreen:Bool = false; // Whether to start the game in fullscreen on desktop targets
 	public static var fpsVar:FPS;
 	public static var debugBuild:Bool;
+	public static var disableDiscordRPC:Bool;
 	public static var stringVersion:String = "0.2.0";
 
 	// You can pretty much ignore everything from here on - your code should go in your states.
@@ -61,29 +62,9 @@ class Main extends Sprite
 	private function setupGame():Void
 	{
 		debugBuild = sys.FileSystem.exists(Paths.debug());
+		disableDiscordRPC = sys.FileSystem.exists(Paths.disableDiscordRPC());
 		if (debugBuild) stringVersion += " (DEBUG)";
 		trace(stringVersion);
-		trace('Red sun, red sun over paradise
-Red sun, red sun over paradise
-Golden rays of the glorious sunshine
-Sending down such a blood-red light
-Now, the animals slowly retreat to the shadows, out of sight
-Arid winds blow across the mountains
-Giving flight to the birds of prey
-In the distance machines come to transform Eden, day by day
-Only love is with us now
-Something warm and pure
-Find the peace within ourselves
-No need for a cure
-When the wind is slow, when the fires hot
-The vulture waits to see what rots
-Oh, how pretty, all the scenery
-This is natures sacrifice
-When the air blows through with a brisk attack
-The reptile tail ripped from its back
-When the sun sets
-We will not forget the red sun over paradise
-Red sun');
 		var stageWidth:Int = Lib.current.stage.stageWidth;
 		var stageHeight:Int = Lib.current.stage.stageHeight;
 

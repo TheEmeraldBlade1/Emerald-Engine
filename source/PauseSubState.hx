@@ -60,7 +60,7 @@ class PauseSubState extends MusicBeatSubstate
 		levelDifficulty.updateHitbox();
 		add(levelDifficulty);
 
-		var blueballedTxt:FlxText = new FlxText(20, 15 + 64, 0, "", 32);
+		var blueballedTxt:FlxText = new FlxText(20, 15 + 32, 0, "", 32);
 		blueballedTxt.text = "Blueballed: " + PlayState.deathCounter;
 		blueballedTxt.scrollFactor.set();
 		blueballedTxt.setFormat(Paths.font('vcr.ttf'), 32);
@@ -141,6 +141,13 @@ class PauseSubState extends MusicBeatSubstate
 			closeState();
 		}
 
+		if (FlxG.keys.justPressed.SIX) {
+			FlxG.save.data.BotPlayToggleMode = !FlxG.save.data.BotPlayToggleMode;
+			PlayState.usedPractice = true;
+			PlayState.cpuControlled = FlxG.save.data.BotPlayToggleMode;
+			botplayText.visible = PlayState.cpuControlled;
+		}
+
 		if (accepted)
 		{
 			var daSelected:String = menuItems[curSelected];
@@ -180,6 +187,8 @@ class PauseSubState extends MusicBeatSubstate
 					PlayState.usedPractice = true;
 					PlayState.cpuControlled = FlxG.save.data.BotPlayToggleMode;
 					botplayText.visible = PlayState.cpuControlled;
+				case 'Ratings':
+					FlxG.save.data.ratingsToggle = !FlxG.save.data.ratingsToggle;
 				case "Exit to menu":
 					PublicVariables.pauseOptions = false;
 					PlayState.deathCounter = 0;

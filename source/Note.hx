@@ -222,7 +222,7 @@ class Note extends FlxSprite
 		if(suffix == null) suffix = '';
 		
 		var skin:String = texture;
-		if (PublicVariables.dontOverWriteNote.contains(prefix)){
+		if (PublicVariables.dontOverWriteNote.contains(noteType)){
 			PublicVariables.noteskinpath = '';
 		}else{
 			PublicVariables.getNoteSkinPath();

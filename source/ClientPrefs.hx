@@ -36,6 +36,7 @@ class ClientPrefs {
 	public static var aFlipX:Bool = false;
 	public static var safeFrame:Int = 8;
 	public static var speed:Float = 2;
+	public static var cpuNoteStrumTimer:Float = 0.15;
 	public static var hss:Bool = false;
 	public static var hideEnemyNotes:Bool = false;
 
@@ -81,6 +82,7 @@ class ClientPrefs {
 	public static var lastControls:Array<FlxKey> = defaultKeys.copy();
 
 	public static function saveSettings() {
+		FlxG.save.data.cpuNoteStrumTimer = cpuNoteStrumTimer;
 		FlxG.save.data.disablePerfectNoteSplashes = disablePerfectNoteSplashes;
 		FlxG.save.data.disableSickNoteSplashes = disableSickNoteSplashes;
 		FlxG.save.data.controllerModeEnable = controllerModeEnable;
@@ -134,6 +136,9 @@ class ClientPrefs {
 	}
 
 	public static function loadPrefs() {
+		if(FlxG.save.data.cpuNoteStrumTimers != null) {
+			cpuNoteStrumTimer = FlxG.save.data.cpuNoteStrumTimer;
+		}
 		if(FlxG.save.data.disablePerfectNoteSplashes != null) {
 			disablePerfectNoteSplashes = FlxG.save.data.disablePerfectNoteSplashes;
 		}

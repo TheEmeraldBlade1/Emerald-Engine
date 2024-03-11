@@ -107,10 +107,12 @@ class TitleState extends MusicBeatState
 		} else {
 			#if desktop
 			{
-				DiscordClient.initialize();
-				Application.current.onExit.add (function (exitCode) {
-					DiscordClient.shutdown();
-				});
+				if (!Main.disableDiscordRPC){
+					DiscordClient.initialize();
+					Application.current.onExit.add (function (exitCode) {
+						DiscordClient.shutdown();
+					});
+				}
 			}
 			#end
 			new FlxTimer().start(1, function(tmr:FlxTimer)
@@ -271,14 +273,16 @@ class TitleState extends MusicBeatState
 		}
 
 		#if desktop
-		if (Main.debugBuild && FlxG.keys.justPressed.SIX){
-			DiscordClient.initialize();
-			Application.current.onExit.add (function (exitCode) {
+		if (!Main.disableDiscordRPC){
+			if (Main.debugBuild && FlxG.keys.justPressed.SIX){
+				DiscordClient.initialize();
+				Application.current.onExit.add (function (exitCode) {
+					DiscordClient.shutdown();
+				});
+			}
+			if (Main.debugBuild && FlxG.keys.justPressed.FIVE){
 				DiscordClient.shutdown();
-			});
-		}
-		if (Main.debugBuild && FlxG.keys.justPressed.FIVE){
-			DiscordClient.shutdown();
+			}
 		}
 		#end
 

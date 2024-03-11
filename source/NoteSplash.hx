@@ -62,6 +62,11 @@ class NoteSplash extends FlxSprite
 				animation.addByPrefix("note2-" + i, "note splash green " + i, 24, false);
 				animation.addByPrefix("note0-" + i, "note splash green " + i, 24, false);
 				animation.addByPrefix("note3-" + i, "note splash green " + i, 24, false);
+			}else if (ClientPrefs.notetypes == 12){
+				animation.addByPrefix("note1-" + i, "note splash purple " + i, 24, false);
+				animation.addByPrefix("note2-" + i, "note splash blue " + i, 24, false);
+				animation.addByPrefix("note0-" + i, "note splash purple " + i, 24, false);
+				animation.addByPrefix("note3-" + i, "note splash blue " + i, 24, false);
 			}else{
 				animation.addByPrefix("note1-" + i, "note splash blue " + i, 24, false);
 				animation.addByPrefix("note2-" + i, "note splash green " + i, 24, false);

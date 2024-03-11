@@ -33,8 +33,7 @@ class VisualSubstate extends MusicBeatSubstate
 	static var unselectableOptions:Array<String> = [
 	];
 	static var noCheckbox:Array<String> = [
-		'Disable Perfect Splash:',
-		'Disable Sick Splash:'
+		'CPU Note Time'
 	];
 
 	static var options:Array<String> = [
@@ -51,7 +50,10 @@ class VisualSubstate extends MusicBeatSubstate
 		'Hide Icon Player 1',
 		'Hide Icon Player 2',
 		'Hide Song Length',
-		'Flashing Lights'
+		'Hide Ratings',
+		'Hide Judgement Ratings',
+		'Flashing Lights',
+		'CPU Note Time'
 	];
 
 	private var grpOptions:FlxTypedGroup<Alphabet>;
@@ -216,6 +218,10 @@ class VisualSubstate extends MusicBeatSubstate
 						ClientPrefs.hideHudIconp1 = !ClientPrefs.hideHudIconp1;
 					case 'Hide Icon Player 2':
 						ClientPrefs.hideHudIconp2 = !ClientPrefs.hideHudIconp2;
+					case 'Hide Ratings':
+						FlxG.save.data.ratingsToggle = !FlxG.save.data.ratingsToggle;
+					case 'Hide Judgement Ratings':
+						FlxG.save.data.hideJudgementRatings = !FlxG.save.data.hideJudgementRatings;
 					case 'Hide Song Length':
 						ClientPrefs.hideTime = !ClientPrefs.hideTime;
 					case 'Disable Perfect Splash':
@@ -252,6 +258,13 @@ class VisualSubstate extends MusicBeatSubstate
 				var add:Int = controls.UI_LEFT ? -1 : 1;
 				if(holdTime > 0.5 || controls.UI_LEFT_P || controls.UI_RIGHT_P)
 				switch(options[curSelected]) {
+					case 'CPU Note Time':
+						if (controls.UI_RIGHT)
+							ClientPrefs.cpuNoteStrumTimer += 0.01;
+						else if (controls.UI_LEFT)
+							ClientPrefs.cpuNoteStrumTimer -= 0.01;
+						if(ClientPrefs.cpuNoteStrumTimer < 0.03) ClientPrefs.cpuNoteStrumTimer = 0.03;
+						else if(ClientPrefs.cpuNoteStrumTimer > 0.20) ClientPrefs.cpuNoteStrumTimer = 0.20;
 				}
 				reloadValues();
 
@@ -294,6 +307,8 @@ class VisualSubstate extends MusicBeatSubstate
 				daText = "Uncheck this if you're sensitive to flashing lights!";
 			case 'Hide Song Length':
 				daText = "If checked, the bar showing how much time is left\nwill be hidden.";
+			case 'CPU Note Time':
+				daText = "Default Value is 0.15";
 		}
 		descText.text = daText;
 
@@ -356,8 +371,16 @@ class VisualSubstate extends MusicBeatSubstate
 						daValue = ClientPrefs.hideHudIconp1;
 					case 'Hide Icon Player 2':
 						daValue = ClientPrefs.hideHudIconp2;
+					case 'Hide Ratings':
+						daValue = FlxG.save.data.ratingsToggle;
+					case 'Hide Judgement Ratings':
+						daValue = FlxG.save.data.hideJudgementRatings;
 					case 'Hide Song Length':
 						daValue = ClientPrefs.hideTime;
+					case 'Disable Perfect Splash':
+						daValue = ClientPrefs.disablePerfectNoteSplashes;
+					case 'Disable Sick Splash':
+						daValue = ClientPrefs.disableSickNoteSplashes;
 				}
 				checkbox.daValue = daValue;
 			}
@@ -371,6 +394,8 @@ class VisualSubstate extends MusicBeatSubstate
 						daText = '' + ClientPrefs.disablePerfectNoteSplashes;
 					case 'Disable Sick Splash':
 						daText = ' ' + ClientPrefs.disableSickNoteSplashes;
+					case 'CPU Note Time':
+						daText = ' ' + ClientPrefs.cpuNoteStrumTimer;
 				}
 				var lastTracker:FlxSprite = text.sprTracker;
 				text.sprTracker = null;

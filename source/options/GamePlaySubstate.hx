@@ -48,6 +48,7 @@ class GamePlaySubstate extends MusicBeatSubstate
 		'Camera Zooms',
 		'Violence',
 		'Swearing',
+		'Botplay'
 	];
 
 	private var grpOptions:FlxTypedGroup<Alphabet>;
@@ -201,6 +202,8 @@ class GamePlaySubstate extends MusicBeatSubstate
 
 					case 'Custom Scroll Speed':
 						ClientPrefs.hss = !ClientPrefs.hss;
+					case 'Botplay':
+						FlxG.save.data.BotPlayToggleMode = !FlxG.save.data.BotPlayToggleMode;
 				}
 				FlxG.sound.play(Paths.sound('scrollMenu'));
 				reloadValues();
@@ -344,6 +347,8 @@ class GamePlaySubstate extends MusicBeatSubstate
 						daValue = ClientPrefs.camZooms;
 					case 'Custom Scroll Speed':
 						daValue = ClientPrefs.hss;
+					case 'Botplay':
+						daValue = FlxG.save.data.BotPlayToggleMode;
 				}
 				checkbox.daValue = daValue;
 			}

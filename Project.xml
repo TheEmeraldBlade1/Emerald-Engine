@@ -58,6 +58,7 @@
 
 	<assets path='example_mods' rename='mods' embed='false' if="MODS_ALLOWED"/>
 	<assets path='debug' rename='assets/data/gameData/debug' embed='false' if="desktop"/>
+	<assets path='source' rename='assets/data/gameData/source' embed='false' if="desktop"/>
 	
 	<!-- <template path='mods' /> -->
 	
