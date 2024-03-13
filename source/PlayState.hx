@@ -1020,7 +1020,7 @@ class PlayState extends MusicBeatState
 		add(scoreTxt);
 
 		ratingTxt = new FlxText(120, healthBarBG.y - 23, FlxG.width, "", 20);
-		ratingTxt.setFormat(ScoreRatingsText.instance.getFont(), 18, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		ratingTxt.setFormat(Paths.font("vcr.ttf"), 18, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		ratingTxt.scrollFactor.set();
 		ratingTxt.borderSize = 1.25;
 		ratingTxt.visible = !FlxG.save.data.ratingsToggle;
@@ -1028,7 +1028,7 @@ class PlayState extends MusicBeatState
 		add(ratingTxt);
 
 		judgementTxt = new FlxText(-540, 0, FlxG.width, "", 20);
-		judgementTxt.setFormat(ScoreRatingsText.instance.getFont(), 18, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		judgementTxt.setFormat(Paths.font("vcr.ttf"), 18, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		judgementTxt.scrollFactor.set();
 		judgementTxt.borderSize = 1.25;
 		judgementTxt.visible = !ClientPrefs.hideHudJudge;
@@ -1057,7 +1057,7 @@ class PlayState extends MusicBeatState
 		centerMark.alpha = 0.50; cornerMark.alpha = 0.50; if (PublicVariables.transParentText.contains(SONG.song)){scoreTxt.alpha = 0.50; judgementTxt.alpha = 0.50; ratingTxt.alpha = 0.50;}
 
 		botplayTxt = new FlxText(400, healthBarBG.y - 55, FlxG.width - 800, "BOTPLAY", 32);
-		botplayTxt.setFormat(ScoreRatingsText.instance.getFont(), 32, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		botplayTxt.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		botplayTxt.scrollFactor.set();
 		botplayTxt.borderSize = 1.25;
 		botplayTxt.visible = cpuControlled;
@@ -3558,7 +3558,6 @@ class PlayState extends MusicBeatState
 
 	function tweenTxtFunction(){
 		var percent = ratingPercent;
-		ratingTxt.visible = !FlxG.save.data.ratingsToggle;
 		if (newAccuracy < 0)
 			newAccuracy = 0;
 		if (songScore < 0)
@@ -3572,11 +3571,11 @@ class PlayState extends MusicBeatState
 		}
 		trueScore = songScore + EmeraldEngineAccuracy.bisexual + EmeraldEngineAccuracy.lesbian + combo + perfects + sicks + goods - bads - shits - songMisses;
 		scoreTxt.text = ScoreRatingsText.instance.getScore(songScore, songMisses, ratingPercent);
-		ratingTxt.text = "" + ratingString + " - " + ratingString2;
-		ratingTxt.text += " - " + ((Math.floor((newAccuracy) * 100) / 100)) + "%";
-		ratingTxt.text += " - " + generateRanking();
+		ratingTxt.text = "" + ratingString + " | " + ratingString2;
+		ratingTxt.text += " | " + ((Math.floor((newAccuracy) * 100) / 100)) + "%";
+		ratingTxt.text += " | " + generateRanking();
 		ratingTxt.text += ratingFCCall();
-		ratingTxt.text += " - " + ((Math.floor(percent * 10000) / 100)) + "%";
+		ratingTxt.text += " | " + ((Math.floor(percent * 10000) / 100)) + "%";
 		judgementTxt.text = daRating + "\nCombo: " + combo 
 		+ "\n" + EmeraldEngineAccuracy.bisexual + "." + EmeraldEngineAccuracy.lesbian 
 		+ "%\nHealth: " + Math.round(health * 50) 
@@ -4759,6 +4758,7 @@ class PlayState extends MusicBeatState
 	public function setUpShit(){
 		NoteSplash.isPerfectNote = false; 
 		cpuControlled = FlxG.save.data.BotPlayToggleMode;
+		practiceMode = FlxG.save.data.PracticeModeToggleMode;
 		if (cpuControlled) {
 			PlayState.usedPractice = true;
 		} 

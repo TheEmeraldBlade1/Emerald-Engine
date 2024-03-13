@@ -48,7 +48,8 @@ class GamePlaySubstate extends MusicBeatSubstate
 		'Camera Zooms',
 		'Violence',
 		'Swearing',
-		'Botplay'
+		'Botplay',
+		'Practice Mode'
 	];
 
 	private var grpOptions:FlxTypedGroup<Alphabet>;
@@ -204,6 +205,8 @@ class GamePlaySubstate extends MusicBeatSubstate
 						ClientPrefs.hss = !ClientPrefs.hss;
 					case 'Botplay':
 						FlxG.save.data.BotPlayToggleMode = !FlxG.save.data.BotPlayToggleMode;
+					case 'Practice Mode':
+						FlxG.save.data.PracticeModeToggleMode = !FlxG.save.data.PracticeModeToggleMode;
 				}
 				FlxG.sound.play(Paths.sound('scrollMenu'));
 				reloadValues();
@@ -349,6 +352,8 @@ class GamePlaySubstate extends MusicBeatSubstate
 						daValue = ClientPrefs.hss;
 					case 'Botplay':
 						daValue = FlxG.save.data.BotPlayToggleMode;
+					case 'Practice Mode':
+						daValue = FlxG.save.data.PracticeModeToggleMode;
 				}
 				checkbox.daValue = daValue;
 			}

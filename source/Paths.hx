@@ -11,6 +11,7 @@ import sys.io.File;
 import sys.FileSystem;
 import flixel.graphics.FlxGraphic;
 import openfl.display.BitmapData;
+import sys.io.File;
 #end
 
 import flash.media.Sound;
@@ -60,6 +61,7 @@ class Paths
 		ignoreModFolders.set('custom_notetypes', true);
 		ignoreModFolders.set('data', true);
 		ignoreModFolders.set('music', true);
+		ignoreModFolders.set('fonts', true);
 		ignoreModFolders.set('scripts', true);
 		ignoreModFolders.set('sounds', true);
 		ignoreModFolders.set('videos', true);
@@ -334,6 +336,10 @@ class Paths
 
 	inline static public function modsJson(key:String) {
 		return modFolders('data/' + key + '.json');
+	}
+
+	inline static public function modsFont(key:String) {
+		return modFolders('fonts/' + key);
 	}
 
 	inline static public function modsVideo(key:String) {

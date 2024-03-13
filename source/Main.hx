@@ -61,8 +61,8 @@ class Main extends Sprite
 
 	private function setupGame():Void
 	{
-		debugBuild = sys.FileSystem.exists(Paths.debug());
-		disableDiscordRPC = sys.FileSystem.exists(Paths.disableDiscordRPC());
+		debugBuild = true;
+		disableDiscordRPC = true;
 		if (debugBuild) stringVersion += " (DEBUG)";
 		trace(stringVersion);
 		var stageWidth:Int = Lib.current.stage.stageWidth;
